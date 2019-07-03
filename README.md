@@ -9,7 +9,7 @@ Latent Semantic Anlisys (LSA) before to apply t-SNE or UMAP for single cell data
 
 ## News
 
-*July 3 2019*. 
+*July 3 2019*. First commit and documentation draft. 
 
 
 ## Installing
