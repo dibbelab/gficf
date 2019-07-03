@@ -10,11 +10,12 @@ Encoding: UTF-8
 LazyData: true
 Suggests: testthat
 RoxygenNote: 6.1.1
-Depends: Matrix, igraph, uwot, parallel, rsvd
+Depends: Matrix, igraph, uwot, ggplot2, rsvd, ggrepel
 LinkingTo: Rcpp, RcppProgress, RcppParallel, RcppAnnoy
 Imports: 
     uwot,
     igraph,
+    ggplot2,
     rsvd,
-    parallel
+    ggrepel
 SystemRequirements: GNU make
