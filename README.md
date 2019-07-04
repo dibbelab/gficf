@@ -39,10 +39,10 @@ devtools::install_github("dibbelab/gficf")
 ```
 
 ## Example
+Download Tabula Muris dataset from [HERE](https://drive.google.com/open?id=1yX8IQ7DiWG8PCmYieFFS7vj53Hf1OfT2) and annotation fro [HERE](https://drive.google.com/open?id=10ixOOsqZqf6GgwQP1okwoe_TMP_ZTzn5).
 
 ```R
 library(gficf)
-library(ggplot2)
 
 # See function man page for help
 ?gficf
@@ -50,7 +50,7 @@ library(ggplot2)
 # Common pipeline to use that goes from normalization to clustering
 
 # Step 1: Nomrmalize data with gficf
-data = gficf::gficf(M = readRDS("path/to/tabula/muris/dataset.rds"),cell_proportion_max = 1,cell_proportion_min = .05,storeRaw = F,normalize = F)
+data = gficf::gficf(M = readRDS("path/to/TabulaMuris.10x.mouse.RAW.rds"),cell_proportion_max = 1,cell_proportion_min = .05,storeRaw = F,normalize = F)
 
 # Step 2: Reduce data with Latent Semantic Anlysis before to apply t-SNE or UMAP
 data = gficf::runLSA(data = data,dim = 50)
@@ -70,5 +70,17 @@ gficf::plotCells(data = data)
 data = gficf::clustcells(data = data,from.embedded = F,dist.method = "manhattan",nt = 4,k = 50,community.algo = "louvian",seed = 0)
 
 # Step 5: Visualize cells by identified clusters
-gficf::plotCells(data = data,colorBy="cluster")
+gficf::plotCells(data = data,colorBy="cluster") + xlab("t-SNE1") + ylab("t-SNE2") + ggtitle("Cells colored by Clusters") 
+
+![tabula_clusters.png](img/tabula_clusters.png) 
+
+# Additional steps: add annotation to cells and plot it.
+info = readRDS("/path/to/TabulaMuris.10x.mouse.annotation.rds")
+data$embedded$tissue = info$tissue
+data$embedded$subtissue = info$subtissue
+data$embedded$cell_ontology_class = info$cell_ontology_class
+gficf::plotCells(data = data,colorBy="cell_ontology_class")
+
+![tabula_annotated.png](img/tabula_annotated.png) 
+
 ```
