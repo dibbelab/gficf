@@ -39,7 +39,8 @@ devtools::install_github("dibbelab/gficf")
 ```
 
 ## Example
-Download Tabula Muris dataset from [HERE](https://drive.google.com/open?id=1yX8IQ7DiWG8PCmYieFFS7vj53Hf1OfT2) and annotation fro [HERE](https://drive.google.com/open?id=10ixOOsqZqf6GgwQP1okwoe_TMP_ZTzn5).
+Download Tabula Muris dataset from [HERE](https://drive.google.com/open?id=1yX8IQ7DiWG8PCmYieFFS7vj53Hf1OfT2) and
+annotation from [HERE](https://drive.google.com/open?id=10ixOOsqZqf6GgwQP1okwoe_TMP_ZTzn5).
 
 ```R
 library(gficf)
@@ -88,3 +89,32 @@ gficf::plotCells(data = data,colorBy="cell_ontology_class")
 ![tabula_annotated.png](img/tabula_annotated.png) 
 
 
+## Implementation Details
+
+For the implemented [Phenograph](https://www.cell.com/cell/fulltext/S0092-8674(15)00637-6) clustering
+the approximate nearest neighbors are found using [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy)
+present in the `uwot` package. The supported distance metrics for KNN (set by the `dist.method` parameter) are:
+
+* Euclidean
+* Cosine
+* Manhattan
+* Hamming
+
+Please note that the Hamming support is a lot slower than the
+other metrics. It is not recomadded to use it if you have more than a few hundred
+features, and even then expect it to take several minutes during the index 
+building phase in situations where the Euclidean metric would take only a few
+seconds.
+
+After computation of Jaccard distances among cells, the Louvain community detection is instead performed using `igraph` implementation.
+
+## Useful Information
+
+* Apart from the man pages in R: thanks to `jlmelville` the creator of `uwot` package you
+may be interested in the following reading where [comparisons between UMAP and t-SNE are decribed](https://jlmelville.github.io/uwot/umap-examples.html)
+
+* A [description of UMAP](https://jlmelville.github.io/uwot/umap-for-tsne.html)
+using algorithmic terminology similar to t-SNE, rather than the more topological
+approach of the UMAP publication.
+
+* A [description of t-SNE](https://lvdmaaten.github.io/tsne/).

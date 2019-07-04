@@ -1,6 +1,6 @@
 #' Gene Frequency - Inverse Document Frequency (GFICF)
 #'
-#' R implementation of the GFICF (http://www.frontiers.path)
+#' R implementation of the GF-ICF (http://www.frontiers.path)
 #' Thanks to 3’-end scRNA-seq approaches, we can now have an accurate estimation of gene expression without having to account for gene length,
 #' thus the number of transcripts (i.e. UMI) associated to each gene, strictly reflects the frequency of a gene in a cell, exactly like a word in a document.
 #' GFICF (Gene Frequency - Inverce Cell Frequency) is analugous of TF-IDF scoring method as defined for tex dada. With GFICF we consider a cell to be analogous
