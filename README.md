@@ -2,12 +2,12 @@
 
 An R implementation of the 
 [Gene Frequency - Inverse Cell Frequency](https://link.to.the.paper.com) 
-method for single cell data normalization (Gambardella et al. 2019), that also 
-supports [Phenograph](https://www.cell.com/cell/fulltext/S0092-8674(15)00637-6)
+method for single cell data normalization (Gambardella et al. 2019).
+The package also includes [Phenograph](https://www.cell.com/cell/fulltext/S0092-8674(15)00637-6)
 [Louvain method](https://sites.google.com/site/findcommunities/)
 clustering using [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy) library
 from [uwot](https://github.com/jlmelville/uwot).
-The package also support data reduction with either Principal Component Analisys (PCA) or
+The package also include data reduction with either Principal Component Analisys (PCA) or
 Latent Semantic Anlisys (LSA) before to apply t-SNE or UMAP for single cell data visualization.
 
 ## News
@@ -70,7 +70,7 @@ gficf::plotCells(data = data)
 # data = gficf::runReduction(data = data,reduction = "umap",seed = 0,nt=4)
 # gficf::plotCells(data = data)
 
-# Step 4: Cell clustering using Phenograph approach
+# Step 4: Cell clustering using Phenograph algorithm
 data = gficf::clustcells(data = data,from.embedded = F,dist.method = "manhattan",nt = 4,k = 50,community.algo = "louvian",seed = 0)
 
 # Step 5: Visualize cells by identified clusters
