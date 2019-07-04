@@ -33,7 +33,7 @@ tf = function(M,doc_proportion_max = 1,doc_proportion_min = 0.01,normalizeCounts
   
   if (normalizeCounts) 
   {
-    message("Rescale counts..")
+    message("Normalize counts..")
     M <- Matrix::Matrix(cpm(calcNormFactors(DGEList(counts=M),normalized.lib.sizes = T)),sparse = T) 
   } 
   
