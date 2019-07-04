@@ -1,5 +1,5 @@
 Package: gficf
-Title: Gene Frequency - Inverse Document Frequency
+Title: Gene Frequency - Inverse Cell Frequency
 Version: 0.1
 Authors@R: person("Gennaro", "Gambardella", email = "gambardella@tigem.it", role = c("aut", "cre"))
 Description: Single cell data rapresentation as text
@@ -10,12 +10,13 @@ Encoding: UTF-8
 LazyData: true
 Suggests: testthat
 RoxygenNote: 6.1.1
-Depends: Matrix, igraph, uwot, ggplot2, rsvd, ggrepel
+Depends: Matrix, igraph, uwot, ggplot2, rsvd, ggrepel, edgeR
 LinkingTo: Rcpp, RcppProgress, RcppParallel, RcppAnnoy
 Imports: 
     uwot,
     igraph,
     ggplot2,
     rsvd,
+    edgeR,
     ggrepel
 SystemRequirements: GNU make
