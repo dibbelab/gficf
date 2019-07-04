@@ -96,7 +96,7 @@ For the implemented [Phenograph](https://www.cell.com/cell/fulltext/S0092-8674(1
 the approximate nearest neighbors are found using [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy)
 present in the `uwot` package. The supported distance metrics for KNN (set by the `dist.method` parameter) are:
 
-* Euclidean
+* Euclidean (default)
 * Cosine
 * Manhattan
 * Hamming
@@ -108,6 +108,11 @@ building phase in situations where the Euclidean metric would take only a few
 seconds.
 
 After computation of Jaccard distances among cells, the Louvain community detection is instead performed using `igraph` implementation.
+All supported communities detection algorithm (set by the `community.algo` parameter) are:
+
+* Louvain (default)
+* Walktrap
+* Fastgreedy
 
 ## Useful Information
 
