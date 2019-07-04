@@ -107,19 +107,28 @@ runReduction = function(data,reduction="tumap",nt=2,seed=18051982, ...)
   reduction = base::match.arg(arg = reduction,choices = c("umap","tumap","tsne"),several.ok = F)
   
   set.seed(seed)
-  if(reduction=="tumap")
+  if(reduction=="tumap" & !is.null(data$pca))
   {
     data$embedded = base::as.data.frame(uwot::tumap(X = data$pca,scale = F,n_threads = nt,verbose = T, ...))
+  } else {
+    message("Wrning: Reduction is applied directly on GF-ICF values.. can be slow if the dataset is big")
+    data$embedded = base::as.data.frame(uwot::tumap(X = t(data$gficf),scale = F,n_threads = nt,verbose = T, ...))
   }
   
-  if(reduction=="umap")
+  if(reduction=="umap" & !is.null(data$pca))
   {
     data$embedded = base::as.data.frame(uwot::umap(X = data$pca, scale = F,n_threads = nt,verbose = T, ...))
+  } else {
+    message("Wrning: Reduction is applied directly on GF-ICF values.. can be slow if the dataset is big")
+    data$embedded = base::as.data.frame(uwot::umap(X = t(data$gficf), scale = F,n_threads = nt,verbose = T, ...))
   }
   
-  if(reduction=="tsne")
+  if(reduction=="tsne" & !is.null(data$pca))
   {
     data$embedded = base::as.data.frame(Rtsne::Rtsne(X = data$pca,dims = 2, pca = F,verbose = T,max_iter=1000,num_threads=nt, ...)$Y)
+  } else {
+    message("Wrning: Reduction is applied directly on GF-ICF values.. can be slow if the dataset is big")
+    data$embedded = base::as.data.frame(Rtsne::Rtsne(X = as.matrix(t(data$gficf)),dims = 2, pca = F,verbose = T,max_iter=1000,num_threads=nt, ...)$Y)
   }
   
   rownames(data$embedded) = base::colnames(data$gficf)
