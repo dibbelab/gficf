@@ -3,7 +3,9 @@
 An R implementation of the 
 [Gene Frequency - Inverse Cell Frequency](https://link.to.the.paper.com) 
 method for single cell data normalization (Gambardella et al. 2019), that also 
-supports Phenograph Louvian Clustering using [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy) library
+supports [Phenograph](https://www.cell.com/cell/fulltext/S0092-8674(15)00637-6)
+[Louvain method](https://sites.google.com/site/findcommunities/)
+clustering using [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy) library
 from [uwot](https://github.com/jlmelville/uwot).
 The package also support data reduction with either Principal Component Analisys (PCA) or
 Latent Semantic Anlisys (LSA) before to apply t-SNE or UMAP for single cell data visualization.
@@ -91,7 +93,9 @@ gficf::plotCells(data = data,colorBy="cell_ontology_class")
 
 
 ## Phenograph Implementation Details
-In the package `gficf` the function `clustcells` implement the [Phenograph](https://www.cell.com/cell/fulltext/S0092-8674(15)00637-6) clustering.
+In the package `gficf` the function `clustcells` implement the [Phenograph](https://www.cell.com/cell/fulltext/S0092-8674(15)00637-6) algorithm,
+which is a clustering method designed for high-dimensional single-cell data analysis. It works by creating a graph ("network") representing phenotypic similarities between cells by calclating the Jaccard coefficient between nearest-neighbor sets, and then identifying communities using the well known [Louvain method](https://sites.google.com/site/findcommunities/) in this graph. 
+
 In this particular implementation of Phenograph we use approximate nearest neighbors found using [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy)
 libraries present in the `uwot` package. The supported distance metrics for KNN (set by the `dist.method` parameter) are:
 
