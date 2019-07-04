@@ -90,11 +90,10 @@ gficf::plotCells(data = data,colorBy="cell_ontology_class")
 ![tabula_annotated.png](img/tabula_annotated.png) 
 
 
-## Implementation Details
-
-For the implemented [Phenograph](https://www.cell.com/cell/fulltext/S0092-8674(15)00637-6) clustering
-the approximate nearest neighbors are found using [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy)
-present in the `uwot` package. The supported distance metrics for KNN (set by the `dist.method` parameter) are:
+## Phenograph Implementation Details
+In the package `gficf` the function `clustcells` implement the [Phenograph](https://www.cell.com/cell/fulltext/S0092-8674(15)00637-6) clustering.
+In this particular implementation of Phenograph we use approximate nearest neighbors found using [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy)
+libraries present in the `uwot` package. The supported distance metrics for KNN (set by the `dist.method` parameter) are:
 
 * Euclidean (default)
 * Cosine
