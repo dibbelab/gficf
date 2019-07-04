@@ -3,7 +3,8 @@
 An R implementation of the 
 [Gene Frequency - Inverse Cell Frequency](https://link.to.the.paper.com) 
 method for single cell data normalization (Gambardella et al. 2019), that also 
-supports Phenograph Louvian Clustering using amazing annoy library from [uwot](https://github.com/jlmelville/uwot).
+supports Phenograph Louvian Clustering using [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy) library
+from [uwot](https://github.com/jlmelville/uwot).
 The package also support data reduction with either Principal Component Analisys (PCA) or
 Latent Semantic Anlisys (LSA) before to apply t-SNE or UMAP for single cell data visualization.
 
@@ -110,11 +111,18 @@ After computation of Jaccard distances among cells, the Louvain community detect
 
 ## Useful Information
 
-* Apart from the man pages in R: thanks to `jlmelville` the creator of `uwot` package you
-may be interested in the following reading where [comparisons between UMAP and t-SNE are decribed](https://jlmelville.github.io/uwot/umap-examples.html)
+* Apart from the man pages in R you may be interested in the following readings:
+
+* A [description of t-SNE](https://lvdmaaten.github.io/tsne/).
 
 * A [description of UMAP](https://jlmelville.github.io/uwot/umap-for-tsne.html)
 using algorithmic terminology similar to t-SNE, rather than the more topological
 approach of the UMAP publication.
 
-* A [description of t-SNE](https://lvdmaaten.github.io/tsne/).
+* Some [Examples](https://jlmelville.github.io/uwot/umap-examples.html) of the 
+output of UMAP on some datasets, compared to t-SNE. 
+
+* Some results of running 
+[UMAP on the simple datasets](https://jlmelville.github.io/uwot/umap-simple.html) 
+from [How to Use t-SNE Effectively](https://distill.pub/2016/misread-tsne/).
+
