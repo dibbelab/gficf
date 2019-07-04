@@ -12,7 +12,7 @@ Latent Semantic Anlisys (LSA) before to apply t-SNE or UMAP for single cell data
 
 ## News
 
-*July 3 2019*. First commit and documentation draft. 
+*July 3 2019*. Version 0.1 with example on Tabula Muris.
 
 
 ## Installing
@@ -54,7 +54,7 @@ library(gficf)
 # Common pipeline to use that goes from normalization to clustering
 
 # Step 1: Nomrmalize data with gficf
-data = gficf::gficf(M = readRDS("path/to/TabulaMuris.10x.mouse.RAW.rds"),cell_proportion_max = 1,cell_proportion_min = .05,storeRaw = F,normalize = F)
+data = gficf::gficf(M = readRDS("path/to/TabulaMuris.10x.mouse.RAW.rds"),cell_proportion_max = 1,cell_proportion_min = .05,storeRaw = F,normalize = T)
 
 # Step 2: Reduce data with Latent Semantic Anlysis before to apply t-SNE or UMAP
 data = gficf::runLSA(data = data,dim = 50)
@@ -74,7 +74,7 @@ gficf::plotCells(data = data)
 data = gficf::clustcells(data = data,from.embedded = F,dist.method = "manhattan",nt = 4,k = 50,community.algo = "louvian",seed = 0)
 
 # Step 5: Visualize cells by identified clusters
-gficf::plotCells(data = data,colorBy="cluster") + xlab("t-SNE1") + ylab("t-SNE2") + ggtitle("Cells colored by Clusters") 
+gficf::plotCells(data = data,colorBy="cluster",pointSize = .05) + xlab("t-SNE1") + ylab("t-SNE2") + ggtitle("Cells colored by Clusters") 
 
 ```
 
@@ -86,7 +86,7 @@ info = readRDS("/path/to/TabulaMuris.10x.mouse.annotation.rds")
 data$embedded$tissue = info$tissue
 data$embedded$subtissue = info$subtissue
 data$embedded$cell_ontology_class = info$cell_ontology_class
-gficf::plotCells(data = data,colorBy="cell_ontology_class")
+gficf::plotCells(data = data,colorBy="cell_ontology_class",pointSize = .05) + xlab("t-SNE1") + ylab("t-SNE2") + ggtitle("Cells colored by Clusters") 
 
 ```
 ![tabula_annotated.png](img/tabula_annotated.png) 
