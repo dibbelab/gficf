@@ -94,7 +94,7 @@ gficf::plotCells(data = data,colorBy="cell_ontology_class",pointSize = .05) + xl
 
 ## Phenograph Implementation Details
 In the package `gficf` the function `clustcells` implement the [Phenograph](https://www.cell.com/cell/fulltext/S0092-8674(15)00637-6) algorithm,
-which is a clustering method designed for high-dimensional single-cell data analysis. It works by creating a graph ("network") representing phenotypic similarities between cells by calclating the Jaccard coefficient between nearest-neighbor sets, and then identifying communities using the well known [Louvain method](https://sites.google.com/site/findcommunities/) in this graph. 
+which is a clustering method designed for high-dimensional single-cell data analysis. It works by creating a graph ("network") representing phenotypic similarities between cells by calculating the Jaccard coefficient between nearest-neighbor sets, and then identifying communities using the well known [Louvain method](https://sites.google.com/site/findcommunities/) in this graph. 
 
 In this particular implementation of Phenograph we use approximate nearest neighbors found using [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy)
 libraries present in the `uwot` package. The supported distance metrics for KNN (set by the `dist.method` parameter) are:
@@ -119,7 +119,7 @@ All supported communities detection algorithm (set by the `community.algo` param
 
 ## Useful Information
 
-* Apart from the man pages in R you may be interested in the following readings:
+Apart from the man pages in R you may be interested in the following readings:
 
 * A [description of t-SNE](https://lvdmaaten.github.io/tsne/).
 
