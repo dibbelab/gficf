@@ -30,7 +30,7 @@
 #' @param seed integer; Seed to use for replication.
 #' @param verbose logical; Increase verbosity.
 #' @return the updated gficf object
-#' @importFrom  igraph graph.data.frame simplify cluster_louvain walktrap.community fastgreedy.community
+#' @importFrom  igraph graph.data.frame simplify cluster_louvain walktrap.community fastgreedy.community membership
 #' @import uwot
 #' @import Matrix
 #' @export
@@ -80,7 +80,7 @@ clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,co
   
   # get centroid of clusters
   if(verbose) {message("Computing Centroids...")}
-  cluster.map = as.character(membership(data$community))
+  cluster.map = as.character(igraph::membership(data$community))
   u = base::unique(cluster.map)
   data$cluster.centroids = base::sapply(u, function(x,y=data$gficf,z=cluster.map) Matrix::rowSums(y[,z%in%x]))
   
