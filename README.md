@@ -1,8 +1,8 @@
 # gficf
 
 An R implementation of the 
-[Gene Frequency - Inverse Cell Frequency](https://link.to.the.paper.com) 
-method for single cell data normalization (Gambardella et al. 2019).
+Gene Frequency - Inverse Cell Frequency method for single cell data
+normalization [(Gambardella et al. 2019)](https://www.frontiersin.org/articles/10.3389/fgene.2019.00734/abstract).
 The package also includes [Phenograph](https://www.cell.com/cell/fulltext/S0092-8674(15)00637-6)
 [Louvain method](https://sites.google.com/site/findcommunities/)
 clustering using [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy) library
@@ -12,6 +12,7 @@ Latent Semantic Anlisys (LSA) before to apply t-SNE or UMAP for single cell data
 
 ## News
 
+*July 12 2019*. Paper Accepted and now available [HERE](https://www.frontiersin.org/articles/10.3389/fgene.2019.00734/abstract).
 *July 3 2019*. Version 0.1 with example on Tabula Muris.
 
 
@@ -47,6 +48,7 @@ annotation from [HERE](https://drive.google.com/open?id=10ixOOsqZqf6GgwQP1okwoe_
 
 ```R
 library(gficf)
+library(ggplot2)
 
 # See function man page for help
 ?gficf
