@@ -13,6 +13,7 @@ Latent Semantic Anlisys (LSA) before to apply t-SNE or UMAP for single cell data
 ## News
 
 *July 12 2019*. Paper Accepted and now available [HERE](https://www.frontiersin.org/articles/10.3389/fgene.2019.00734/abstract).
+
 *July 3 2019*. Version 0.1 with example on Tabula Muris.
 
 
