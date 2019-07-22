@@ -63,21 +63,21 @@ runPCA = function(data,dim=NULL,rescale=F,centre=F,randomized=T)
     data$dimPCA = dim
   }
   
-  x = data$gficf
+  x = t(data$gficf)
   if (rescale)
   {
-    bc_tot <- Matrix::colSums(x)
+    bc_tot <- Matrix::rowSums(x)
     median_tot <- stats::median(bc_tot)
-    x <- sweep(x, 2, median_tot/bc_tot, '*')
+    x <- sweep(x, 1, median_tot/bc_tot, '*')
   }
   
   if (centre)
   {
-    x <- sweep(x, 1, Matrix::rowMeans(x), '-')
-    x <- sweep(x, 1, base::apply(x, 1, sd), '/')
+    x <- sweep(x, 2, Matrix::colMeans(x), '-')
+    x <- sweep(x, 2, base::apply(x, 2, sd), '/')
   }
   
-  data$pca = rsvd::rpca(x,k=dim,center=F,scale=F,rand=randomized)$rotation
+  data$pca = rsvd::rpca(x,k=dim,center=F,scale=F,rand=randomized)$x
   
   return(data)
 }
