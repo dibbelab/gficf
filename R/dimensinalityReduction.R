@@ -23,19 +23,7 @@ runLSA = function(data,dim=NULL,rescale=F,centre=F,randomized=T)
   
   data$pca = list()
   data$pca$cells = t(data$gficf)
-  if (rescale)
-  {
-    bc_tot <- Matrix::rowSums(data$pca$cells)
-    median_tot <- stats::median(bc_tot)
-    data$pca$cells <- sweep(data$pca$cells, 1, median_tot/bc_tot, '*')
-  }
-  
-  if (centre)
-  {
-    data$pca$cells <- sweep(data$pca$cells, 2, Matrix::colMeans(data$pca$cells), '-')
-    data$pca$cells <- sweep(x, 2, base::apply(data$pca$cells, 2, sd), '/')
-  }
-  
+  data$pca$cells = gficf::scaleMatrix(data$pca$cells,rescale,centre)
   if (randomized) {ppk<- rsvd::rsvd(data$pca$cells,k=dim)} else {ppk<- RSpectra::svds(data$pca$cells,k=dim)}
   data$pca$cells <- ppk$u %*% base::diag(x = ppk$d)
   data$pca$centre <- centre
@@ -69,19 +57,7 @@ runPCA = function(data,dim=NULL,rescale=F,centre=F,randomized=T)
   
   data$pca = list()
   data$pca$cells = t(data$gficf)
-  if (rescale)
-  {
-    bc_tot <- Matrix::rowSums(data$pca$cells)
-    median_tot <- stats::median(bc_tot)
-    data$pca$cells <- sweep(data$pca$cells, 1, median_tot/bc_tot, '*')
-  }
-  
-  if (centre)
-  {
-    data$pca$cells <- sweep(data$pca$cells, 2, Matrix::colMeans(data$pca$cells), '-')
-    data$pca$cells <- sweep(x, 2, base::apply(data$pca$cells, 2, sd), '/')
-  }
-  
+  data$pca$cells = gficf::scaleMatrix(data$pca$cells,rescale,centre)
   x = rsvd::rpca(data$pca$cells,k=dim,center=F,scale=F,rand=randomized)
   data$pca$cells = x$x
   data$pca$centre <- centre
