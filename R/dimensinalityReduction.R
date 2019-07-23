@@ -21,23 +21,27 @@ runLSA = function(data,dim=NULL,rescale=F,centre=F,randomized=T)
     data$dimPCA = dim
   }
   
-  x = t(data$gficf)
+  data$pca = list()
+  data$pca$cells = t(data$gficf)
   if (rescale)
   {
-    bc_tot <- Matrix::rowSums(x)
+    bc_tot <- Matrix::rowSums(data$pca$cells)
     median_tot <- stats::median(bc_tot)
-    x <- sweep(x, 1, median_tot/bc_tot, '*')
+    data$pca$cells <- sweep(data$pca$cells, 1, median_tot/bc_tot, '*')
   }
   
   if (centre)
   {
-    x <- sweep(x, 2, Matrix::colMeans(x), '-')
-    x <- sweep(x, 2, base::apply(x, 2, sd), '/')
+    data$pca$cells <- sweep(data$pca$cells, 2, Matrix::colMeans(data$pca$cells), '-')
+    data$pca$cells <- sweep(x, 2, base::apply(data$pca$cells, 2, sd), '/')
   }
   
-  if (randomized) {ppk<- rsvd::rsvd(x,k=dim)} else {ppk<- RSpectra::svds(x,k=dim)}
-  data$pca <- ppk$u %*% base::diag(x = ppk$d)
-
+  if (randomized) {ppk<- rsvd::rsvd(data$pca$cells,k=dim)} else {ppk<- RSpectra::svds(data$pca$cells,k=dim)}
+  data$pca$cells <- ppk$u %*% base::diag(x = ppk$d)
+  data$pca$centre <- centre
+  data$pca$rescale <- rescale
+  data$pca$genes <- ppk$v
+  
   return(data)
 }
 
@@ -63,21 +67,26 @@ runPCA = function(data,dim=NULL,rescale=F,centre=F,randomized=T)
     data$dimPCA = dim
   }
   
-  x = t(data$gficf)
+  data$pca = list()
+  data$pca$cells = t(data$gficf)
   if (rescale)
   {
-    bc_tot <- Matrix::rowSums(x)
+    bc_tot <- Matrix::rowSums(data$pca$cells)
     median_tot <- stats::median(bc_tot)
-    x <- sweep(x, 1, median_tot/bc_tot, '*')
+    data$pca$cells <- sweep(data$pca$cells, 1, median_tot/bc_tot, '*')
   }
   
   if (centre)
   {
-    x <- sweep(x, 2, Matrix::colMeans(x), '-')
-    x <- sweep(x, 2, base::apply(x, 2, sd), '/')
+    data$pca$cells <- sweep(data$pca$cells, 2, Matrix::colMeans(data$pca$cells), '-')
+    data$pca$cells <- sweep(x, 2, base::apply(data$pca$cells, 2, sd), '/')
   }
   
-  data$pca = rsvd::rpca(x,k=dim,center=F,scale=F,rand=randomized)$x
+  x = rsvd::rpca(data$pca$cells,k=dim,center=F,scale=F,rand=randomized)
+  data$pca$cells = x$x
+  data$pca$centre <- centre
+  data$pca$rescale <- rescale
+  data$pca$genes <- x$rotation
   
   return(data)
 }
@@ -109,11 +118,11 @@ runReduction = function(data,reduction="tumap",nt=2,seed=18051982, ...)
   set.seed(seed)
   if (!is.null(data$pca))
   {
-    if(reduction=="tumap"){ data$embedded = base::as.data.frame(uwot::tumap(X = data$pca,scale = F,n_threads = nt,verbose = T, ...))}
+    if(reduction=="tumap"){ data$embedded = base::as.data.frame(uwot::tumap(X = data$pca$cells,scale = F,n_threads = nt,verbose = T, ...))}
     
-    if(reduction=="umap"){data$embedded = base::as.data.frame(uwot::umap(X = data$pca, scale = F,n_threads = nt,verbose = T, ...))}
+    if(reduction=="umap"){data$embedded = base::as.data.frame(uwot::umap(X = data$pca$cells, scale = F,n_threads = nt,verbose = T, ...))}
     
-    if(reduction=="tsne"){data$embedded = base::as.data.frame(Rtsne::Rtsne(X = data$pca,dims = 2, pca = F,verbose = T,max_iter=1000,num_threads=nt, ...)$Y)}
+    if(reduction=="tsne"){data$embedded = base::as.data.frame(Rtsne::Rtsne(X = data$pca$cells,dims = 2, pca = F,verbose = T,max_iter=1000,num_threads=nt, ...)$Y)}
   } else {
     message("Wrning: Reduction is applied directly on GF-ICF values.. can be slow if the dataset is big")
     
