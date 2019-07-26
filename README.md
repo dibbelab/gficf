@@ -13,7 +13,7 @@ Latent Semantic Anlisys (LSA) before to apply t-SNE or UMAP for single cell data
 ## News
 *July 26 2019* Added new functionality. Is now possible to embed new cells in an already existing space. [See example..](https://jeky82.github.io/gficf_example.html#how-to-embedd-new-cells-in-an-existing-space)
 
-*July 15 2019* Addedd web page with examples is now [HERE](https://jeky82.github.io/gficf_example.html)
+*July 15 2019* Addedd web page with examples [HERE](https://jeky82.github.io/gficf_example.html)
 
 *July 12 2019*. Paper Accepted and now available [HERE](https://www.frontiersin.org/articles/10.3389/fgene.2019.00734/abstract).
 
