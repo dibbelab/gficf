@@ -2,6 +2,7 @@
 
 export(clustcells)
 export(computePCADim)
+export(embedNewCells)
 export(gficf)
 export(plotCells)
 export(runLSA)

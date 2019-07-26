@@ -23,13 +23,14 @@ runLSA = function(data,dim=NULL,rescale=F,centre=F,randomized=T)
   
   data$pca = list()
   data$pca$cells = t(data$gficf)
-  data$pca$cells = gficf::scaleMatrix(data$pca$cells,rescale,centre)
+  data$pca$cells = gficf:::scaleMatrix(data$pca$cells,rescale,centre)
   if (randomized) {ppk<- rsvd::rsvd(data$pca$cells,k=dim)} else {ppk<- RSpectra::svds(data$pca$cells,k=dim)}
   data$pca$cells <- ppk$u %*% base::diag(x = ppk$d)
   data$pca$centre <- centre
   data$pca$rescale <- rescale
   data$pca$genes <- ppk$v
-  
+  rownames(data$pca$genes) = rownames(data$gficf)
+  rownames(data$pca$cells) = colnames(data$gficf)
   return(data)
 }
 
@@ -57,16 +58,18 @@ runPCA = function(data,dim=NULL,rescale=F,centre=F,randomized=T)
   
   data$pca = list()
   data$pca$cells = t(data$gficf)
-  data$pca$cells = gficf::scaleMatrix(data$pca$cells,rescale,centre)
+  data$pca$cells = gficf:::scaleMatrix(data$pca$cells,rescale,centre)
   x = rsvd::rpca(data$pca$cells,k=dim,center=F,scale=F,rand=randomized)
   data$pca$cells = x$x
   data$pca$centre <- centre
   data$pca$rescale <- rescale
   data$pca$genes <- x$rotation
-  
+  rownames(data$pca$genes) = rownames(data$gficf)
+  rownames(data$pca$cells) = colnames(data$gficf)
+  colnames(data$pca$cells) = colnames(data$pca$genes) = paste("C",1:dim,sep = "")
   return(data)
 }
-
+  
 #' Dimensionality reduction
 #'
 #' Run t-SNE or UMAP or t-UMAP dimensionality reduction on selected features from PCA or LSA.
@@ -86,7 +89,7 @@ runPCA = function(data,dim=NULL,rescale=F,centre=F,randomized=T)
 #' @importFrom Rtsne Rtsne
 #' 
 #' @export
-runReduction = function(data,reduction="tumap",nt=2,seed=18051982, ...)
+runReduction = function(data,reduction="tumap",nt=2,seed=18051982, ret_model_pred = T, ...)
 {
 
   reduction = base::match.arg(arg = reduction,choices = c("umap","tumap","tsne"),several.ok = F)
@@ -94,11 +97,20 @@ runReduction = function(data,reduction="tumap",nt=2,seed=18051982, ...)
   set.seed(seed)
   if (!is.null(data$pca))
   {
-    if(reduction=="tumap"){ data$embedded = base::as.data.frame(uwot::tumap(X = data$pca$cells,scale = F,n_threads = nt,verbose = T, ...))}
+    if(reduction=="tumap"){
+      data$uwot = uwot::tumap(X = data$pca$cells,scale = F,n_threads = nt,verbose = T,ret_model = ret_model_pred, ...)
+      data$embedded = base::as.data.frame(data$uwot$embedding)
+    }
     
-    if(reduction=="umap"){data$embedded = base::as.data.frame(uwot::umap(X = data$pca$cells, scale = F,n_threads = nt,verbose = T, ...))}
+    if(reduction=="umap"){
+      data$uwot = uwot::umap(X = data$pca$cells, scale = F,n_threads = nt,verbose = T, ret_model = ret_model_pred, ...)
+      data$embedded = base::as.data.frame(data$uwot$embedding)
+    }
     
-    if(reduction=="tsne"){data$embedded = base::as.data.frame(Rtsne::Rtsne(X = data$pca$cells,dims = 2, pca = F,verbose = T,max_iter=1000,num_threads=nt, ...)$Y)}
+    if(reduction=="tsne"){
+      data$uwot = NULL
+      data$embedded = base::as.data.frame(Rtsne::Rtsne(X = data$pca$cells,dims = 2, pca = F,verbose = T,max_iter=1000,num_threads=nt, ...)$Y)
+    }
   } else {
     message("Wrning: Reduction is applied directly on GF-ICF values.. can be slow if the dataset is big")
     
@@ -110,6 +122,7 @@ runReduction = function(data,reduction="tumap",nt=2,seed=18051982, ...)
   }  
   rownames(data$embedded) = base::colnames(data$gficf)
   colnames(data$embedded) = base::c("X","Y")
+  data$reduction = reduction
   return(data)
 }
 
@@ -150,3 +163,58 @@ computePCADim = function(data,randomized=T,subsampling=F,plot=T)
   data$dimPCA = reduction_dim
   return(data)
 }
+
+#' Number of features to use 
+#'
+#' Compute the number of dimension to use for either PCA or LSA.
+#' 
+#' @param data list; GFICF object
+#' @param x Matrix; UMI counts matrix of cells to embedd.
+#' @param nt integer; Number of thread to use (default 2).
+#' @param seed integer; Initial seed to use.
+#' @import Matrix
+#' @import uwot
+#' @importFrom Rtsne Rtsne
+#' 
+#' @export
+embedNewCells = function(data,x,nt=2,seed=18051982, ...)
+{
+  x = gficf:::tf(x[rownames(x)%in% names(data$w),],doc_proportion_max = 2,doc_proportion_min = 0,normalizeCounts = data$param$normalized)
+  x = gficf:::idf(x,w = data$w)
+  x = t(gficf:::l.norm(t(x),norm = "l2"))
+  pcapred = gficf:::scaleMatrix(t(x), data$pca$rescale,data$pca$centre) %*% data$pca$genes
+  rownames(pcapred) = colnames(x)
+  colnames(pcapred) = colnames(data$pca$cells)
+  
+  if(data$reduction%in%c("tumap","umap")) {
+    df = as.data.frame(uwot::umap_transform(as.matrix(pcapred),data$uwot,verbose = TRUE))
+    rownames(df) = rownames(pcapred)
+    colnames(df) = c("X","Y")
+  }
+  
+  if(data$reduction=="tsne") {
+    warning("Not Fully supported!! With t-SNE only PCA/LSA components are predicted while t-SNE is re-run again!")
+    set.seed(seed)
+    df = base::as.data.frame(Rtsne::Rtsne(X = as.matrix(rbind(data$pca$cells,pcapred)),dims = 2, pca = F,verbose = T,max_iter=1000,num_threads=nt, ...)$Y)
+    rownames(df) = c(rownames(data$pca$cells),rownames(pcapred))
+    colnames(df) = c("X","Y")
+    data$embedded[1:nrow(data$pca$cells),c("X","Y")] = df[1:nrow(data$pca$cells),c("X","Y")]
+    df = df[rownames(pcapred),]
+  }
+  
+  if(is.null(data$embedded$predicted)) {data$embedded$predicted = "NO"}
+  
+  if (ncol(data$embedded)>2) {
+    df[,colnames(data$embedded)[3:ncol(data$embedded)]] = NA
+    df$predicted = "YES"
+  } else {
+    df$predicted = "YES"
+  }
+  data$embedded = rbind(data$embedded,df)
+  data$pca$pred = pcapred
+  data$embedded$predicted = factor(as.character(data$embedded$predicted),levels = c("NO","YES"))
+  return(data)
+}
+
+
+

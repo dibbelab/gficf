@@ -4,7 +4,8 @@
 \alias{runReduction}
 \title{Dimensionality reduction}
 \usage{
-runReduction(data, reduction = "tumap", nt = 2, seed = 18051982, ...)
+runReduction(data, reduction = "tumap", nt = 2, seed = 18051982,
+  ret_model_pred = T, ...)
 }
 \arguments{
 \item{data}{list; GFICF object}

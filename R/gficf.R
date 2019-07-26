@@ -16,10 +16,16 @@
 gficf = function(M,cell_proportion_max = 1,cell_proportion_min = 0.05,storeRaw=FALSE,normalize=FALSE)
 {
   data = list()
-  data$gficf = tf(M,doc_proportion_max = cell_proportion_max,doc_proportion_min = cell_proportion_min,normalizeCounts=normalize)
-  data$gficf = idf(data$gficf)
-  data$gficf = t(l.norm(t(data$gficf),norm = "l2"))
+  data$gficf = gficf:::tf(M,doc_proportion_max = cell_proportion_max,doc_proportion_min = cell_proportion_min,normalizeCounts=normalize)
+  data$w = gficf:::getIdfW(data$gficf)
+  data$gficf = gficf:::idf(data$gficf,data$w)
+  data$gficf = t(gficf:::l.norm(t(data$gficf),norm = "l2"))
   if (storeRaw) {data$rawCounts=M}
+  
+  data$param <- list()
+  data$param$cell_proportion_max = cell_proportion_max
+  data$param$cell_proportion_min = cell_proportion_min
+  data$param$normalized = normalize
   return(data)
 }
 
@@ -39,32 +45,41 @@ tf = function(M,doc_proportion_max = 1,doc_proportion_min = 0.01,normalizeCounts
   
   message("Apply GF transformation..")
   M =t(t(M) / Matrix::colSums(M))
-
+  
   return(M)
 }
 
 #' @import Matrix
 #' 
-idf = function(M,type="classic",w=NULL)
+idf = function(M,w)
 {
-  
-  if (is.null(w))
+  message("Applay ICF..")
+  M = M[rownames(M) %in% names(w),]
+  if(nrow(M)<length(w))
   {
-    message("Apply ICF transformation..")
-    nt = Matrix::rowSums(M!=0)
-    if (type == "classic") {w = log( (ncol(M)+1) / (nt+1) );rm(nt)}
-    if (type == "prob") {w = log( (ncol(M) - nt) / nt );rm(nt)}
-    if (type == "smooth") {w = log( 1 + ncol(M)/nt );rm(nt)}
-  } else {
-    w = w[names(w)%in%rownames(M)]
-    M = M[rownames(M) %in% names(w),]
-    w = w[rownames(M)]
+    g = names(w)[!names(w)%in%rownames(M)]
+    tmp = Matrix::Matrix(data = 0,nrow = length(g),ncol = ncol(M))
+    rownames(tmp) = g
+    colnames(tmp) = colnames(M)
+    M = rbind(M,tmp)
   }
+  M = M[names(w),]
   M = M * w
-  ix = Matrix::rowSums(M)>0
-  if (sum(ix==0)>0) {M = M[ix,]}
   return(M)
 }
+
+#' @import Matrix
+#' 
+getIdfW = function(M,type="classic")
+{
+  message("Compute ICF weigth..")
+  nt = Matrix::rowSums(M!=0)
+  if (type == "classic") {w = log( (ncol(M)+1) / (nt+1) );rm(nt)}
+  if (type == "prob") {w = log( (ncol(M) - nt) / nt );rm(nt)}
+  if (type == "smooth") {w = log( 1 + ncol(M)/nt );rm(nt)}
+  return(w)
+}
+
 
 
 l.norm = function (m, norm = c("l1", "l2")) 
@@ -76,5 +91,3 @@ l.norm = function (m, norm = c("l1", "l2"))
     Diagonal(x = norm_vec) %*% m
   else m * norm_vec
 }
-
-

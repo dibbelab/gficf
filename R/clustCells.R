@@ -34,7 +34,7 @@
 #' @import uwot
 #' @import Matrix
 #' @export
-clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,community.algo="louvian",store.graph=F,seed=180582,verbose=TRUE)
+clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,community.algo="louvian",store.graph=T,seed=180582,verbose=TRUE)
 {
   set.seed(seed)
   if(verbose) {message("Finding Neighboors..")}
@@ -45,7 +45,7 @@ clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,co
     neigh = uwot:::find_nn(as.matrix(data$embedded[,c(1,2)]),k=k,include_self = F,n_threads = nt,verbose = TRUE,method = "annoy",metric=dist.method)
   } else {
     if(is.null(data$pca)) {stop("First run runPCA or runLSA to reduce dimensionality")}
-    neigh = uwot:::find_nn(data$pca,k=k,include_self = F,n_threads = nt,verbose = verbose,method = "annoy",metric=dist.method)
+    neigh = uwot:::find_nn(data$pca$cells,k=k,include_self = F,n_threads = nt,verbose = verbose,method = "annoy",metric=dist.method)
   }
   
   if(verbose) {message("Jaccard Coefficient..")}
