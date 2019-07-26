@@ -10,8 +10,6 @@ from [uwot](https://github.com/jlmelville/uwot).
 The package also include data reduction with either Principal Component Analisys (PCA) or
 Latent Semantic Anlisys (LSA) before to apply t-SNE or UMAP for single cell data visualization.   
 
-Web page with examples is now [HERE](https://jeky82.github.io/gficf_example.html)
-
 ## News
 *July 26 2019* Added new functionality. Is now possible to embed new cells in an already existing space. [See example..](https://jeky82.github.io/gficf_example.html#how-to-embedd-new-cells-in-an-existing-space)
 
@@ -48,11 +46,13 @@ if(!require(devtools)){
 devtools::install_github("dibbelab/gficf")
 ```
 
+## How to use GFICF
+Web page with examples is now [HERE](https://jeky82.github.io/gficf_example.html)
+
+
 ## Useful Information
 
 Apart from the man pages in R you may be interested in the following readings:
-
-* [Examples](https://jeky82.github.io/gficf_example.html) of the output of GF-ICF on some datasets.
 
 * A [description of t-SNE](https://lvdmaaten.github.io/tsne/).
 
