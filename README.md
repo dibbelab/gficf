@@ -8,7 +8,7 @@ The package also includes [Phenograph](https://www.cell.com/cell/fulltext/S0092-
 clustering using [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy) library
 from [uwot](https://github.com/jlmelville/uwot).
 The package also include data reduction with either Principal Component Analisys (PCA) or
-Latent Semantic Anlisys (LSA) before to apply t-SNE or UMAP for single cell data visualization.   
+Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell data visualization.   
 
 ## News
 *July 26 2019* Added new functionality. Is now possible to embed new cells in an already existing space. [See example..](https://jeky82.github.io/gficf_example.html#how-to-embedd-new-cells-in-an-existing-space)
