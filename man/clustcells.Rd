@@ -6,7 +6,7 @@
 \usage{
 clustcells(data, from.embedded = F, k = 15,
   dist.method = "manhattan", nt = 2, community.algo = "louvian",
-  store.graph = F, seed = 180582, verbose = TRUE)
+  store.graph = T, seed = 180582, verbose = TRUE)
 }
 \arguments{
 \item{data}{list; Input data (gficf object)}

@@ -9,14 +9,15 @@
 #' @param M Matrix; UMI cell count matrix
 #' @param cell_proportion_max integer; Remove genes present in more then to the specifided proportion (0,1). Default 1.
 #' @param cell_proportion_min integer; Remove genes present in less then or equal to the specifided proportion (0,1). Default is 0.05 (i.e. 5 percent).
-#' @param storeRaw logical; Store RAW UMI counts.
+#' @param storeRaw logical; Store UMI counts.
 #' @param  normalize logical; Rescale UMI counts before applay GFICF. Recaling is done using EdgeR normalization.
 #' @return The updated gficf object.
 #' @export
-gficf = function(M,cell_proportion_max = 1,cell_proportion_min = 0.05,storeRaw=FALSE,normalize=FALSE)
+gficf = function(M,cell_proportion_max = 1,cell_proportion_min = 0.05,storeRaw=TRUE,normalize=FALSE)
 {
   data = list()
-  data$gficf = gficf:::tf(M,doc_proportion_max = cell_proportion_max,doc_proportion_min = cell_proportion_min,normalizeCounts=normalize)
+  M = gficf:::normCounts(M,doc_proportion_max = cell_proportion_max,doc_proportion_min = cell_proportion_min,normalizeCounts=normalize)
+  data$gficf = gficf:::tf(M)
   data$w = gficf:::getIdfW(data$gficf)
   data$gficf = gficf:::idf(data$gficf,data$w)
   data$gficf = t(gficf:::l.norm(t(data$gficf),norm = "l2"))
@@ -32,7 +33,7 @@ gficf = function(M,cell_proportion_max = 1,cell_proportion_min = 0.05,storeRaw=F
 #' @import Matrix
 #' @importFrom edgeR DGEList calcNormFactors cpm
 #' 
-tf = function(M,doc_proportion_max = 1,doc_proportion_min = 0.01,normalizeCounts=FALSE)
+normCounts = function(M,doc_proportion_max = 1,doc_proportion_min = 0.01,normalizeCounts=FALSE)
 {
   ix = Matrix::rowSums(M!=0)
   M = M[ix>ncol(M)*doc_proportion_min & ix<=ncol(M)*doc_proportion_max,]
@@ -43,6 +44,15 @@ tf = function(M,doc_proportion_max = 1,doc_proportion_min = 0.01,normalizeCounts
     M <- Matrix::Matrix(cpm(calcNormFactors(DGEList(counts=M),normalized.lib.sizes = T)),sparse = T) 
   } 
   
+  return(M)
+}
+
+
+#' @import Matrix
+#' 
+tf = function(M)
+{
+
   message("Apply GF transformation..")
   M =t(t(M) / Matrix::colSums(M))
   
