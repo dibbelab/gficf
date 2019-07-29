@@ -2,7 +2,7 @@
 % Please edit documentation in R/dimensinalityReduction.R
 \name{embedNewCells}
 \alias{embedNewCells}
-\title{Number of features to use}
+\title{Embed new cells in an existing space}
 \usage{
 embedNewCells(data, x, nt = 2, seed = 18051982, ...)
 }
@@ -15,6 +15,9 @@ embedNewCells(data, x, nt = 2, seed = 18051982, ...)
 
 \item{seed}{integer; Initial seed to use.}
 }
+\value{
+The updated gficf object.
+}
 \description{
-Compute the number of dimension to use for either PCA or LSA.
+This function embed new cells in an already existing space. For now it supports only UMAP and t-UMAP. Briefly new cells are first normalized with GF-ICF method but using as ICF weigth estimated on the existing cells and than projected in the existing PCA/LSA space before to be embedded in the already existing UMAP space via umap_transform function.
 }

@@ -5,7 +5,7 @@
 \title{Gene Frequency - Inverse Document Frequency (GFICF)}
 \usage{
 gficf(M, cell_proportion_max = 1, cell_proportion_min = 0.05,
-  storeRaw = FALSE, normalize = FALSE)
+  storeRaw = TRUE, normalize = FALSE)
 }
 \arguments{
 \item{M}{Matrix; UMI cell count matrix}
@@ -14,7 +14,7 @@ gficf(M, cell_proportion_max = 1, cell_proportion_min = 0.05,
 
 \item{cell_proportion_min}{integer; Remove genes present in less then or equal to the specifided proportion (0,1). Default is 0.05 (i.e. 5 percent).}
 
-\item{storeRaw}{logical; Store RAW UMI counts.}
+\item{storeRaw}{logical; Store UMI counts.}
 
 \item{normalize}{logical; Rescale UMI counts before applay GFICF. Recaling is done using EdgeR normalization.}
 }
