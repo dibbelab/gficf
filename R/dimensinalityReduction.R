@@ -164,14 +164,15 @@ computePCADim = function(data,randomized=T,subsampling=F,plot=T)
   return(data)
 }
 
-#' Number of features to use 
+#' Embed new cells in an existing space 
 #'
-#' Compute the number of dimension to use for either PCA or LSA.
+#' This function embed new cells in an already existing space. For now it supports only UMAP and t-UMAP. Briefly new cells are first normalized with GF-ICF method but using as ICF weigth estimated on the existing cells and than projected in the existing PCA/LSA space before to be embedded in the already existing UMAP space via umap_transform function. 
 #' 
 #' @param data list; GFICF object
 #' @param x Matrix; UMI counts matrix of cells to embedd.
 #' @param nt integer; Number of thread to use (default 2).
 #' @param seed integer; Initial seed to use.
+#' @return The updated gficf object.
 #' @import Matrix
 #' @import uwot
 #' @importFrom Rtsne Rtsne
