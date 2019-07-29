@@ -180,7 +180,8 @@ computePCADim = function(data,randomized=T,subsampling=F,plot=T)
 #' @export
 embedNewCells = function(data,x,nt=2,seed=18051982, ...)
 {
-  x = gficf:::tf(x[rownames(x)%in% names(data$w),],doc_proportion_max = 2,doc_proportion_min = 0,normalizeCounts = data$param$normalized)
+  x = gficf:::normCounts(x[rownames(x)%in% names(data$w),],doc_proportion_max = 2,doc_proportion_min = 0,normalizeCounts = data$param$normalized)
+  x = gficf:::tf(x)
   x = gficf:::idf(x,w = data$w)
   x = t(gficf:::l.norm(t(x),norm = "l2"))
   pcapred = gficf:::scaleMatrix(t(x), data$pca$rescale,data$pca$centre) %*% data$pca$genes
