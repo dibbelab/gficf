@@ -63,7 +63,7 @@ plotGenes = function(data,genes,x=NULL)
     df$expr = data$rawCounts[i,rownames(df)]
     df$expr <- (df$expr-min(df$expr))/(max(df$expr)-min(df$expr))
     df = df[order(df$expr,decreasing = F),]
-    l[[i]] = ggplot(data = df,aes(x=X,y=Y,color=expr)) + geom_point(aes(shape=lev),size=.5,shape=19) + theme_bw() + theme_bw() + scale_color_gradient2(low = "gray",mid = "#2171b5",high = "#08306b",midpoint = .5) + ggtitle(i)
+    l[[i]] = ggplot(data = df,aes(x=X,y=Y,color=expr)) + geom_point(aes(shape=lev),size=.5,shape=19) + theme_bw() + theme_bw() + scale_color_gradient2(low = "#fff7fb",mid = "#2171b5",high = "#08306b",midpoint = .5) + ggtitle(i)
   }
   
   return(l)
