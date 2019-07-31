@@ -6,7 +6,8 @@
 \usage{
 clustcells(data, from.embedded = F, k = 15,
   dist.method = "manhattan", nt = 2, community.algo = "louvian",
-  store.graph = T, seed = 180582, verbose = TRUE)
+  store.graph = T, seed = 180582, verbose = TRUE, modularity = 1,
+  resolution = 0.8, n.start = 10, n.iter = 10)
 }
 \arguments{
 \item{data}{list; Input data (gficf object)}
@@ -27,7 +28,9 @@ clustcells(data, from.embedded = F, k = 15,
 
 \item{community.algo}{characthers; Community algorithm to use for clustering. Supported are:
 \itemize{
-  \item \code{"louvian"} (the default)
+  \item \code{"louvian"} (the default, the original Louvian method)
+  \item \code{"louvian 2"} (Louvian with modularity optimization from Seurat)
+  \item \code{"louvian 3"} (Louvain algorithm with multilevel refinement from Seurat)
   \item \code{"walktrap"}
   \item \code{"fastgreedy"}
 }}
@@ -37,6 +40,12 @@ clustcells(data, from.embedded = F, k = 15,
 \item{seed}{integer; Seed to use for replication.}
 
 \item{verbose}{logical; Increase verbosity.}
+
+\item{resolution}{Value of the resolution parameter, use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities.}
+
+\item{n.start}{Number of random starts (used in louvian 2 or 3 methods).}
+
+\item{n.iter}{Maximal number of iterations per random start (used in louvian 2 or 3 methods).}
 }
 \value{
 the updated gficf object

@@ -11,7 +11,7 @@ LazyData: true
 Suggests: testthat
 RoxygenNote: 6.1.1
 Depends: Matrix, igraph, uwot, ggplot2, rsvd, ggrepel, edgeR
-LinkingTo: Rcpp, RcppProgress, RcppParallel, RcppAnnoy
+LinkingTo: Rcpp, RcppProgress, RcppParallel, RcppAnnoy, RcppEigen
 Imports: 
     uwot,
     igraph,

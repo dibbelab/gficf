@@ -22,20 +22,28 @@
 #' @param  nt integer; Number of cpus to use for k-nn search
 #' @param community.algo characthers; Community algorithm to use for clustering. Supported are:
 #' \itemize{
-#'   \item \code{"louvian"} (the default)
+#'   \item \code{"louvian"} (the default, the original Louvian method)
+#'   \item \code{"louvian 2"} (Louvian with modularity optimization from Seurat)
+#'   \item \code{"louvian 3"} (Louvain algorithm with multilevel refinement from Seurat)
 #'   \item \code{"walktrap"}
 #'   \item \code{"fastgreedy"}
 #' }
 #' @param store.graph logical; Store produced phenograph in the gficf object
 #' @param seed integer; Seed to use for replication.
 #' @param verbose logical; Increase verbosity.
+#' @param resolution Value of the resolution parameter, use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities.
+#' @param n.start Number of random starts (used in louvian 2 or 3 methods).
+#' @param n.iter Maximal number of iterations per random start (used in louvian 2 or 3 methods).
 #' @return the updated gficf object
-#' @importFrom  igraph graph.data.frame simplify cluster_louvain walktrap.community fastgreedy.community membership
+#' @importFrom  igraph graph.data.frame simplify cluster_louvain walktrap.community fastgreedy.community membership as_adj
 #' @import uwot
 #' @import Matrix
 #' @export
-clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,community.algo="louvian",store.graph=T,seed=180582,verbose=TRUE)
+clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,community.algo="louvian",store.graph=T,seed=180582,verbose=TRUE, resolution = 0.8, n.start = 10, n.iter = 10)
 {
+  community.algo = base::match.arg(arg = community.algo,choices = c("louvian","louvian 2","louvian 3","walktrap","fastgreedy"),several.ok = F)
+  
+  if (is.null(data$embedded)) {stop("Run first runReduction function")}
   set.seed(seed)
   if(verbose) {message("Finding Neighboors..")}
   
@@ -49,7 +57,7 @@ clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,co
   }
   
   if(verbose) {message("Jaccard Coefficient..")}
-  links <- jaccard_coeff(neigh$idx)
+  links <- gficf:::jaccard_coeff(neigh$idx)
   links <- links[links[,1]>0, ]
   links <- links[links[,1] != links[,2],]
   relations <- as.data.frame(links)
@@ -64,6 +72,19 @@ clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,co
     if(verbose) {message("Performing louvain...")}
     community <- igraph::cluster_louvain(g)
   }
+  
+  if (community.algo=="louvian 2")
+  {
+    if(verbose) {message("Performing louvain with modularity optimization...")}
+    community <- gficf:::RunModularityClustering(igraph::as_adjacency_matrix(g,attr = "weight",sparse = T),1,resolution,1,n.start,n.iter,seed,verbose)
+  }
+  
+  if (community.algo=="louvian 3")
+  {
+    if(verbose) {message("Performing louvain with modularity optimization...")}
+    community <- gficf:::RunModularityClustering(igraph::as_adjacency_matrix(g,attr = "weight",sparse = T),1,resolution,2,n.start,n.iter,seed,verbose)
+  }
+  
   if (community.algo=="walktrap")
   {
     if(verbose) {message("Performing walktrap...")}
@@ -74,13 +95,18 @@ clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,co
     community <- igraph::fastgreedy.community(g)
   }
   
-  data$embedded$cluster <- as.character(igraph::membership(community))
+  if(community.algo %in% c("louvian 2","louvian 3")) {
+    community = community + 1
+    data$embedded$cluster = as.character(community)
+  } else {
+    data$embedded$cluster <- as.character(igraph::membership(community))
+  }
   
   if (store.graph) {data$community=community;data$cell.graph=g} else {data$community=community}
   
   # get centroid of clusters
   if(verbose) {message("Computing Centroids...")}
-  cluster.map = as.character(igraph::membership(data$community))
+  cluster.map = data$embedded$cluster
   u = base::unique(cluster.map)
   data$cluster.centroids = base::sapply(u, function(x,y=data$gficf,z=cluster.map) Matrix::rowSums(y[,z%in%x]))
   
@@ -89,3 +115,25 @@ clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,co
   return(data)
 }
 
+# Runs the modularity optimizer (C++ function from seurat package https://github.com/satijalab/seurat)
+#
+# @param SNN SNN matrix to use as input for the clustering algorithms
+# @param modularity Modularity function to use in clustering (1 = standard; 2 = alternative)
+# @param resolution Value of the resolution parameter, use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities
+# @param algorithm Algorithm for modularity optimization (1 = original Louvain algorithm; 2 = Louvain algorithm with multilevel refinement; 3 = SLM algorithm; 4 = Leiden algorithm). Leiden requires the leidenalg python module.
+# @param n.start Number of random starts
+# @param n.iter Maximal number of iterations per random start
+# @param random.seed Seed of the random number generator
+# @param print.output Whether or not to print output to the console
+# @param temp.file.location Deprecated and no longer used
+# @param edge.file.name Path to edge file to use
+#
+# @return clusters
+#
+#' @importFrom utils read.table write.table
+#
+RunModularityClustering <- function(SNN = matrix(), modularity = 1, resolution = 0.8, algorithm = 1, n.start = 10, n.iter = 10, random.seed = 0, print.output = TRUE, temp.file.location = NULL, edge.file.name = "") 
+{
+  clusters <- RunModularityClusteringCpp(SNN,modularity,resolution,algorithm,n.start,n.iter,random.seed,print.output,edge.file.name)
+  return(clusters)
+}
