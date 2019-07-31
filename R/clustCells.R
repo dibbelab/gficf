@@ -1,11 +1,11 @@
-#' RphenoGraph clustering like
+#' PhenoGraph clustering
 #' 
 #' R implementation of the PhenoGraph algorithm
 #' 
-#' A custom R implementation of the PhenoGraph(http://www.cell.com/cell/abstract/S0092-8674(15)00637-6) algorithm, 
+#' A custom R implementation of the PhenoGraph (http://www.cell.com/cell/abstract/S0092-8674(15)00637-6) algorithm, 
 #' which is a clustering method designed for high-dimensional single-cell data analysis. It works by creating a graph ("network") representing 
 #' phenotypic similarities between cells by calclating the Jaccard coefficient between nearest-neighbor sets, and then identifying communities 
-#' using the well known Louvain method(https://sites.google.com/site/findcommunities/) in this graph. 
+#' using the well known Louvain method (https://sites.google.com/site/findcommunities/) in this graph. 
 #' 
 #' That version used PCA or LSA reduced meta-cells and multithreading annoy version for K-nn search (from uwot package).  
 #' 
@@ -31,9 +31,9 @@
 #' @param store.graph logical; Store produced phenograph in the gficf object
 #' @param seed integer; Seed to use for replication.
 #' @param verbose logical; Increase verbosity.
-#' @param resolution Value of the resolution parameter, use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities.
-#' @param n.start Number of random starts (used in louvian 2 or 3 methods).
-#' @param n.iter Maximal number of iterations per random start (used in louvian 2 or 3 methods).
+#' @param resolution Value of the resolution parameter, use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities (used only for louvian 2 or 3 methods).
+#' @param n.start Number of random starts (used only for louvian 2 or 3 methods).
+#' @param n.iter Maximal number of iterations per random start (used only for louvian 2 or 3 methods).
 #' @return the updated gficf object
 #' @importFrom  igraph graph.data.frame simplify cluster_louvain walktrap.community fastgreedy.community membership as_adj
 #' @import uwot

@@ -2,12 +2,12 @@
 % Please edit documentation in R/clustCells.R
 \name{clustcells}
 \alias{clustcells}
-\title{RphenoGraph clustering like}
+\title{PhenoGraph clustering}
 \usage{
 clustcells(data, from.embedded = F, k = 15,
   dist.method = "manhattan", nt = 2, community.algo = "louvian",
-  store.graph = T, seed = 180582, verbose = TRUE, modularity = 1,
-  resolution = 0.8, n.start = 10, n.iter = 10)
+  store.graph = T, seed = 180582, verbose = TRUE, resolution = 0.8,
+  n.start = 10, n.iter = 10)
 }
 \arguments{
 \item{data}{list; Input data (gficf object)}
@@ -41,11 +41,11 @@ clustcells(data, from.embedded = F, k = 15,
 
 \item{verbose}{logical; Increase verbosity.}
 
-\item{resolution}{Value of the resolution parameter, use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities.}
+\item{resolution}{Value of the resolution parameter, use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities (used only for louvian 2 or 3 methods).}
 
-\item{n.start}{Number of random starts (used in louvian 2 or 3 methods).}
+\item{n.start}{Number of random starts (used only for louvian 2 or 3 methods).}
 
-\item{n.iter}{Maximal number of iterations per random start (used in louvian 2 or 3 methods).}
+\item{n.iter}{Maximal number of iterations per random start (used only for louvian 2 or 3 methods).}
 }
 \value{
 the updated gficf object
@@ -54,10 +54,10 @@ the updated gficf object
 R implementation of the PhenoGraph algorithm
 }
 \details{
-A custom R implementation of the PhenoGraph(http://www.cell.com/cell/abstract/S0092-8674(15)00637-6) algorithm, 
+A custom R implementation of the PhenoGraph (http://www.cell.com/cell/abstract/S0092-8674(15)00637-6) algorithm, 
 which is a clustering method designed for high-dimensional single-cell data analysis. It works by creating a graph ("network") representing 
 phenotypic similarities between cells by calclating the Jaccard coefficient between nearest-neighbor sets, and then identifying communities 
-using the well known Louvain method(https://sites.google.com/site/findcommunities/) in this graph.
+using the well known Louvain method (https://sites.google.com/site/findcommunities/) in this graph.
 
 That version used PCA or LSA reduced meta-cells and multithreading annoy version for K-nn search (from uwot package).
 }
