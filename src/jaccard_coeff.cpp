@@ -1,6 +1,8 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
+// This C++ code is from JinmiaoChenLab/Rphenograph package available at https://github.com/JinmiaoChenLab/Rphenograph/tree/master/src
+//
 // Compute jaccard coefficient between nearest-neighbor sets
 //
 // Weights of both i->j and j->i are recorded if they have intersection. In this case
