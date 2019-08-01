@@ -60,10 +60,10 @@ plotGenes = function(data,genes,x=NULL)
   for (i in genes)
   {
     df = data$embedded
-    df$expr = data$rawCounts[i,rownames(df)]
-    df$expr <- (df$expr-min(df$expr))/(max(df$expr)-min(df$expr))
+    df$expr = log10(data$rawCounts[i,rownames(df)]+1)
+    df$expr = (df$expr-min(df$expr))/(max(df$expr)-min(df$expr))
     df = df[order(df$expr,decreasing = F),]
-    l[[i]] = ggplot(data = df,aes(x=X,y=Y,color=expr)) + geom_point(aes(shape=lev),size=.5,shape=19) + theme_bw() + theme_bw() + scale_color_gradient2(low = "#fff7fb",mid = "#2171b5",high = "#08306b",midpoint = .5) + ggtitle(i)
+    l[[i]] = ggplot(data = df,aes(x=X,y=Y,color=expr)) + geom_point(size=.5) + theme_bw() + theme_bw() + scale_color_gradient2(low = "#ffffd9",mid = "#7fcdbb",high = "#3690c0",midpoint = .5) + ggtitle(i)
   }
   
   return(l)
