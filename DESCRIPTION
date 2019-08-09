@@ -11,6 +11,7 @@ LazyData: true
 RoxygenNote: 6.1.1
 Depends: Matrix, igraph, uwot, ggplot2, rsvd, ggrepel, fastmatch, Rtsne
 LinkingTo: Rcpp (>= 0.11.0), RcppEigen, RcppProgress, RcppParallel, RcppAnnoy
+biocViews:
 Imports: 
     uwot,
     igraph,
@@ -18,8 +19,7 @@ Imports:
     rsvd,
     ggrepel,
     Rtsne,
-    fastmatch
-Suggests: 
+    fastmatch,
     edgeR,
     fgsea,
     biomaRt
