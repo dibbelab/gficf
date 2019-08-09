@@ -52,7 +52,7 @@ gmtPathways <- function(gmt.file,convertToEns,convertHu2Mm)
 #' @param convertHu2Mm boolean: Convert gene sets from human symbols to Mouse Ensable id.
 #' @return The updated gficf object.
 #' @importFrom fgsea fgsea
-#' @importFrom BiocParallel bpparam
+#' @import fastmatch
 #' @export
 runGSEA <- function(data,gmt.file,nsim=1000,convertToEns=T,convertHu2Mm=F)
 {
