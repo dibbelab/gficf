@@ -8,9 +8,10 @@ URL: https://github.com/dibbelab/gficf
 BugReports: https://github.com/dibbelab/gficf
 Encoding: UTF-8
 LazyData: true
+Suggests: testthat
 RoxygenNote: 6.1.1
 Depends: Matrix, igraph, uwot, ggplot2, rsvd, ggrepel, edgeR, fgsea
-LinkingTo: Rcpp, RcppEigen, RcppProgress
+LinkingTo: Rcpp, RcppProgress, RcppParallel, RcppAnnoy
 biocViews:
 Imports: 
     uwot,
@@ -20,6 +21,4 @@ Imports:
     ggrepel,
     edgeR,
     fgsea
-Suggests:
-    testthat
 SystemRequirements: GNU make
