@@ -44,13 +44,6 @@ if(!require(devtools)){
   install.packages("devtools") # If not already installed
 }
 devtools::install_github("dibbelab/gficf")
-
-# Install also edgeR and fgsea packages
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-
-BiocManager::install("edgeR")
-BiocManager::install("fgsea")
 ```
 
 ## How to use GFICF
