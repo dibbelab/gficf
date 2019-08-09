@@ -10,7 +10,7 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
 Depends: Matrix, igraph, uwot, ggplot2, rsvd, ggrepel, edgeR, fgsea
-LinkingTo: Rcpp (>= 0.11.0), RcppEigen, RcppProgress
+LinkingTo: Rcpp, RcppEigen, RcppProgress
 biocViews:
 Imports: 
     uwot,
