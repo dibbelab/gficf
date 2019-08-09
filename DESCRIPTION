@@ -8,16 +8,18 @@ URL: https://github.com/dibbelab/gficf
 BugReports: https://github.com/dibbelab/gficf
 Encoding: UTF-8
 LazyData: true
-Suggests: testthat
 RoxygenNote: 6.1.1
-Depends: Matrix, igraph, uwot, ggplot2, rsvd, ggrepel, edgeR
+Depends: Matrix, igraph, uwot, ggplot2, rsvd, ggrepel, edgeR, fgsea
 LinkingTo: Rcpp (>= 0.11.0), RcppEigen, RcppProgress
+biocViews:
 Imports: 
     uwot,
     igraph,
     ggplot2,
     rsvd,
-    ggrepel
+    ggrepel,
+    edgeR,
+    fgsea
 Suggests:
-    edgeR
+    testthat
 SystemRequirements: GNU make
