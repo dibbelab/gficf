@@ -69,3 +69,50 @@ plotGenes = function(data,genes,x=NULL)
   return(l)
 }
 
+#' Plot GSEA results
+#'
+#' Circle plot for gene set enrichement analysis results.
+#' 
+#' @param data list; GFICF object
+#' @param fdr number; FDR threshold to select significant pathways to plot.
+#' @return plot from ggplot2 package.
+#' @import Matrix
+#' @import ggplot2
+#' 
+#' @export
+plotGSEA = function(data,fdr=.05)
+{
+  if (is.null(data$gsea)) {stop("Please run runGSEA function first")}
+  nes = data$gsea$nes
+  nes[data$gsea$es<=0 | data$gsea$fdr>=fdr] = 0 
+  nes = nes[Matrix::rowSums(nes)>0,]
+  df = reshape::melt(as.matrix(nes))
+  colnames(df) = c("pathway","cluster","es")
+  ggplot(data = df,aes(x=pathway,y=cluster)) + geom_point(aes(size=es)) + scale_size_continuous(range = c(0,7)) + theme_bw() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + scale_y_continuous(breaks = 1:max(df$cluster)) + xlab("") + ylab("Cluster name (NES values)")
+}
+
+#' Plot GSEA results
+#'
+#' Circle plot for gene set enrichement analysis results.
+#' 
+#' @param data list; GFICF object
+#' @param pathwayName characters; Name of the pathway to plot.
+#' @param fdr number; FDR threshold to select significant pathways to plot.
+#' @return plot from ggplot2 package.
+#' @import Matrix
+#' @import ggplot2
+#' 
+#' @export
+plotPathway = function(data,pathwayName,fdr=.05)
+{
+  if (is.null(data$gsea)) {stop("Please run runGSEA function first")}
+  nes = data$gsea$nes
+  nes[data$gsea$es<=0 | data$gsea$fdr>=fdr] = 0 
+  nes = nes[Matrix::rowSums(nes)>0,]
+  nes = nes[pathwayName,]
+  df = data$embedded
+  df$NES = nes[match(df$cluster,names(nes))]
+  ggplot(data = df,aes(x=X,y=Y)) + geom_point(aes(color=NES),shape=20) + theme_bw() + scale_color_gradient(low = "gray",high = "red")
+}
+
+
