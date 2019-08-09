@@ -21,5 +21,6 @@ Imports:
     fastmatch
 Suggests: 
     edgeR,
-    fgsea
+    fgsea,
+    biomaRt
 SystemRequirements: GNU make
