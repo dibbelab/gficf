@@ -45,7 +45,7 @@ if(!require(devtools)){
 }
 devtools::install_github("dibbelab/gficf")
 
-# Install also edgeR
+# Install also edgeR and fgsea packages
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
 
