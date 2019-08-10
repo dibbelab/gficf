@@ -9,7 +9,7 @@ BugReports: https://github.com/dibbelab/gficf
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
-Depends: R (>= 3.4.0), methods
+Depends: R (>= 3.4.0)
 LinkingTo: Rcpp (>= 0.11.0), RcppEigen, RcppProgress, RcppParallel, RcppAnnoy
 biocViews:
 Imports: 
@@ -21,6 +21,10 @@ Imports:
     Rtsne,
     fastmatch,
     edgeR,
+    BiocParallel,
     fgsea,
-    biomaRt
+    RSpectra,
+    Matrix,
+    biomaRt,
+    reshape
 SystemRequirements: GNU make

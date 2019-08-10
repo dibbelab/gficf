@@ -52,6 +52,7 @@ gmtPathways <- function(gmt.file,convertToEns,convertHu2Mm)
 #' @param convertHu2Mm boolean: Convert gene sets from human symbols to Mouse Ensable id.
 #' @return The updated gficf object.
 #' @importFrom fgsea fgsea
+#' @importFrom BiocParallel bpparam
 #' @import fastmatch
 #' @export
 runGSEA <- function(data,gmt.file,nsim=1000,convertToEns=T,convertHu2Mm=F)
@@ -59,7 +60,7 @@ runGSEA <- function(data,gmt.file,nsim=1000,convertToEns=T,convertHu2Mm=F)
   if (is.null(data$cluster.centroids)) {stop("Please run clustcell function first")}
   
   data$gsea = list()
-  data$gsea$pathways = gficf:::gmtPathways(gmt.file,convertToEns,convertHu2Mm)
+  data$gsea$pathways = gmtPathways(gmt.file,convertToEns,convertHu2Mm)
   data$gsea$es = Matrix::Matrix(data = 0,nrow = length(data$gsea$pathways),ncol = ncol(data$cluster.centroids))
   data$gsea$nes = Matrix::Matrix(data = 0,nrow = length(data$gsea$pathways),ncol = ncol(data$cluster.centroids))
   data$gsea$pval = Matrix::Matrix(data = 0,nrow = length(data$gsea$pathways),ncol = ncol(data$cluster.centroids))

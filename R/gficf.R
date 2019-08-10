@@ -16,11 +16,11 @@
 gficf = function(M,cell_proportion_max = 1,cell_proportion_min = 0.05,storeRaw=TRUE,normalize=FALSE)
 {
   data = list()
-  M = gficf:::normCounts(M,doc_proportion_max = cell_proportion_max,doc_proportion_min = cell_proportion_min,normalizeCounts=normalize)
-  data$gficf = gficf:::tf(M)
-  data$w = gficf:::getIdfW(data$gficf)
-  data$gficf = gficf:::idf(data$gficf,data$w)
-  data$gficf = t(gficf:::l.norm(t(data$gficf),norm = "l2"))
+  M = normCounts(M,doc_proportion_max = cell_proportion_max,doc_proportion_min = cell_proportion_min,normalizeCounts=normalize)
+  data$gficf = tf(M)
+  data$w = getIdfW(data$gficf)
+  data$gficf = idf(data$gficf,data$w)
+  data$gficf = t(l.norm(t(data$gficf),norm = "l2"))
   if (storeRaw) {data$rawCounts=M}
   
   data$param <- list()

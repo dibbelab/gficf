@@ -23,7 +23,7 @@ runLSA = function(data,dim=NULL,rescale=F,centre=F,randomized=T)
   
   data$pca = list()
   data$pca$cells = t(data$gficf)
-  data$pca$cells = gficf:::scaleMatrix(data$pca$cells,rescale,centre)
+  data$pca$cells = scaleMatrix(data$pca$cells,rescale,centre)
   if (randomized) {ppk<- rsvd::rsvd(data$pca$cells,k=dim)} else {ppk<- RSpectra::svds(data$pca$cells,k=dim)}
   data$pca$cells <- ppk$u %*% base::diag(x = ppk$d)
   data$pca$centre <- centre
@@ -58,7 +58,7 @@ runPCA = function(data,dim=NULL,rescale=F,centre=F,randomized=T)
   
   data$pca = list()
   data$pca$cells = t(data$gficf)
-  data$pca$cells = gficf:::scaleMatrix(data$pca$cells,rescale,centre)
+  data$pca$cells = scaleMatrix(data$pca$cells,rescale,centre)
   x = rsvd::rpca(data$pca$cells,k=dim,center=F,scale=F,rand=randomized)
   data$pca$cells = x$x
   data$pca$centre <- centre
@@ -84,6 +84,8 @@ runPCA = function(data,dim=NULL,rescale=F,centre=F,randomized=T)
 #' }
 #' @param nt integer; Number of thread to use (default 2).
 #' @param seed integer; Initial seed to use.
+#' @param ret_model_pred boolean; If true, the umap model is retained to be used for prediction. 
+#' @param ... Additional arguments to pass to Rtsne/umap/tumap call.
 #' @return The updated gficf object.
 #' @import uwot
 #' @importFrom Rtsne Rtsne
@@ -172,6 +174,7 @@ computePCADim = function(data,randomized=T,subsampling=F,plot=T)
 #' @param x Matrix; UMI counts matrix of cells to embedd.
 #' @param nt integer; Number of thread to use (default 2).
 #' @param seed integer; Initial seed to use.
+#' @param ... Additional arguments to pass to Rtsne or umap_transform call.
 #' @return The updated gficf object.
 #' @import Matrix
 #' @import uwot
@@ -180,11 +183,11 @@ computePCADim = function(data,randomized=T,subsampling=F,plot=T)
 #' @export
 embedNewCells = function(data,x,nt=2,seed=18051982, ...)
 {
-  x = gficf:::normCounts(x[rownames(x)%in% names(data$w),],doc_proportion_max = 2,doc_proportion_min = 0,normalizeCounts = data$param$normalized)
-  x = gficf:::tf(x)
-  x = gficf:::idf(x,w = data$w)
-  x = t(gficf:::l.norm(t(x),norm = "l2"))
-  pcapred = gficf:::scaleMatrix(t(x), data$pca$rescale,data$pca$centre) %*% data$pca$genes
+  x = normCounts(x[rownames(x)%in% names(data$w),],doc_proportion_max = 2,doc_proportion_min = 0,normalizeCounts = data$param$normalized)
+  x = tf(x)
+  x = idf(x,w = data$w)
+  x = t(l.norm(t(x),norm = "l2"))
+  pcapred = scaleMatrix(t(x), data$pca$rescale,data$pca$centre) %*% data$pca$genes
   rownames(pcapred) = colnames(x)
   colnames(pcapred) = colnames(data$pca$cells)
   

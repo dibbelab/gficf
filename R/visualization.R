@@ -78,6 +78,7 @@ plotGenes = function(data,genes,x=NULL)
 #' @return plot from ggplot2 package.
 #' @import Matrix
 #' @import ggplot2
+#' @importFrom reshape melt
 #' 
 #' @export
 plotGSEA = function(data,fdr=.05)
