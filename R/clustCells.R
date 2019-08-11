@@ -56,7 +56,7 @@ clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,co
     neigh = uwot:::find_nn(data$pca$cells,k=k,include_self = F,n_threads = nt,verbose = verbose,method = "annoy",metric=dist.method)
   }
   
-  links <- gficf:::jaccard_coeff(neigh$idx,verbose)
+  links <- jaccard_coeff(neigh$idx,verbose)
   links <- links[links[,1]>0, ]
   links <- links[links[,1] != links[,2],]
   relations <- as.data.frame(links)
@@ -75,13 +75,13 @@ clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,co
   if (community.algo=="louvian 2")
   {
     if(verbose) {message("Performing louvain with modularity optimization...")}
-    community <- gficf:::RunModularityClustering(igraph::as_adjacency_matrix(g,attr = "weight",sparse = T),1,resolution,1,n.start,n.iter,seed,verbose)
+    community <- RunModularityClustering(igraph::as_adjacency_matrix(g,attr = "weight",sparse = T),1,resolution,1,n.start,n.iter,seed,verbose)
   }
   
   if (community.algo=="louvian 3")
   {
     if(verbose) {message("Performing louvain with modularity optimization...")}
-    community <- gficf:::RunModularityClustering(igraph::as_adjacency_matrix(g,attr = "weight",sparse = T),1,resolution,2,n.start,n.iter,seed,verbose)
+    community <- RunModularityClustering(igraph::as_adjacency_matrix(g,attr = "weight",sparse = T),1,resolution,2,n.start,n.iter,seed,verbose)
   }
   
   if (community.algo=="walktrap")
