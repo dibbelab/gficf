@@ -85,11 +85,11 @@ features, and even then expect it to take several minutes during the index
 building phase in situations where the Euclidean metric would take only a few
 seconds.
 
-After computation of Jaccard distances among cells, the Louvain community detection is instead performed using `igraph` implementation.
+After computation of Jaccard distances among cells, the Louvain community detection is instead performed using `igraph` or native `Seurat`implementation.
 All supported communities detection algorithm (set by the `community.algo` parameter) are:
 
-* Louvain (default)
-* Louvian with modularity optimization (c++ function imported from Seurat)
-* Louvain algorithm with multilevel refinement (c++ function imported from Seurat)
+* Louvain classic (default)
+* Louvian with modularity optimization (native c++ function imported from `Seurat`)
+* Louvain algorithm with multilevel refinement (native c++ function imported from `Seurat`)
 * Walktrap
 * Fastgreedy
