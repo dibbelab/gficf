@@ -50,21 +50,17 @@ clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,co
   if (from.embedded)
   {
     if(is.null(data$embedded)) {stop("First run runReduction to embed your cells")}
-    neigh = uwot:::find_nn(as.matrix(data$embedded[,c(1,2)]),k=k,include_self = F,n_threads = nt,verbose = TRUE,method = "annoy",metric=dist.method)
+    neigh = uwot:::find_nn(as.matrix(data$embedded[,c(1,2)]),k=k+1,include_self = T,n_threads = nt,verbose = TRUE,method = "annoy",metric=dist.method)$idx
   } else {
     if(is.null(data$pca)) {stop("First run runPCA or runLSA to reduce dimensionality")}
-    neigh = uwot:::find_nn(data$pca$cells,k=k,include_self = F,n_threads = nt,verbose = verbose,method = "annoy",metric=dist.method)
+    neigh = uwot:::find_nn(data$pca$cells,k=k+1,include_self = T,n_threads = nt,verbose = verbose,method = "annoy",metric=dist.method)$idx
   }
   
-  links <- jaccard_coeff(neigh$idx,verbose)
-  links <- links[links[,1]>0, ]
-  links <- links[links[,1] != links[,2],]
-  relations <- as.data.frame(links)
+  neigh = neigh[,-1]
+  relations <- jaccard_coeff(neigh,verbose)
+  relations <- as.data.frame(relations)
   colnames(relations)<- c("from","to","weight")
   g <- igraph::graph.data.frame(relations, directed=FALSE)
-  
-  #sum multiple edges
-  g = igraph::simplify(g, edge.attr.comb=list(weight="sum"),remove.loops = F,remove.multiple = T)
   
   if (community.algo=="louvian")
   {
