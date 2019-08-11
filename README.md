@@ -11,7 +11,7 @@ The package also include data reduction with either Principal Component Analisys
 Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell data visualization.   
 
 ## News
-*July 26 2019* Added new functionality. Is now possible to embed new cells in an already existing space. [See example..](https://jeky82.github.io/gficf_example.html#how-to-embedd-new-cells-in-an-existing-space)
+*July 26 2019* **Added new functionality:** Is now possible to embed new cells in an already existing embedded space. [See example how..](https://jeky82.github.io/gficf_example.html#how-to-embedd-new-cells-in-an-existing-space)
 
 *July 15 2019* Addedd web page with examples [HERE](https://jeky82.github.io/gficf_example.html)
 
@@ -24,20 +24,19 @@ Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell dat
 
 ### From github
 
-`gficf` makes use of annoy library in `uwot`. So you may have to carry out
-a few extra steps before being able to build this package like for `uwot` installation:
+`gficf` makes use of `uwot` and `Rcpp`. So you may have to carry out
+a few extra steps before being able to build this package:
 
-**Windows**: install 
+**Windows**: First install 
 [Rtools](https://cran.r-project.org/bin/windows/Rtools/) and ensure 
 `C:\Rtools\bin` is on your path.
 
-**Mac OS X**: using a custom `~/.R/Makevars` 
-[may cause linking errors](https://github.com/jlmelville/uwot/issues/1).
+**Mac OS X**: using a custom `~/.R/Makevars` may cause errors.
 This sort of thing is a potential problem on all platforms but seems to bite
 Mac owners more.
 [The R for Mac OS X FAQ](https://cran.r-project.org/bin/macosx/RMacOSX-FAQ.html#Installation-of-source-packages)
 may be helpful here to work out what you can get away with. To be on the safe
-side, I would advise building `uwot` without a custom `Makevars`.
+side, I would advise building `gficf` without a custom `Makevars`.
 
 ```R
 if(!require(devtools)){
