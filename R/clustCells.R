@@ -57,8 +57,8 @@ clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,co
   }
   
   neigh = neigh[,-1]
-  relations <- relations[relations[,1]>0, ]
   relations <- jaccard_coeff(neigh,verbose)
+  relations <- relations[relations[,1]>0, ]
   relations <- as.data.frame(relations)
   colnames(relations)<- c("from","to","weight")
   g <- igraph::graph.data.frame(relations, directed=FALSE)
