@@ -56,8 +56,7 @@ clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,co
     neigh = uwot:::find_nn(data$pca$cells,k=k,include_self = F,n_threads = nt,verbose = verbose,method = "annoy",metric=dist.method)
   }
   
-  if(verbose) {message("Jaccard Coefficient..")}
-  links <- gficf:::jaccard_coeff(neigh$idx)
+  links <- gficf:::jaccard_coeff(neigh$idx,verbose)
   links <- links[links[,1]>0, ]
   links <- links[links[,1] != links[,2],]
   relations <- as.data.frame(links)

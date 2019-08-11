@@ -1,7 +1,8 @@
 #include <Rcpp.h>
+#include <progress.hpp>
 using namespace Rcpp;
 
-// This C++ code is from JinmiaoChenLab/Rphenograph package available at https://github.com/JinmiaoChenLab/Rphenograph/tree/master/src
+// Original C++ code is from JinmiaoChenLab/Rphenograph package available at https://github.com/JinmiaoChenLab/Rphenograph/tree/master/src
 //
 // Compute jaccard coefficient between nearest-neighbor sets
 //
@@ -13,12 +14,17 @@ using namespace Rcpp;
 //
 // Author: Chen Hao, Date: 25/09/2015
 
-
+// [[Rcpp::depends(RcppProgress)]]
 // [[Rcpp::export]]
-NumericMatrix jaccard_coeff(NumericMatrix idx) {
+NumericMatrix jaccard_coeff(NumericMatrix idx, bool printOutput) {
     int nrow = idx.nrow(), ncol = idx.ncol();
     NumericMatrix weights(nrow*ncol, 3);
     int r = 0;
+    if (printOutput)
+    {
+      Rprintf("Running Jaccard Coefficient Estimation...\n");
+    }
+    Progress p(nrow, printOutput);
     for (int i = 0; i < nrow; i++) {
         for (int j = 0; j < ncol; j++) {
             int k = idx(i,j)-1;
@@ -32,6 +38,7 @@ NumericMatrix jaccard_coeff(NumericMatrix idx) {
                 r++;
             }
         }
+        p.increment();
     }
     
     return weights;

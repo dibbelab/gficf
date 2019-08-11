@@ -5,7 +5,7 @@ RunModularityClusteringCpp <- function(SNN, modularityFunction, resolution, algo
     .Call(`_gficf_RunModularityClusteringCpp`, SNN, modularityFunction, resolution, algorithm, nRandomStarts, nIterations, randomSeed, printOutput, edgefilename)
 }
 
-jaccard_coeff <- function(idx) {
-    .Call(`_gficf_jaccard_coeff`, idx)
+jaccard_coeff <- function(idx, printOutput) {
+    .Call(`_gficf_jaccard_coeff`, idx, printOutput)
 }
 

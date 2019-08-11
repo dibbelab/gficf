@@ -26,20 +26,21 @@ BEGIN_RCPP
 END_RCPP
 }
 // jaccard_coeff
-NumericMatrix jaccard_coeff(NumericMatrix idx);
-RcppExport SEXP _gficf_jaccard_coeff(SEXP idxSEXP) {
+NumericMatrix jaccard_coeff(NumericMatrix idx, bool printOutput);
+RcppExport SEXP _gficf_jaccard_coeff(SEXP idxSEXP, SEXP printOutputSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type idx(idxSEXP);
-    rcpp_result_gen = Rcpp::wrap(jaccard_coeff(idx));
+    Rcpp::traits::input_parameter< bool >::type printOutput(printOutputSEXP);
+    rcpp_result_gen = Rcpp::wrap(jaccard_coeff(idx, printOutput));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
     {"_gficf_RunModularityClusteringCpp", (DL_FUNC) &_gficf_RunModularityClusteringCpp, 9},
-    {"_gficf_jaccard_coeff", (DL_FUNC) &_gficf_jaccard_coeff, 1},
+    {"_gficf_jaccard_coeff", (DL_FUNC) &_gficf_jaccard_coeff, 2},
     {NULL, NULL, 0}
 };
 
