@@ -27,8 +27,7 @@ struct JCoefficient : public RcppParallel::Worker {
         
         int k = mat(i,j)-1;
         std::vector<double> v(mat.ncol());
-        std::vector<double>::iterator it;
-        
+
         RcppParallel::RMatrix<double>::Row v1 = mat.row(i);
         RcppParallel::RMatrix<double>::Row v2 = mat.row(k);
         
