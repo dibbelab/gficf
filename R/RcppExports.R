@@ -9,3 +9,7 @@ jaccard_coeff <- function(idx, printOutput) {
     .Call(`_gficf_jaccard_coeff`, idx, printOutput)
 }
 
+rcpp_parallel_jaccard_coef <- function(mat, printOutput) {
+    .Call(`_gficf_rcpp_parallel_jaccard_coef`, mat, printOutput)
+}
+

@@ -26,5 +26,7 @@ Imports:
     RSpectra,
     Matrix,
     biomaRt,
-    reshape
+    reshape,
+    RcppParallel,
+    Rcpp
 SystemRequirements: GNU make

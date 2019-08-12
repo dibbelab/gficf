@@ -36,6 +36,7 @@
 #' @param n.iter Maximal number of iterations per random start (used only for louvian 2 or 3 methods).
 #' @return the updated gficf object
 #' @importFrom  igraph graph.data.frame simplify cluster_louvain walktrap.community fastgreedy.community membership as_adj
+#' @importFrom RcppParallel setThreadOptions RcppParallelLibs
 #' @import uwot
 #' @import Matrix
 #' @export
@@ -57,8 +58,9 @@ clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,co
   }
   
   neigh = neigh[,-1]
-  relations <- jaccard_coeff(neigh,verbose)
-  relations <- relations[relations[,1]>0, ]
+  RcppParallel::setThreadOptions(numThreads = nt)
+  relations <- rcpp_parallel_jaccard_coef(neigh,verbose)
+  relations <- relations[relations[,3]>0, ]
   relations <- as.data.frame(relations)
   colnames(relations)<- c("from","to","weight")
   g <- igraph::graph.data.frame(relations, directed=FALSE)
