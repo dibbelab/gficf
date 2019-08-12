@@ -11,6 +11,8 @@ The package also include data reduction with either Principal Component Analisys
 Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell data visualization.   
 
 ## News
+*August 12 2019* RcppParallel Jaccard estimation in Phenograph (speed boost) 
+
 *July 26 2019* **New functionality:** Embed new cells in an already existing embedded space. [See example how..](https://jeky82.github.io/gficf_example.html#how-to-embedd-new-cells-in-an-existing-space)
 
 *July 15 2019* Addedd web page with examples [HERE](https://jeky82.github.io/gficf_example.html)
