@@ -50,33 +50,35 @@ gmtPathways <- function(gmt.file,convertToEns,convertHu2Mm)
 #' @param nsim integer; number of simulation used to compute ES significance.
 #' @param convertToEns boolean: Convert gene sets from gene symbols to Ensable id.
 #' @param convertHu2Mm boolean: Convert gene sets from human symbols to Mouse Ensable id.
+#' @param nt numeric; Number of cpu to use for the GSEA
+#' @param minSize numeric; Minimal size of a gene set to test (default 15). All pathways below the threshold are excluded.
+#' @param maxSize numeric; Maximal size of a gene set to test (default Inf). All pathways above the threshold are excluded.
 #' @return The updated gficf object.
 #' @importFrom fgsea fgsea
-#' @importFrom BiocParallel bpparam
 #' @import fastmatch
 #' @export
-runGSEA <- function(data,gmt.file,nsim=1000,convertToEns=T,convertHu2Mm=F)
+runGSEA <- function(data,gmt.file,nsim=1000,convertToEns=T,convertHu2Mm=F,nt=2,minSize=15,maxSize=Inf)
 {
-  if (is.null(data$cluster.centroids)) {stop("Please run clustcell function first")}
+  if (is.null(data$cluster.gene.rnk)) {stop("Please run clustcell function first")}
   
   data$gsea = list()
   data$gsea$pathways = gmtPathways(gmt.file,convertToEns,convertHu2Mm)
-  data$gsea$es = Matrix::Matrix(data = 0,nrow = length(data$gsea$pathways),ncol = ncol(data$cluster.centroids))
-  data$gsea$nes = Matrix::Matrix(data = 0,nrow = length(data$gsea$pathways),ncol = ncol(data$cluster.centroids))
-  data$gsea$pval = Matrix::Matrix(data = 0,nrow = length(data$gsea$pathways),ncol = ncol(data$cluster.centroids))
-  data$gsea$fdr = Matrix::Matrix(data = 0,nrow = length(data$gsea$pathways),ncol = ncol(data$cluster.centroids))
+  data$gsea$es = Matrix::Matrix(data = 0,nrow = length(data$gsea$pathways),ncol = ncol(data$cluster.gene.rnk))
+  data$gsea$nes = Matrix::Matrix(data = 0,nrow = length(data$gsea$pathways),ncol = ncol(data$cluster.gene.rnk))
+  data$gsea$pval = Matrix::Matrix(data = 0,nrow = length(data$gsea$pathways),ncol = ncol(data$cluster.gene.rnk))
+  data$gsea$fdr = Matrix::Matrix(data = 0,nrow = length(data$gsea$pathways),ncol = ncol(data$cluster.gene.rnk))
   
   rownames(data$gsea$es) = rownames(data$gsea$nes) = rownames(data$gsea$pval) = rownames(data$gsea$fdr) = names(data$gsea$pathways)
-  colnames(data$gsea$es) = colnames(data$gsea$nes) = colnames(data$gsea$pval) = colnames(data$gsea$fdr) = colnames(data$cluster.centroids)
+  colnames(data$gsea$es) = colnames(data$gsea$nes) = colnames(data$gsea$pval) = colnames(data$gsea$fdr) = colnames(data$cluster.gene.rnk)
   
-  pb <- txtProgressBar(min = 0, max = ncol(data$cluster.centroids), style = 3)
-  for (i in 1:ncol(data$cluster.centroids))
+  pb <- txtProgressBar(min = 0, max = ncol(data$cluster.gene.rnk), style = 3)
+  for (i in 1:ncol(data$cluster.gene.rnk))
   {
-    df = as.data.frame(fgsea::fgsea(pathways = data$gsea$pathways,stats = data$cluster.centroids[,i],nperm = nsim,gseaParam = 0,BPPARAM = BiocParallel::bpparam()))[,1:7]
-    data$gsea$es[,i] = df$ES
-    data$gsea$nes[,i] = df$NES
-    data$gsea$pval[,i] = df$pval
-    data$gsea$fdr[,i] = df$padj
+    df = as.data.frame(fgsea::fgsea(pathways = data$gsea$pathways,stats = data$cluster.gene.rnk[,i],nperm = nsim,gseaParam = 0,nproc = nt,minSize = minSize,maxSize = maxSize))[,1:7]
+    data$gsea$es[df$pathway,i] = df$ES
+    data$gsea$nes[df$pathway,i] = df$NES
+    data$gsea$pval[df$pathway,i] = df$pval
+    data$gsea$fdr[df$pathway,i] = df$padj
     setTxtProgressBar(pb, i)
   }
   

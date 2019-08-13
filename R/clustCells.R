@@ -106,7 +106,7 @@ clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,co
   if(verbose) {message("Computing Centroids...")}
   cluster.map = data$embedded$cluster
   u = base::unique(cluster.map)
-  data$cluster.centroids = base::sapply(u, function(x,y=data$gficf,z=cluster.map) Matrix::rowSums(y[,z%in%x]))
+  data$cluster.gene.rnk = base::sapply(u, function(x,y=data$gficf,z=cluster.map) Matrix::rowSums(y[,z%in%x]))
   
   message(paste("Detected Clusters:",length(unique(data$embedded$cluster))))
   

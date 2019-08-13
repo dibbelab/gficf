@@ -88,8 +88,8 @@ plotGSEA = function(data,fdr=.05)
   nes[data$gsea$es<=0 | data$gsea$fdr>=fdr] = 0 
   nes = nes[Matrix::rowSums(nes)>0,]
   df = reshape::melt(as.matrix(nes))
-  colnames(df) = c("pathway","cluster","es")
-  ggplot(data = df,aes(x=pathway,y=cluster)) + geom_point(aes(size=es)) + scale_size_continuous(range = c(0,7)) + theme_bw() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + scale_y_continuous(breaks = 1:max(df$cluster)) + xlab("") + ylab("Cluster name (NES values)")
+  colnames(df) = c("pathway","cluster","nes")
+  ggplot(data = df,aes(x=pathway,y=cluster)) + geom_point(aes(size=nes)) + scale_size_continuous(range = c(0,7)) + theme_bw() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + scale_y_continuous(breaks = 1:max(df$cluster)) + xlab("") + ylab("Cluster name")
 }
 
 #' Plot GSEA results

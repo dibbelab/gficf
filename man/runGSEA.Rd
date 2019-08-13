@@ -5,7 +5,7 @@
 \title{Gene Set Enrichement Analysi on GF-ICF}
 \usage{
 runGSEA(data, gmt.file, nsim = 1000, convertToEns = T,
-  convertHu2Mm = F)
+  convertHu2Mm = F, nt = 2, minSize = 15, maxSize = Inf)
 }
 \arguments{
 \item{data}{list; GFICF object}
@@ -17,6 +17,12 @@ runGSEA(data, gmt.file, nsim = 1000, convertToEns = T,
 \item{convertToEns}{boolean: Convert gene sets from gene symbols to Ensable id.}
 
 \item{convertHu2Mm}{boolean: Convert gene sets from human symbols to Mouse Ensable id.}
+
+\item{nt}{numeric; Number of cpu to use for the GSEA}
+
+\item{minSize}{numeric; Minimal size of a gene set to test (default 15). All pathways below the threshold are excluded.}
+
+\item{maxSize}{numeric; Maximal size of a gene set to test (default Inf). All pathways above the threshold are excluded.}
 }
 \value{
 The updated gficf object.
