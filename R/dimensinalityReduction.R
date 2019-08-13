@@ -7,6 +7,7 @@
 #' @param rescale logical; Rescale gficf scores before applying reduction (deprecated).
 #' @param centre logical; Centre gficf scores before applying reduction (increase separation).
 #' @param randomized logical; Use randomized (faster) version for matrix decomposition (default is TRUE).
+#' @param seed integer; Initial seed to use.
 #' @return The updated gficf object.
 #' @importFrom RSpectra svds
 #' @importFrom rsvd rsvd
@@ -45,6 +46,7 @@ runLSA = function(data,dim=NULL,rescale=F,centre=F,randomized=T,seed=180582)
 #' @param rescale logical; Rescale gficf scores before applying reduction (deprecated).
 #' @param centre logical; Centre gficf scores before applying reduction (increase separation).
 #' @param randomized logical; Use randomized (faster) version for matrix decomposition (default is TRUE).
+#' @param seed integer; Initial seed to use.
 #' @return The updated gficf object.
 #' @importFrom rsvd rpca
 #' 

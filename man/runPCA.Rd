@@ -4,7 +4,8 @@
 \alias{runPCA}
 \title{Principal Component Analysis (PCA)}
 \usage{
-runPCA(data, dim = NULL, rescale = F, centre = F, randomized = T)
+runPCA(data, dim = NULL, rescale = F, centre = F, randomized = T,
+  seed = 180582)
 }
 \arguments{
 \item{data}{list; GFICF object}
@@ -16,6 +17,8 @@ runPCA(data, dim = NULL, rescale = F, centre = F, randomized = T)
 \item{centre}{logical; Centre gficf scores before applying reduction (increase separation).}
 
 \item{randomized}{logical; Use randomized (faster) version for matrix decomposition (default is TRUE).}
+
+\item{seed}{integer; Initial seed to use.}
 }
 \value{
 The updated gficf object.
