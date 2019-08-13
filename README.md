@@ -11,15 +11,17 @@ The package also include data reduction with either Principal Component Analisys
 Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell data visualization.   
 
 ## News
-*August 12 2019* RcppParallel Jaccard estimation in Phenograph (speed boost) 
+*Aug. 13 2019* **New functionality:** Idetify active pathways in group of cells. [See example how..](https://jeky82.github.io/gficf_example.html#how-to-perform-gsea-to-identify-active-pathways-in-each-cluster)
 
-*July 26 2019* **New functionality:** Embed new cells in an already existing embedded space. [See example how..](https://jeky82.github.io/gficf_example.html#how-to-embedd-new-cells-in-an-existing-space)
+*Aug. 12 2019* RcppParallel Jaccard estimation in Phenograph (speed boost) 
 
-*July 15 2019* Addedd web page with examples [HERE](https://jeky82.github.io/gficf_example.html)
+*Jul. 26 2019* **New functionality:** Embed new cells in an already existing embedded space. [See example how..](https://jeky82.github.io/gficf_example.html#how-to-embedd-new-cells-in-an-existing-space)
 
-*July 12 2019*. Paper Accepted and now available [HERE](https://www.frontiersin.org/articles/10.3389/fgene.2019.00734/abstract).
+*Jul. 15 2019* Addedd web page with examples [HERE](https://jeky82.github.io/gficf_example.html)
 
-*July 3 2019*. Version 0.1 with example on Tabula Muris.
+*Jul. 12 2019*. Paper Accepted and now available [HERE](https://www.frontiersin.org/articles/10.3389/fgene.2019.00734/abstract).
+
+*Jul. 03 2019*. Version 0.1 with example on Tabula Muris.
 
 
 ## Installing
