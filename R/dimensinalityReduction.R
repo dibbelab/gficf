@@ -12,8 +12,10 @@
 #' @importFrom rsvd rsvd
 #' 
 #' @export
-runLSA = function(data,dim=NULL,rescale=F,centre=F,randomized=T)
+runLSA = function(data,dim=NULL,rescale=F,centre=F,randomized=T,seed=180582)
 {
+  set.seed(seed)
+  
   if (is.null(dim))
   {
     if (is.null(data$dimPCA)) {stop("Specify the number of dims or run computePCADim first")} else {dim=data$dimPCA}
@@ -47,8 +49,10 @@ runLSA = function(data,dim=NULL,rescale=F,centre=F,randomized=T)
 #' @importFrom rsvd rpca
 #' 
 #' @export
-runPCA = function(data,dim=NULL,rescale=F,centre=F,randomized=T)
+runPCA = function(data,dim=NULL,rescale=F,centre=F,randomized=T,seed=180582)
 {
+  set.seed(seed)
+  
   if (is.null(dim))
   {
     if (is.null(data$dimPCA)) {stop("Specify the number of dims or run computePCADim first")} else {dim=data$dimPCA}
