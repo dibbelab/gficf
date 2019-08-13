@@ -11,7 +11,7 @@ of Jaccard Coefficient estimation using [RcppParallel](https://cran.r-project.or
 The package also include data reduction with either Principal Component Analisys (PCA) or
 Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell data visualization.   
 
-Additional Functionality:
+**Additional Functionality**:
 * Embed new cells in an already existing embedded space. [See example how..](https://jeky82.github.io/gficf_example.html#how-to-embedd-new-cells-in-an-existing-space)
 
 * Idetify active pathways in a group of cells. [See example how..](https://jeky82.github.io/gficf_example.html#how-to-perform-gsea-to-identify-active-pathways-in-each-cluster)
