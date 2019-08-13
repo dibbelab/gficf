@@ -6,7 +6,8 @@ normalization [(Gambardella et al. 2019)](https://www.frontiersin.org/articles/1
 The package also includes [Phenograph](https://www.cell.com/cell/fulltext/S0092-8674(15)00637-6)
 [Louvain method](https://sites.google.com/site/findcommunities/)
 clustering using [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy) library
-from [uwot](https://github.com/jlmelville/uwot).
+from [uwot](https://github.com/jlmelville/uwot) and a naive but fast parallel implementation
+of Jaccard Coefficient estimation using [RcppParallel](https://cran.r-project.org/package=RcppParallel).
 The package also include data reduction with either Principal Component Analisys (PCA) or
 Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell data visualization.   
 
@@ -89,7 +90,7 @@ features, and even then expect it to take several minutes during the index
 building phase in situations where the Euclidean metric would take only a few
 seconds.
 
-After computation of Jaccard distances among cells, the Louvain community detection is instead performed using `igraph` or native `Seurat`implementation.
+After computation of Jaccard distances among cells (custom [RcppParallel](https://cran.r-project.org/package=RcppParallel) implementation), the Louvain community detection is instead performed using `igraph` or native `Seurat`implementation.
 All supported communities detection algorithm (set by the `community.algo` parameter) are:
 
 * Louvain classic (default)
