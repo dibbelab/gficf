@@ -38,7 +38,7 @@ BEGIN_RCPP
 END_RCPP
 }
 // rcpp_parallel_jaccard_coef
-Eigen::MatrixXd rcpp_parallel_jaccard_coef(Rcpp::NumericMatrix mat, bool printOutput);
+Rcpp::NumericMatrix rcpp_parallel_jaccard_coef(Rcpp::NumericMatrix mat, bool printOutput);
 RcppExport SEXP _gficf_rcpp_parallel_jaccard_coef(SEXP matSEXP, SEXP printOutputSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
