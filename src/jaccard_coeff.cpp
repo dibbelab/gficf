@@ -34,7 +34,7 @@ NumericMatrix jaccard_coeff(NumericMatrix idx, bool printOutput) {
             if(u>0){ 
                 weights(r, 0) = i+1;
                 weights(r, 1) = k+1;
-                weights(r, 2) = u/(2.0*ncol - u)/2;  // symmetrize the graph
+                weights(r, 2) = u/(2.0*ncol - u);
                 r++;
             }
         }
