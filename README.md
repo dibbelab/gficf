@@ -19,7 +19,7 @@ Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell dat
 ## News
 *Aug. 13 2019* **New functionality:** Idetify active pathways in a group of cells. [See example how..](https://jeky82.github.io/gficf_example.html#how-to-perform-gsea-to-identify-active-pathways-in-each-cluster)
 
-*Aug. 12 2019* RcppParallel Jaccard estimation in Phenograph (speed boost) 
+*Aug. 12 2019* RcppParallel Jaccard estimation in Phenograph [(20X speed boost)](https://jeky82.github.io/2019/08/12/parallel_JC_benchmarks.html) 
 
 *Jul. 26 2019* **New functionality:** Embed new cells in an already existing embedded space. [See example how..](https://jeky82.github.io/gficf_example.html#how-to-embedd-new-cells-in-an-existing-space)
 
