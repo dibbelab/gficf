@@ -90,14 +90,15 @@ runPCA = function(data,dim=NULL,rescale=F,centre=F,randomized=T,seed=180582)
 #' }
 #' @param nt integer; Number of thread to use (default 2).
 #' @param seed integer; Initial seed to use.
-#' @param ret_model_pred boolean; If true, the umap model is retained to be used for prediction. 
+#' @param ret_model_pred boolean; If true, the umap model is retained to be used for prediction.
+#' @param verbose boolean; Icrease verbosity. 
 #' @param ... Additional arguments to pass to Rtsne/umap/tumap call.
 #' @return The updated gficf object.
 #' @import uwot
 #' @importFrom Rtsne Rtsne
 #' 
 #' @export
-runReduction = function(data,reduction="tumap",nt=2,seed=18051982, ret_model_pred = T, ...)
+runReduction = function(data,reduction="tumap",nt=2,seed=18051982, ret_model_pred = T,verbose=T, ...)
 {
 
   reduction = base::match.arg(arg = reduction,choices = c("umap","tumap","tsne"),several.ok = F)
@@ -106,27 +107,27 @@ runReduction = function(data,reduction="tumap",nt=2,seed=18051982, ret_model_pre
   if (!is.null(data$pca))
   {
     if(reduction=="tumap"){
-      data$uwot = uwot::tumap(X = data$pca$cells,scale = F,n_threads = nt,verbose = T,ret_model = ret_model_pred, ...)
+      data$uwot = uwot::tumap(X = data$pca$cells,scale = F,n_threads = nt,verbose = verbose,ret_model = ret_model_pred, ...)
       data$embedded = base::as.data.frame(data$uwot$embedding)
     }
     
     if(reduction=="umap"){
-      data$uwot = uwot::umap(X = data$pca$cells, scale = F,n_threads = nt,verbose = T, ret_model = ret_model_pred, ...)
+      data$uwot = uwot::umap(X = data$pca$cells, scale = F,n_threads = nt,verbose = verbose, ret_model = ret_model_pred, ...)
       data$embedded = base::as.data.frame(data$uwot$embedding)
     }
     
     if(reduction=="tsne"){
       data$uwot = NULL
-      data$embedded = base::as.data.frame(Rtsne::Rtsne(X = data$pca$cells,dims = 2, pca = F,verbose = T,max_iter=1000,num_threads=nt, ...)$Y)
+      data$embedded = base::as.data.frame(Rtsne::Rtsne(X = data$pca$cells,dims = 2, pca = F,verbose = verbose,max_iter=1000,num_threads=nt, ...)$Y)
     }
   } else {
-    message("Wrning: Reduction is applied directly on GF-ICF values.. can be slow if the dataset is big")
+    message("Wrning: Reduction is applied directly on GF-ICF values.. can be slow if the dataset is big!")
     
-    if(reduction=="tumap"){data$embedded = base::as.data.frame(uwot::tumap(X = as.matrix(t(data$gficf)),scale = F,n_threads = nt,verbose = T, ...))}
+    if(reduction=="tumap"){data$embedded = base::as.data.frame(uwot::tumap(X = as.matrix(t(data$gficf)),scale = F,n_threads = nt,verbose = verbose, ...))}
     
-    if(reduction=="umap"){data$embedded = base::as.data.frame(uwot::umap(X = as.matrix(t(data$gficf)), scale = F,n_threads = nt,verbose = T, ...))}
+    if(reduction=="umap"){data$embedded = base::as.data.frame(uwot::umap(X = as.matrix(t(data$gficf)), scale = F,n_threads = nt,verbose = verbose, ...))}
     
-    if(reduction=="tsne"){data$embedded = base::as.data.frame(Rtsne::Rtsne(X = as.matrix(t(data$gficf)),dims = 2, pca = F,verbose = T,max_iter=1000,num_threads=nt, ...)$Y)}
+    if(reduction=="tsne"){data$embedded = base::as.data.frame(Rtsne::Rtsne(X = as.matrix(t(data$gficf)), dims = 2, pca = F, verbose = verbose, max_iter=1000,num_threads=nt, ...)$Y)}
   }  
   rownames(data$embedded) = base::colnames(data$gficf)
   colnames(data$embedded) = base::c("X","Y")
@@ -181,13 +182,14 @@ computePCADim = function(data,randomized=T,subsampling=F,plot=T)
 #' @param nt integer; Number of thread to use (default 2).
 #' @param seed integer; Initial seed to use.
 #' @param ... Additional arguments to pass to Rtsne or umap_transform call.
+#' @param verbose boolean; Icrease verbosity.
 #' @return The updated gficf object.
 #' @import Matrix
 #' @import uwot
 #' @importFrom Rtsne Rtsne
 #' 
 #' @export
-embedNewCells = function(data,x,nt=2,seed=18051982, ...)
+embedNewCells = function(data,x,nt=2,seed=18051982, verbose=TRUE, ...)
 {
   x = normCounts(x[rownames(x)%in% names(data$w),],doc_proportion_max = 2,doc_proportion_min = 0,normalizeCounts = data$param$normalized)
   x = tf(x)
@@ -198,7 +200,7 @@ embedNewCells = function(data,x,nt=2,seed=18051982, ...)
   colnames(pcapred) = colnames(data$pca$cells)
   
   if(data$reduction%in%c("tumap","umap")) {
-    df = as.data.frame(uwot::umap_transform(as.matrix(pcapred),data$uwot,verbose = TRUE))
+    df = as.data.frame(uwot::umap_transform(as.matrix(pcapred),data$uwot,verbose = verbose))
     rownames(df) = rownames(pcapred)
     colnames(df) = c("X","Y")
   }
@@ -206,7 +208,7 @@ embedNewCells = function(data,x,nt=2,seed=18051982, ...)
   if(data$reduction=="tsne") {
     warning("Not Fully supported!! With t-SNE only PCA/LSA components are predicted while t-SNE is re-run again!")
     set.seed(seed)
-    df = base::as.data.frame(Rtsne::Rtsne(X = as.matrix(rbind(data$pca$cells,pcapred)),dims = 2, pca = F,verbose = T,max_iter=1000,num_threads=nt, ...)$Y)
+    df = base::as.data.frame(Rtsne::Rtsne(X = as.matrix(rbind(data$pca$cells,pcapred)),dims = 2, pca = F,verbose = verbose,max_iter=1000,num_threads=nt, ...)$Y)
     rownames(df) = c(rownames(data$pca$cells),rownames(pcapred))
     colnames(df) = c("X","Y")
     data$embedded[1:nrow(data$pca$cells),c("X","Y")] = df[1:nrow(data$pca$cells),c("X","Y")]

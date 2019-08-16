@@ -20,3 +20,20 @@ scaleMatrix = function(x,rescale,centre)
   }
   return(x)
 }
+
+
+stime <- function() {
+  format(Sys.time(), "%T")
+}
+
+# message with a time stamp
+tsmessage <- function(..., domain = NULL, appendLF = TRUE, verbose = TRUE,time_stamp = TRUE) {
+  if (verbose) {
+    msg <- ""
+    if (time_stamp) {
+      msg <- paste0(stime(), " ")
+    }
+    message(msg, ..., domain = domain, appendLF = appendLF)
+    utils::flush.console()
+  }
+}

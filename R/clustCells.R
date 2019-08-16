@@ -46,7 +46,7 @@ clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,co
   
   if (is.null(data$embedded)) {stop("Run first runReduction function")}
   set.seed(seed)
-  if(verbose) {message("Finding Neighboors..")}
+  tsmessage("Finding Neighboors..",verbose = verbose)
   
   if (from.embedded)
   {
@@ -67,29 +67,29 @@ clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,co
   
   if (community.algo=="louvian")
   {
-    if(verbose) {message("Performing louvain...")}
+    tsmessage("Performing louvain...",verbose = verbose)
     community <- igraph::cluster_louvain(g)
   }
   
   if (community.algo=="louvian 2")
   {
-    if(verbose) {message("Performing louvain with modularity optimization...")}
+    tsmessage("Performing louvain with modularity optimization...",verbose = verbose)
     community <- RunModularityClustering(igraph::as_adjacency_matrix(g,attr = "weight",sparse = T),1,resolution,1,n.start,n.iter,seed,verbose)
   }
   
   if (community.algo=="louvian 3")
   {
-    if(verbose) {message("Performing louvain with modularity optimization...")}
+    tsmessage("Performing louvain with modularity optimization...",verbose = verbose)
     community <- RunModularityClustering(igraph::as_adjacency_matrix(g,attr = "weight",sparse = T),1,resolution,2,n.start,n.iter,seed,verbose)
   }
   
   if (community.algo=="walktrap")
   {
-    if(verbose) {message("Performing walktrap...")}
+    tsmessage("Performing walktrap...",verbose = verbose)
     community <- igraph::walktrap.community(g)
   } 
   if (community.algo=="fastgreedy") {
-    if(verbose) {message("Performing fastgreedy...")}
+    tsmessage("Performing fastgreedy...",verbose = verbose)
     community <- igraph::fastgreedy.community(g)
   }
   
@@ -103,12 +103,12 @@ clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,co
   if (store.graph) {data$community=community;data$cell.graph=g} else {data$community=community}
   
   # get centroid of clusters
-  if(verbose) {message("Computing Centroids...")}
+  tsmessage("Computing Centroids...",verbose = verbose)
   cluster.map = data$embedded$cluster
   u = base::unique(cluster.map)
   data$cluster.gene.rnk = base::sapply(u, function(x,y=data$gficf,z=cluster.map) Matrix::rowSums(y[,z%in%x]))
   
-  message(paste("Detected Clusters:",length(unique(data$embedded$cluster))))
+  tsmessage(paste("Detected Clusters:",length(unique(data$embedded$cluster))),verbose = verbose)
   
   return(data)
 }

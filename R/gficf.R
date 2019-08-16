@@ -11,16 +11,17 @@
 #' @param cell_proportion_min integer; Remove genes present in less then or equal to the specifided proportion (0,1). Default is 0.05 (i.e. 5 percent).
 #' @param storeRaw logical; Store UMI counts.
 #' @param  normalize logical; Rescale UMI counts before applay GFICF. Recaling is done using EdgeR normalization.
+#' @param verbose boolean; Increase verbosity.
 #' @return The updated gficf object.
 #' @export
-gficf = function(M,cell_proportion_max = 1,cell_proportion_min = 0.05,storeRaw=TRUE,normalize=FALSE)
+gficf = function(M,cell_proportion_max = 1,cell_proportion_min = 0.05,storeRaw=TRUE,normalize=FALSE,verbose=TRUE)
 {
   data = list()
-  M = normCounts(M,doc_proportion_max = cell_proportion_max,doc_proportion_min = cell_proportion_min,normalizeCounts=normalize)
-  data$gficf = tf(M)
-  data$w = getIdfW(data$gficf)
-  data$gficf = idf(data$gficf,data$w)
-  data$gficf = t(l.norm(t(data$gficf),norm = "l2"))
+  M = normCounts(M,doc_proportion_max = cell_proportion_max,doc_proportion_min = cell_proportion_min,normalizeCounts=normalize,verbose=verbose)
+  data$gficf = tf(M,verbose = verbose)
+  data$w = getIdfW(data$gficf,verbose = verbose)
+  data$gficf = idf(data$gficf,data$w,verbose = verbose)
+  data$gficf = t(l.norm(t(data$gficf),norm = "l2",verbose = verbose))
   if (storeRaw) {data$rawCounts=M}
   
   data$param <- list()
@@ -33,14 +34,14 @@ gficf = function(M,cell_proportion_max = 1,cell_proportion_min = 0.05,storeRaw=T
 #' @import Matrix
 #' @importFrom edgeR DGEList calcNormFactors cpm
 #' 
-normCounts = function(M,doc_proportion_max = 1,doc_proportion_min = 0.01,normalizeCounts=FALSE)
+normCounts = function(M,doc_proportion_max = 1,doc_proportion_min = 0.01,normalizeCounts=FALSE,verbose=TRUE)
 {
   ix = Matrix::rowSums(M!=0)
   M = M[ix>ncol(M)*doc_proportion_min & ix<=ncol(M)*doc_proportion_max,]
   
   if (normalizeCounts) 
   {
-    message("Normalize counts..")
+    tsmessage("Normalize counts..",verbose = verbose)
     M <- Matrix::Matrix(cpm(calcNormFactors(DGEList(counts=M),normalized.lib.sizes = T)),sparse = T) 
   } 
   
@@ -50,10 +51,10 @@ normCounts = function(M,doc_proportion_max = 1,doc_proportion_min = 0.01,normali
 
 #' @import Matrix
 #' 
-tf = function(M)
+tf = function(M,verbose)
 {
 
-  message("Apply GF transformation..")
+  tsmessage("Apply GF transformation..",verbose = verbose)
   M =t(t(M) / Matrix::colSums(M))
   
   return(M)
@@ -61,9 +62,9 @@ tf = function(M)
 
 #' @import Matrix
 #' 
-idf = function(M,w)
+idf = function(M,w,verbose)
 {
-  message("Applay ICF..")
+  tsmessage("Applay ICF..",verbose = verbose)
   M = M[rownames(M) %in% names(w),]
   if(nrow(M)<length(w))
   {
@@ -80,9 +81,9 @@ idf = function(M,w)
 
 #' @import Matrix
 #' 
-getIdfW = function(M,type="classic")
+getIdfW = function(M,type="classic",verbose)
 {
-  message("Compute ICF weigth..")
+  tsmessage("Compute ICF weigth..",verbose = verbose)
   nt = Matrix::rowSums(M!=0)
   if (type == "classic") {w = log( (ncol(M)+1) / (nt+1) );rm(nt)}
   if (type == "prob") {w = log( (ncol(M) - nt) / nt );rm(nt)}
@@ -92,9 +93,9 @@ getIdfW = function(M,type="classic")
 
 
 
-l.norm = function (m, norm = c("l1", "l2")) 
+l.norm = function (m, norm = c("l1", "l2"),verbose) 
 {
-  message(paste("Apply",norm))
+  tsmessage(paste("Apply",norm),verbose = verbose)
   norm_vec = switch(norm, l1 = 1/rowSums(m), l2 = 1/sqrt(rowSums(m^2)))
   norm_vec[is.infinite(norm_vec)] = 0
   if (inherits(m, "sparseMatrix")) 
