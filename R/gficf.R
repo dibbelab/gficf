@@ -19,10 +19,11 @@ gficf = function(M,cell_proportion_max = 1,cell_proportion_min = 0.05,storeRaw=T
   data = list()
   M = normCounts(M,doc_proportion_max = cell_proportion_max,doc_proportion_min = cell_proportion_min,normalizeCounts=normalize,verbose=verbose)
   data$gficf = tf(M,verbose = verbose)
+  if (storeRaw) {data$rawCounts=M;rm(M)}
   data$w = getIdfW(data$gficf,verbose = verbose)
   data$gficf = idf(data$gficf,data$w,verbose = verbose)
   data$gficf = t(l.norm(t(data$gficf),norm = "l2",verbose = verbose))
-  if (storeRaw) {data$rawCounts=M}
+  gc()
   
   data$param <- list()
   data$param$cell_proportion_max = cell_proportion_max
