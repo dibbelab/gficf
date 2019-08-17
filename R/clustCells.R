@@ -64,6 +64,7 @@ clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,co
   relations <- as.data.frame(relations)
   colnames(relations)<- c("from","to","weight")
   g <- igraph::graph.data.frame(relations, directed=FALSE)
+  rm(relations,neigh);gc()
   
   if (community.algo=="louvian")
   {

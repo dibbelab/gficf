@@ -191,13 +191,14 @@ computePCADim = function(data,randomized=T,subsampling=F,plot=T)
 #' @export
 embedNewCells = function(data,x,nt=2,seed=18051982, verbose=TRUE, ...)
 {
-  x = normCounts(x[rownames(x)%in% names(data$w),],doc_proportion_max = 2,doc_proportion_min = 0,normalizeCounts = data$param$normalized)
-  x = tf(x)
-  x = idf(x,w = data$w)
-  x = t(l.norm(t(x),norm = "l2"))
+  x = normCounts(x[rownames(x)%in% names(data$w),],doc_proportion_max = 2,doc_proportion_min = 0,normalizeCounts = data$param$normalized,verbose=verbose)
+  x = tf(x,verbose=verbose)
+  x = idf(x,w = data$w,verbose=verbose)
+  x = t(l.norm(t(x),norm = "l2",verbose=verbose))
   pcapred = scaleMatrix(t(x), data$pca$rescale,data$pca$centre) %*% data$pca$genes
   rownames(pcapred) = colnames(x)
   colnames(pcapred) = colnames(data$pca$cells)
+  rm(x);gc()
   
   if(data$reduction%in%c("tumap","umap")) {
     df = as.data.frame(uwot::umap_transform(as.matrix(pcapred),data$uwot,verbose = verbose))
