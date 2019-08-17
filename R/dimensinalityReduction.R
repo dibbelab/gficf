@@ -195,25 +195,23 @@ embedNewCells = function(data,x,nt=2,seed=18051982, verbose=TRUE, ...)
   x = tf(x,verbose=verbose)
   x = idf(x,w = data$w,verbose=verbose)
   x = t(l.norm(t(x),norm = "l2",verbose=verbose))
-  pcapred = scaleMatrix(t(x), data$pca$rescale,data$pca$centre) %*% data$pca$genes
-  rownames(pcapred) = colnames(x)
-  colnames(pcapred) = colnames(data$pca$cells)
-  rm(x);gc()
-  
+  x = as.matrix(scaleMatrix(t(x), data$pca$rescale,data$pca$centre)) %*% data$pca$genes
+  gc()
+
   if(data$reduction%in%c("tumap","umap")) {
-    df = as.data.frame(uwot::umap_transform(as.matrix(pcapred),data$uwot,verbose = verbose))
-    rownames(df) = rownames(pcapred)
+    df = as.data.frame(uwot::umap_transform(as.matrix(x),data$uwot,verbose = verbose))
+    rownames(df) = rownames(x)
     colnames(df) = c("X","Y")
   }
   
   if(data$reduction=="tsne") {
     warning("Not Fully supported!! With t-SNE only PCA/LSA components are predicted while t-SNE is re-run again!")
     set.seed(seed)
-    df = base::as.data.frame(Rtsne::Rtsne(X = as.matrix(rbind(data$pca$cells,pcapred)),dims = 2, pca = F,verbose = verbose,max_iter=1000,num_threads=nt, ...)$Y)
-    rownames(df) = c(rownames(data$pca$cells),rownames(pcapred))
+    df = base::as.data.frame(Rtsne::Rtsne(X = as.matrix(rbind(data$pca$cells,x)),dims = 2, pca = F,verbose = verbose,max_iter=1000,num_threads=nt, ...)$Y)
+    rownames(df) = c(rownames(data$pca$cells),rownames(x))
     colnames(df) = c("X","Y")
     data$embedded[1:nrow(data$pca$cells),c("X","Y")] = df[1:nrow(data$pca$cells),c("X","Y")]
-    df = df[rownames(pcapred),]
+    df = df[rownames(x),]
   }
   
   if(is.null(data$embedded$predicted)) {data$embedded$predicted = "NO"}
@@ -225,7 +223,7 @@ embedNewCells = function(data,x,nt=2,seed=18051982, verbose=TRUE, ...)
     df$predicted = "YES"
   }
   data$embedded = rbind(data$embedded,df)
-  data$pca$pred = pcapred
+  data$pca$pred = x
   data$embedded$predicted = factor(as.character(data$embedded$predicted),levels = c("NO","YES"))
   return(data)
 }
