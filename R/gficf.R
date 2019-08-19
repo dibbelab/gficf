@@ -1,4 +1,4 @@
-#' Gene Frequency - Inverse Document Frequency (GFICF)
+#' Gene Frequency - Inverse Cell Frequency (GF-ICF)
 #'
 #' R implementation of the GF-ICF (https://www.frontiersin.org/articles/10.3389/fgene.2019.00734/abstract)
 #' Thanks to 3’-end scRNA-seq approaches, we can now have an accurate estimation of gene expression without having to account for gene length,
