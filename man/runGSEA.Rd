@@ -5,7 +5,8 @@
 \title{Gene Set Enrichement Analysi on GF-ICF}
 \usage{
 runGSEA(data, gmt.file, nsim = 1000, convertToEns = T,
-  convertHu2Mm = F, nt = 2, minSize = 15, maxSize = Inf)
+  convertHu2Mm = F, nt = 2, minSize = 15, maxSize = Inf,
+  verbose = TRUE)
 }
 \arguments{
 \item{data}{list; GFICF object}
@@ -23,6 +24,8 @@ runGSEA(data, gmt.file, nsim = 1000, convertToEns = T,
 \item{minSize}{numeric; Minimal size of a gene set to test (default 15). All pathways below the threshold are excluded.}
 
 \item{maxSize}{numeric; Maximal size of a gene set to test (default Inf). All pathways above the threshold are excluded.}
+
+\item{verbose}{boolean; Show the progress bar.}
 }
 \value{
 The updated gficf object.

@@ -5,7 +5,7 @@
 \title{Gene Frequency - Inverse Document Frequency (GFICF)}
 \usage{
 gficf(M, cell_proportion_max = 1, cell_proportion_min = 0.05,
-  storeRaw = TRUE, normalize = FALSE)
+  storeRaw = TRUE, normalize = FALSE, verbose = TRUE)
 }
 \arguments{
 \item{M}{Matrix; UMI cell count matrix}
@@ -17,6 +17,8 @@ gficf(M, cell_proportion_max = 1, cell_proportion_min = 0.05,
 \item{storeRaw}{logical; Store UMI counts.}
 
 \item{normalize}{logical; Rescale UMI counts before applay GFICF. Recaling is done using EdgeR normalization.}
+
+\item{verbose}{boolean; Increase verbosity.}
 }
 \value{
 The updated gficf object.

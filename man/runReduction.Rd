@@ -5,7 +5,7 @@
 \title{Dimensionality reduction}
 \usage{
 runReduction(data, reduction = "tumap", nt = 2, seed = 18051982,
-  ret_model_pred = T, ...)
+  ret_model_pred = T, verbose = T, ...)
 }
 \arguments{
 \item{data}{list; GFICF object}
@@ -22,6 +22,8 @@ runReduction(data, reduction = "tumap", nt = 2, seed = 18051982,
 \item{seed}{integer; Initial seed to use.}
 
 \item{ret_model_pred}{boolean; If true, the umap model is retained to be used for prediction.}
+
+\item{verbose}{boolean; Icrease verbosity.}
 
 \item{...}{Additional arguments to pass to Rtsne/umap/tumap call.}
 }

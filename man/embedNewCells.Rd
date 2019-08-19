@@ -4,7 +4,7 @@
 \alias{embedNewCells}
 \title{Embed new cells in an existing space}
 \usage{
-embedNewCells(data, x, nt = 2, seed = 18051982, ...)
+embedNewCells(data, x, nt = 2, seed = 18051982, verbose = TRUE, ...)
 }
 \arguments{
 \item{data}{list; GFICF object}
@@ -14,6 +14,8 @@ embedNewCells(data, x, nt = 2, seed = 18051982, ...)
 \item{nt}{integer; Number of thread to use (default 2).}
 
 \item{seed}{integer; Initial seed to use.}
+
+\item{verbose}{boolean; Icrease verbosity.}
 
 \item{...}{Additional arguments to pass to Rtsne or umap_transform call.}
 }
