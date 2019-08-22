@@ -11,19 +11,25 @@ of Jaccard Coefficient estimation using [RcppParallel](https://cran.r-project.or
 The package also include data reduction with either Principal Component Analisys (PCA) or
 Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell data visualization.   
 
-**Additional Functionality**:
+**Examples & Functionality**:
+* General and simple use case scenario is [HERE](https://jeky82.github.io/gficf_example.html)
+
 * Embed new cells in an already existing embedded space. [See example how..](https://jeky82.github.io/gficf_example.html#how-to-embedd-new-cells-in-an-existing-space)
 
 * Idetify active pathways in a group of cells. [See example how..](https://jeky82.github.io/gficf_example.html#how-to-perform-gsea-to-identify-active-pathways-in-each-cluster)
 
-## News
-*Aug. 13 2019* **New functionality:** Idetify active pathways in a group of cells. [See example how..](https://jeky82.github.io/gficf_example.html#how-to-perform-gsea-to-identify-active-pathways-in-each-cluster)
+* Idetify marker genes across clusters. [See example how..](https://jeky82.github.io/gficf_example.html#find-marker-genes)
 
-*Aug. 12 2019* RcppParallel Jaccard estimation in Phenograph [(20X speed boost)](https://jeky82.github.io/2019/08/12/parallel_JC_benchmarks.html) 
+## News
+*Aug. 22 2019* **New functionality:** Identify marker genes across clusters of cells. [See example how..](https://jeky82.github.io/gficf_example.html#find-marker-genes)
+
+*Aug. 20 2019* RcppParallel Mann–Whitney U test [(Benchmarks against R implementation)](https://jeky82.github.io/2019/08/20/MannWhitney.html) 
+
+*Aug. 13 2019* **New functionality:** Identify active pathways in a group of cells. [See example how..](https://jeky82.github.io/gficf_example.html#how-to-perform-gsea-to-identify-active-pathways-in-each-cluster)
+
+*Aug. 12 2019* RcppParallel Jaccard estimation in Phenograph [(20X speed boost with 6 cores)](https://jeky82.github.io/2019/08/12/parallel_JC_benchmarks.html) 
 
 *Jul. 26 2019* **New functionality:** Embed new cells in an already existing embedded space. [See example how..](https://jeky82.github.io/gficf_example.html#how-to-embedd-new-cells-in-an-existing-space)
-
-*Jul. 15 2019* Addedd web page with examples [HERE](https://jeky82.github.io/gficf_example.html)
 
 *Jul. 12 2019*. Paper Accepted and now available [HERE](https://www.frontiersin.org/articles/10.3389/fgene.2019.00734/abstract).
 
@@ -34,8 +40,11 @@ Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell dat
 
 ### From github
 
-`gficf` makes use of `uwot` and `Rcpp`. So you may have to carry out
+`gficf` makes use of `Rcpp`, `RcppParallel` and `RcppGSL`. So you may have to carry out
 a few extra steps before being able to build this package:
+
+**Linux systems**: You need gsl dev library to successfully install RcppGSL library.
+On Ubuntu/Debian systems this can be accomplished by runnuing the command `sudo apt-get install libgsl-dev` from the terminal.
 
 **Windows**: First install 
 [Rtools](https://cran.r-project.org/bin/windows/Rtools/) and ensure 
