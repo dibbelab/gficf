@@ -16,6 +16,7 @@
 #' @export
 findClusterMarkers = function(data,nt=2,hvg=T,verbose=T)
 {
+  if (is.null(data$community)) {stop("Please identify cluster first! Run clustcells function.")}
   RcppParallel::setThreadOptions(numThreads = nt)
   
   u = unique(data$embedded$cluster)
