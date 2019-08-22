@@ -1,6 +1,6 @@
 Package: gficf
 Title: Gene Frequency - Inverse Cell Frequency
-Version: 0.2
+Version: 0.3
 Authors@R: person("Gennaro", "Gambardella", email = "gambardella@tigem.it", role = c("aut", "cre"))
 Description: Single cell data rapresentation as text
 License: GPL-3
