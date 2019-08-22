@@ -1,7 +1,7 @@
-#'  Find Marker Genes of Groups of Cells
+#' Find Marker Genes from cell clusters.
 #'
-#' Try to identify marker genes across clusters performing Mann-Whitney U test
-#' among each pair of clusters.
+#' Try to identify marker genes across clusters performing Mann-Whitney U test.
+#' DE genes are identified the expression in each cluster versus the all the other.
 #'
 #' @param data list; GFICF object
 #' @param x Matrix; UMI counts matrix of cells to embedd.
@@ -17,6 +17,8 @@
 findClusterMarkers = function(data,nt=2,hvg=T,verbose=T)
 {
   if (is.null(data$community)) {stop("Please identify cluster first! Run clustcells function.")}
+  if (is.null(data$rawCounts)) {stop("No raw/normalized counts stored. You should have run gficf normalization with storeRaw = T")}
+  
   RcppParallel::setThreadOptions(numThreads = nt)
   
   u = unique(data$embedded$cluster)
@@ -28,66 +30,35 @@ findClusterMarkers = function(data,nt=2,hvg=T,verbose=T)
   {
     tsmessage("... Detecting HVGs")
     df = findVarGenes(cpms,fitMethod = "locfit",verbose = verbose)
-    tsmessage("... Done!")
-    cpms = cpms[df$gene[df$FDR<.1],]
+    df = df[order(df$FDR),]
+    ix = df$FDR<.1
+    tsmessage(paste("... Detected",sum(ix),"significant HVGs with an FDR < 10%"))
+    if(sum(ix)<=1000) {ix = 1:min(1000,nrow(df))} 
+    cpms = cpms[df$gene[ix],]
+    rm(df)
   }
   
   cpms = as.matrix(cpms)
   
-  l = l2 = vector(mode = "list",length = length(u))
-  names(l) = names(l2) = as.character(1:length(u))
-  for (i in 1:length(l))
-  {
-    l[[i]] = Matrix::Matrix(data = 0,ncol = length(u)-1,nrow = nrow(cpms))
-    colnames(l[[i]]) = names(l)[!names(l)%in%names(l)[i]]
-    rownames(l[[i]]) = rownames(cpms)
-    l2[[i]] = l[[i]]
-  }
-  
-  tsmessage("... Identify DE genes among Cluster pairs")
-  p = uwot:::Progress$new(max = round(.5 * length(u)^2),display = T)
-  for (i in 1:length(u))
-  {
-    cells.1 = which(data$embedded$cluster%in%u[i])
-    for (j in 1:i)
-    {
-      if(i!=j)
-      {
-        cells.2 = which(data$embedded$cluster%in%u[j])
-        p_val <- gficf:::rcpp_parallel_WMU_test(matX = cpms[,cells.1],matY = cpms[,cells.2],F)
-        l[[u[i]]][,u[j]] = p.adjust(p_val[,1],method = "fdr") * sign(p_val[,2])
-        l[[u[j]]][,u[i]] = p.adjust(p_val[,1],method = "fdr") * sign(p_val[,2]) * -1
-        
-        l2[[u[i]]][,u[j]] = p_val[,2]
-        l2[[u[j]]][,u[i]] = -1 * p_val[,2]
-      }
-      p$increment()
-    }
-  }
-  
-  tsmessage("... Identify Cluster markers")
+  tsmessage("... Start identify marker genes")
   res = NULL
-  for (i in 1:length(l))
-  {
-    M = l[[i]]
-    M[abs(M)>=.5] = 0
-    M = cbind(apply(M, 1, function(x) sum(x>0)),
-              apply(M, 1, function(x) sum(x<0)),
-              apply(M, 1, function(x) sum(x==0))
-    )
-    ix = (M[,1]==ncol(l[[i]])) #| M[,2]==ncol(l[[i]]))
-    tmp = data.frame(ens = rownames(M)[ix],
-                     fdr = apply(l[[i]][ix,],1,max),
-                     fc  = Matrix::rowMeans(l2[[i]][ix,])
-    )
-    tmp$cluster = names(l)[i]
+  p = uwot:::Progress$new(max = length(u),display = T)
+  for (i in 1:length(u)) {
+    cells.1 = which(data$embedded$cluster%in%u[i])
+    cells.2 = which(!data$embedded$cluster%in%u[i])
+    tmp = rcpp_parallel_WMU_test(matX = cpms[,cells.1],matY = cpms[,cells.2],printOutput = F)
+    tmp = data.frame(ens=rownames(cpms),log2FC=tmp[,2],fdr=tmp[,1],stringsAsFactors = F)
+    tmp = subset(tmp,fdr<.05 & log2FC>0)
+    tmp = tmp[order(tmp$fdr,decreasing = F),]
+    tmp$cluster = u[i]
     res = rbind(res,tmp)
+    p$increment()
   }
   
-  res = subset( res,!( ens %in% res$ens[duplicated(res$ens)] ) )
+  res = res[order(res$log2FC,decreasing = T),]
   rownames(res) = NULL
   data$de.genes = res
-  return(res)
+  return(data)
 }
 
 #'  Find high variable genes following the approach

@@ -38,14 +38,14 @@ plotCells = function(data,colorBy=NULL,pointSize=.5)
 #' 
 #' @param data list; GFICF object
 #' @param genes characters; Id of genes to plot. It must correspond to the IDs on the rows of raw count matrix.
-#' @param log2Expr boolean; Relative expression of a gene is computed on rescaled in log2 expression (default FALSE).
+#' @param log2Expr boolean; Relative expression of a gene is computed on rescaled in log2 expression (default TRUE).
 #' @param x Matrix; Custom normalized raw counts. If present will be used instead of the ones normalized by gficf. Default is NULL.
 #' @return A list of plots.
 #' @import Matrix
 #' @import ggplot2
 #' 
 #' @export
-plotGenes = function(data,genes,log2Expr=F,x=NULL)
+plotGenes = function(data,genes,log2Expr=T,x=NULL)
 {
   if (is.null(data$embedded)) {stop("Please run reduction in the embedded space first!")}
   if (!is.null(x)) {data$rawCounts=x}
@@ -91,6 +91,7 @@ plotGenes = function(data,genes,log2Expr=F,x=NULL)
 #' @param x Matrix; Custom normalized raw counts. If present will be used instead of the ones normalized by gficf. Default is NULL.
 #' @return A list of plots.
 #' 
+#' @import fastmatch
 #' @import Matrix
 #' @import ggplot2
 #' @importFrom reshape2 melt
@@ -109,13 +110,22 @@ plotGeneViolin = function(data,gene,ncol=3,x=NULL)
   
   df = reshape2::melt(as.matrix(cpms[gene,]))
   colnames(df) = c("ens","cell.id","value")
+  
+  if(!is.null(names(gene))) {
+      ix = is.na(names(gene)) | names(gene) %in% "" | is.null(names(gene))
+      if(sum(ix)>0) {names(gene)[ix] = gene[ix]}
+      if(length(unique(names(gene))) == length(gene)) {
+        df$ens = names(gene)[fastmatch::fmatch(df$ens,gene)]
+      }
+    }
+  
   df$value = log2(df$value+1)
   df$cluster = data$embedded$cluster[match(df$cell.id,rownames(data$embedded))]
   df$cluster = factor(as.character(df$cluster),levels = as.character(1:length(unique(df$cluster))))
   p = ggplot2::ggplot(data = df,ggplot2::aes(x=cluster,y=value)) + 
       ggplot2::geom_violin(scale = "width") + 
       ggplot2::facet_wrap(~ens,scales = "free_y",ncol=ncol) + 
-      ggplot2::ylab("log2(CPM+1)") + ggplot2::xlab("")
+      ggplot2::ylab("log2(CPM+1)") + ggplot2::xlab("") + ggplot2::theme_bw()
   
   return(p)
 }

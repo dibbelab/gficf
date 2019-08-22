@@ -3,6 +3,7 @@
 export(clustcells)
 export(computePCADim)
 export(embedNewCells)
+export(ensToSymbol)
 export(findClusterMarkers)
 export(gficf)
 export(plotCells)

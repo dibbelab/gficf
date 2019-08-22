@@ -2,7 +2,7 @@
 % Please edit documentation in R/deGenes.R
 \name{findClusterMarkers}
 \alias{findClusterMarkers}
-\title{Find Marker Genes of Groups of Cells}
+\title{Find Marker Genes from cell clusters.}
 \usage{
 findClusterMarkers(data, nt = 2, hvg = T, verbose = T)
 }
@@ -21,6 +21,6 @@ findClusterMarkers(data, nt = 2, hvg = T, verbose = T)
 The updated gficf object.
 }
 \description{
-Try to identify marker genes across clusters performing Mann-Whitney U test
-among each pair of clusters.
+Try to identify marker genes across clusters performing Mann-Whitney U test.
+DE genes are identified the expressio in each cluster versus the all the other.
 }
