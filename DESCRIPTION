@@ -10,7 +10,7 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
 Depends: R (>= 3.4.0)
-LinkingTo: Rcpp (>= 0.11.0), RcppEigen, RcppProgress, RcppParallel
+LinkingTo: Rcpp (>= 0.11.0), RcppGSL, RcppEigen, RcppProgress, RcppParallel
 biocViews:
 Imports: 
     uwot,
@@ -26,7 +26,9 @@ Imports:
     RSpectra,
     Matrix,
     biomaRt,
-    reshape,
+    reshape2,
     RcppParallel,
-    Rcpp
+    Rcpp,
+    MASS,
+    locfit
 SystemRequirements: GNU make
