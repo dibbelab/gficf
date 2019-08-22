@@ -38,18 +38,23 @@ plotCells = function(data,colorBy=NULL,pointSize=.5)
 #' 
 #' @param data list; GFICF object
 #' @param genes characters; Id of genes to plot. It must correspond to the IDs on the rows of raw count matrix.
+#' @param log2Expr boolean; Relative expression of a gene is computed on rescaled in log2 expression (default FALSE).
 #' @param x Matrix; Custom normalized raw counts. If present will be used instead of the ones normalized by gficf. Default is NULL.
 #' @return A list of plots.
-#' @export
 #' @import Matrix
 #' @import ggplot2
 #' 
 #' @export
-plotGenes = function(data,genes,x=NULL)
+plotGenes = function(data,genes,log2Expr=F,x=NULL)
 {
   if (is.null(data$embedded)) {stop("Please run reduction in the embedded space first!")}
   if (!is.null(x)) {data$rawCounts=x}
   if (is.null(data$rawCounts)) {stop("Raw or normalized counts absent.")}
+  
+  data$rawCounts = normCounts(data$rawCounts,doc_proportion_max = 2,
+                              doc_proportion_min = 0,
+                              normalizeCounts = !data$param$normalized & is.null(x),
+                              verbose=T)
   
   genes = genes[genes%in%rownames(data$rawCounts)]
   
@@ -60,13 +65,59 @@ plotGenes = function(data,genes,x=NULL)
   for (i in genes)
   {
     df = data$embedded
-    df$expr = log10(data$rawCounts[i,rownames(df)]+1)
+    if(log2Expr)
+    {
+      df$expr = log2(data$rawCounts[i,rownames(df)]+1)
+    } else {
+      df$expr = data$rawCounts[i,rownames(df)]
+    }
+    
     df$expr = (df$expr-min(df$expr))/(max(df$expr)-min(df$expr))
     df = df[order(df$expr,decreasing = F),]
-    l[[i]] = ggplot(data = df,aes(x=X,y=Y,color=expr)) + geom_point(size=.5) + theme_bw() + theme_bw() + scale_color_gradient2(low = "#ffffd9",mid = "#7fcdbb",high = "#3690c0",midpoint = .5) + ggtitle(i)
+    l[[i]] = ggplot(data = df,aes(x=X,y=Y,color=expr)) + geom_point(aes(shape=lev),size=.5,shape=19) + theme_bw() + theme_bw() + scale_color_gradient2(low = "gray",mid = "#2171b5",high = "#08306b",midpoint = .5) + ggtitle(i)
+    
   }
   
   return(l)
+}
+
+#' Plot the expression of a gene across group of cells.
+#'
+#' Plot the expression of a gene across group of cells with violion plot.
+#' 
+#' @param data list; GFICF object
+#' @param genes characters; Id of genes to plot. It must correspond to the IDs on the rows of raw count matrix.
+#' @param ncol numeric; Number of columns of the final plot (defaul is 3).
+#' @param x Matrix; Custom normalized raw counts. If present will be used instead of the ones normalized by gficf. Default is NULL.
+#' @return A list of plots.
+#' 
+#' @import Matrix
+#' @import ggplot2
+#' @importFrom reshape2 melt
+#' 
+#' @export
+plotGeneViolin = function(data,gene,ncol=3,x=NULL)
+{
+  if (is.null(data$community)) {stop("Please run clustcells first!")}
+  if (!is.null(x)) {data$rawCounts=x}
+  if (is.null(data$rawCounts)) {stop("Raw or normalized counts absent.")}
+  
+  cpms = normCounts(data$rawCounts,doc_proportion_max = 2,
+                    doc_proportion_min = 0,
+                    normalizeCounts = !data$param$normalized & is.null(x),
+                    verbose=T)
+  
+  df = reshape2::melt(as.matrix(cpms[gene,]))
+  colnames(df) = c("ens","cell.id","value")
+  df$value = log2(df$value+1)
+  df$cluster = data$embedded$cluster[match(df$cell.id,rownames(data$embedded))]
+  df$cluster = factor(as.character(df$cluster),levels = as.character(1:length(unique(df$cluster))))
+  p = ggplot2::ggplot(data = df,ggplot2::aes(x=cluster,y=value)) + 
+      ggplot2::geom_violin(scale = "width") + 
+      ggplot2::facet_wrap(~ens,scales = "free_y",ncol=ncol) + 
+      ggplot2::ylab("log2(CPM+1)") + ggplot2::xlab("")
+  
+  return(p)
 }
 
 #' Plot GSEA results
@@ -78,7 +129,7 @@ plotGenes = function(data,genes,x=NULL)
 #' @return plot from ggplot2 package.
 #' @import Matrix
 #' @import ggplot2
-#' @importFrom reshape melt
+#' @importFrom reshape2 melt
 #' 
 #' @export
 plotGSEA = function(data,fdr=.05)
@@ -87,7 +138,7 @@ plotGSEA = function(data,fdr=.05)
   nes = data$gsea$nes
   nes[data$gsea$es<=0 | data$gsea$fdr>=fdr] = 0 
   nes = nes[Matrix::rowSums(nes)>0,]
-  df = reshape::melt(as.matrix(nes))
+  df = reshape2::melt(as.matrix(nes))
   colnames(df) = c("pathway","cluster","nes")
   ggplot(data = df,aes(x=pathway,y=cluster)) + geom_point(aes(size=nes)) + scale_size_continuous(range = c(0,7)) + theme_bw() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + scale_y_continuous(breaks = 1:max(df$cluster)) + xlab("") + ylab("Cluster name")
 }

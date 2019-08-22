@@ -4,12 +4,14 @@
 \alias{plotGenes}
 \title{Plot gene expression across cells}
 \usage{
-plotGenes(data, genes, x = NULL)
+plotGenes(data, genes, log2Expr = F, x = NULL)
 }
 \arguments{
 \item{data}{list; GFICF object}
 
 \item{genes}{characters; Id of genes to plot. It must correspond to the IDs on the rows of raw count matrix.}
+
+\item{log2Expr}{boolean; Relative expression of a gene is computed on rescaled in log2 expression (default FALSE).}
 
 \item{x}{Matrix; Custom normalized raw counts. If present will be used instead of the ones normalized by gficf. Default is NULL.}
 }

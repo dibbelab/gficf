@@ -2,7 +2,7 @@
 % Please edit documentation in R/gficf.R
 \name{gficf}
 \alias{gficf}
-\title{Gene Frequency - Inverse Document Frequency (GFICF)}
+\title{Gene Frequency - Inverse Cell Frequency (GF-ICF)}
 \usage{
 gficf(M, cell_proportion_max = 1, cell_proportion_min = 0.05,
   storeRaw = TRUE, normalize = FALSE, verbose = TRUE)
