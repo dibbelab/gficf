@@ -9,7 +9,15 @@ jaccard_coeff <- function(idx, printOutput) {
     .Call(`_gficf_jaccard_coeff`, idx, printOutput)
 }
 
+rcpp_WMU_test <- function(M, idx1, idx2) {
+    .Call(`_gficf_rcpp_WMU_test`, M, idx1, idx2)
+}
+
 rcpp_parallel_jaccard_coef <- function(mat, printOutput) {
     .Call(`_gficf_rcpp_parallel_jaccard_coef`, mat, printOutput)
+}
+
+rcpp_parallel_WMU_test <- function(matX, matY, printOutput) {
+    .Call(`_gficf_rcpp_parallel_WMU_test`, matX, matY, printOutput)
 }
 
