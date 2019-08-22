@@ -72,7 +72,7 @@ runGSEA <- function(data,gmt.file,nsim=1000,convertToEns=T,convertHu2Mm=F,nt=2,m
   rownames(data$gsea$es) = rownames(data$gsea$nes) = rownames(data$gsea$pval) = rownames(data$gsea$fdr) = names(data$gsea$pathways)
   colnames(data$gsea$es) = colnames(data$gsea$nes) = colnames(data$gsea$pval) = colnames(data$gsea$fdr) = colnames(data$cluster.gene.rnk)
   
-  pb <- Progress$new(max = ncol(data$cluster.gene.rnk),display = verbose)
+  pb <- uwot:::Progress$new(max = ncol(data$cluster.gene.rnk),display = verbose)
   for (i in 1:ncol(data$cluster.gene.rnk))
   {
     df = as.data.frame(fgsea::fgsea(pathways = data$gsea$pathways,stats = data$cluster.gene.rnk[,i],nperm = nsim,gseaParam = 0,nproc = nt,minSize = minSize,maxSize = maxSize))[,1:7]
