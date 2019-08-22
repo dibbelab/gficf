@@ -1,7 +1,13 @@
-    # Turn on C++11 support to get access to long long (guaranteed 64-bit ints)
+# Turn on C++11 support to get access to long long (guaranteed 64-bit ints)
 CXX_STD = CXX11
+
+# RcppGSL
+GSL_CFLAGS = $(shell ${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe -e "RcppGSL:::CFlags()")
+GSL_LIBS   = $(shell ${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe -e "RcppGSL:::LdFlags()") `gsl-config --libs`
+PKG_CPPFLAGS += $(GSL_CFLAGS) -I../inst/include
+PKG_LIBS += $(GSL_LIBS) 
 
 # RcppParallel
 PKG_CXXFLAGS += -DRCPP_PARALLEL_USE_TBB=1 -DSTRICT_R_HEADERS
-PKG_LIBS += $(shell "${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" \
-              -e "RcppParallel::RcppParallelLibs()")
+PKG_LIBS += $(shell "${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" -e "RcppParallel::RcppParallelLibs()")
+
