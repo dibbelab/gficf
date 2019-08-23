@@ -41,27 +41,27 @@ Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell dat
 `gficf` makes use of `Rcpp`, `RcppParallel` and `RcppGSL`. So you may have to carry out
 a few extra steps before being able to build this package:
 
-**On Linux**: You need gsl dev library to successfully install RcppGSL library.
+### On Linux
+You need gsl dev library to successfully install RcppGSL library.
 On Ubuntu/Debian systems this can be accomplished by runnuing the command `sudo apt-get install libgsl-dev` from the terminal.
 
-**On Mac OS X**: We need to install gsl libraries. This can be done via [Homebrew](https://brew.sh/). So, first install it via
+### On Mac OS X
+We need to install gsl libraries. This can be done via [Homebrew](https://brew.sh/). So, first install it via
 ```bash
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
-and than install gsl
+and than use `homebrew` to install gsl with following command
 ```bash
 brew install gsl
 ```
-**Note for Mac Users:** using a custom `~/.R/Makevars` may cause errors.
-This sort of thing is a potential problem on all platforms but seems to bite
-Mac owners more. [The R for Mac OS X FAQ](https://cran.r-project.org/bin/macosx/RMacOSX-FAQ.html#Installation-of-source-packages)
-may be helpful here to work out what you can get away with. To be on the safe
-side, I would advise building `gficf` without a custom `Makevars`.
 
-**On Windows**: First install  [Rtools](https://cran.r-project.org/bin/windows/Rtools/) and ensure  `C:\Rtools\bin` is on your path. Second [download from sourceforge](https://sourceforge.net/projects/gnu-scientific-library-windows/) and exctract it in `C:\`. **Third** Open R/Rstudio and before to istall the package from github exec the following command in the R terminal.
-
+### On Windows
+First install  [Rtools](https://cran.r-project.org/bin/windows/Rtools/) and ensure  `C:\Rtools\bin` is on your path.   
+Second [download from sourceforge](https://sourceforge.net/projects/gnu-scientific-library-windows/) and exctract it in `C:\`.   
+**Third** Open R/Rstudio and before to istall the package from github exec the following command in the R terminal.
 ```R
-# Change the path if you installed gsl librarie not in the default path. Be sure to use the format '"path/to/gsl-xxx_mingw-xxx\gsl-xxx-static"'
+# Change the path if you installed gsl librarie not in the default path.
+# Be sure to use the format '"path/to/gsl-xxx_mingw-xxx\gsl-xxx-static"'
 # In this way " characters will be mainteined and spaces in the path preserved if there are.
 
 # For example for gsl-2.2.1 compiled with mingw-6.2.0:
@@ -69,7 +69,6 @@ Sys.setenv(GSL_LIBS = '"C:/gsl-2.2.1_mingw-6.2.0/gsl-2.2.1-static"')
 ```
 
 Finally after you followed **the above OS specific steps** exec in R terminal the following commands
-
 ```R
 if(!require(devtools)){
   install.packages("devtools") # If not already installed
