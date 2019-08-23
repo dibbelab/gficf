@@ -33,10 +33,10 @@ std::vector<double> getRanks(std::vector<double> const &absoluteValues)
 {
   std::vector<double> ranks(absoluteValues.size());
   
-  int i = 0;
+  size_t i = 0;
   while (i < absoluteValues.size())
   {
-    int j = i + 1;
+    size_t j = i + 1;
     while (j < absoluteValues.size())
     {
       if(absoluteValues[i] != absoluteValues[j])
@@ -45,7 +45,7 @@ std::vector<double> getRanks(std::vector<double> const &absoluteValues)
       }
       j++;
     }
-    for(int k = i; k <= j-1; k++)
+    for(size_t k = i; k <= j-1; k++)
     {   
       ranks[k] = 1 + (double)(i + j-1)/(double)2;
     }
@@ -67,10 +67,10 @@ std::vector<double> getCounts(std::vector<double> const &valuesOrd)
 {
   std::vector<double> u = getUniq(valuesOrd);
   std::vector<double> u_counts(u.size(),0);
-  int k=0;
+  size_t k=0;
   double prev=valuesOrd[0];
   
-  for(int i=0;i<valuesOrd.size();i++)
+  for(size_t i=0;i<valuesOrd.size();i++)
   {
     if(prev==valuesOrd[i])
     {
@@ -112,7 +112,7 @@ double getPvalue(double& z)
 Rcpp::NumericVector subset(Rcpp::NumericVector const &v, Rcpp::NumericVector idx)
 {
   Rcpp::NumericVector res(idx.size());
-  int k=0;
+  size_t k=0;
   for(Rcpp::NumericVector::iterator it = idx.begin(); it != idx.end(); ++it, k++)
     res(k) = v[*it - 1];
   return res;
