@@ -2,9 +2,8 @@
 CXX_STD = CXX11
 
 # RcppGSL
-GSL_LIBS   = "C:/Program Files (x86)/GnuWin32"
-PKG_CPPFLAGS=-I$(LIB_GSL)/include/gsl -I../inst/include
-PKG_LIBS=-L$(LIB_GSL)/lib -lgsl -lgslcblas 
+PKG_CPPFLAGS=-I"C:/Program Files (x86)/GnuWin32/include/gsl" -I../inst/include
+PKG_LIBS=-L"C:/Program Files (x86)/GnuWin32/lib" -lgsl -lgslcblas 
 
 # RcppParallel
 PKG_CXXFLAGS += -DRCPP_PARALLEL_USE_TBB=1 -DSTRICT_R_HEADERS
