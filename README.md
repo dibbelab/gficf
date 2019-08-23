@@ -61,7 +61,7 @@ Second [download from sourceforge](https://sourceforge.net/projects/gnu-scientif
 **Third** Open R/Rstudio and before to istall the package from github exec the following command in the R terminal.
 ```R
 # Change the path if you installed gsl librarie not in the default path.
-# Be sure to use the format '"path/to/gsl-xxx_mingw-xxx\gsl-xxx-static"'
+# Be sure to use the format '"path/to/gsl-xxx_mingw-xxx/gsl-xxx-static"'
 # In this way " characters will be mainteined and spaces in the path preserved if there are.
 
 # For example for gsl-2.2.1 compiled with mingw-6.2.0:
