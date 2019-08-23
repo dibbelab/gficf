@@ -2,10 +2,9 @@
 CXX_STD = CXX11
 
 # RcppGSL
-GSL_CFLAGS = $(shell ${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe -e "RcppGSL:::CFlags()")
-GSL_LIBS   = $(shell ${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe -e "RcppGSL:::LdFlags()")
-PKG_CPPFLAGS += $(GSL_CFLAGS) -I../inst/include
-PKG_LIBS += $(GSL_LIBS) 
+PKG_CPPFLAGS=-I$(LIB_GSL)/include
+PKG_LIBS=-L$(LIB_GSL)/lib -lgsl -lgslcblas
+
 
 # RcppParallel
 PKG_CXXFLAGS += -DRCPP_PARALLEL_USE_TBB=1 -DSTRICT_R_HEADERS
