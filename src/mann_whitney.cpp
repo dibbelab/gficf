@@ -179,7 +179,7 @@ double MWUtest(Rcpp::NumericVector const &v1, Rcpp::NumericVector const &v2)
       }
     }
     
-    double mu = v1.size()*v2.size()/2, sig=0, z = 0, correction = 0;
+    double mu = v1.size()*v2.size()/2, sig=0, z = 0;
     sig = getSigma(nties,v1.size(),v2.size());
     
     z = U1<U2 ? U1-mu : U2-mu;
