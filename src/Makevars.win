@@ -2,7 +2,6 @@
 CXX_STD = CXX11
 
 # RcppGSL
-GSL_LIBS= ./gsl_win
 PKG_CPPFLAGS= -I$(GSL_LIBS)/include -I../inst/include
 PKG_LIBS= -L$(GSL_LIBS)/lib -lgsl -lgslcblas 
 
