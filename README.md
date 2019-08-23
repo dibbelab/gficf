@@ -46,15 +46,15 @@ a few extra steps before being able to build this package:
 **Linux systems**: You need gsl dev library to successfully install RcppGSL library.
 On Ubuntu/Debian systems this can be accomplished by runnuing the command `sudo apt-get install libgsl-dev` from the terminal.
 
-**Mac OS X**: We need to install gsl libraries that can be done via [Homebrew](https://brew.sh/). So, first in stall it via
+**Mac OS X**: We need to install gsl libraries. This can be done via [Homebrew](https://brew.sh/). So, first in stall it via
 ```bash
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)
+/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 and than install gsl
 ```bash
 brew install gsl
 ```
-**Note for MAc Users:** using a custom `~/.R/Makevars` may cause errors.
+**Note for Mac Users:** using a custom `~/.R/Makevars` may cause errors.
 This sort of thing is a potential problem on all platforms but seems to bite
 Mac owners more. [The R for Mac OS X FAQ](https://cran.r-project.org/bin/macosx/RMacOSX-FAQ.html#Installation-of-source-packages)
 may be helpful here to work out what you can get away with. To be on the safe
