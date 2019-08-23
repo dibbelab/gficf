@@ -36,9 +36,7 @@ Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell dat
 *Jul. 03 2019*. Version 0.1 with example on Tabula Muris.
 
 
-## Installing
-
-### From github
+## Installing From github
 
 `gficf` makes use of `Rcpp`, `RcppParallel` and `RcppGSL`. So you may have to carry out
 a few extra steps before being able to build this package:
@@ -46,7 +44,7 @@ a few extra steps before being able to build this package:
 **Linux systems**: You need gsl dev library to successfully install RcppGSL library.
 On Ubuntu/Debian systems this can be accomplished by runnuing the command `sudo apt-get install libgsl-dev` from the terminal.
 
-**Mac OS X**: We need to install gsl libraries. This can be done via [Homebrew](https://brew.sh/). So, first in stall it via
+**Mac OS X**: We need to install gsl libraries. This can be done via [Homebrew](https://brew.sh/). So, first install it via
 ```bash
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
