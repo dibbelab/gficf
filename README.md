@@ -56,9 +56,9 @@ brew install gsl
 ```
 
 ### On Windows
-First install  [Rtools](https://cran.r-project.org/bin/windows/Rtools/) and ensure  `C:\Rtools\bin` is on your path.   
-Second [download from sourceforge](https://sourceforge.net/projects/gnu-scientific-library-windows/) and exctract it in `C:\`.   
-**Third** Open R/Rstudio and before to istall the package from github exec the following command in the R terminal.
+1. Skip this first step if you are using RStudio because it will ask you automatically. Otherwise install  [Rtools](https://cran.r-project.org/bin/windows/Rtools/) and ensure  `path\to\Rtools\bin` is on your path.   
+2, [Download from sourceforge](https://sourceforge.net/projects/gnu-scientific-library-windows/) and exctract it in `C:\` or where you want.   
+3. Open R/Rstudio and before to istall the package from github exec the following command in the R terminal.
 ```R
 # Change the path if you installed gsl librarie not in the default path.
 # Be sure to use the format '"path/to/gsl-xxx_mingw-xxx/gsl-xxx-static"'
