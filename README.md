@@ -21,6 +21,8 @@ Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell dat
 * Idetify marker genes across clusters. [See example how..](https://jeky82.github.io/gficf_example.html#find-marker-genes)
 
 ## News
+*Aug. 24 2019* Support for binary packages for OSX and Windows (only R>=3.6)
+
 *Aug. 22 2019* **New functionality:** Identify marker genes across clusters of cells. [See example how..](https://jeky82.github.io/gficf_example.html#find-marker-genes)
 
 *Aug. 20 2019* RcppParallel Mann–Whitney U test [(Benchmarks against R implementation)](https://jeky82.github.io/2019/08/20/MannWhitney.html) 
@@ -35,8 +37,14 @@ Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell dat
 
 *Jul. 03 2019*. Version 0.1 with example on Tabula Muris.
 
+## Installing from dibbelab repo (Only with R>=3.6)
+```R
+if (!requireNamespace("BiocManager", quietly = TRUE)) {install.packages("BiocManager")}
+BiocManager::install(c("edgeR", "BiocParallel", "fgsea", "biomaRt"))
+install.packages(pkgs = "gficf",repos = c("https://dibbelab.github.io/Rrepo/","https://cloud.r-project.org"))
+```
 
-## Installing From github
+## Installing from github (All R versions)
 
 `gficf` makes use of `Rcpp`, `RcppParallel` and `RcppGSL`. So you have to carry out
 a few extra steps before being able to build this package. The steps are reported below for each platform.
@@ -69,11 +77,10 @@ brew install gsl
 Sys.setenv(GSL_LIBS = '"C:/gsl-2.2.1_mingw-6.2.0/gsl-2.2.1-static"')
 ```
 
-Finally after you followed **the above OS specific steps** exec in R terminal the following commands
+### After above OS specific steps
+Exec in R terminal the following commands
 ```R
-if(!require(devtools)){
-  install.packages("devtools") # If not already installed
-}
+if(!require(devtools)){ install.packages("devtools")}
 devtools::install_github("dibbelab/gficf")
 ```
 
