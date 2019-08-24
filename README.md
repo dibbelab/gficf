@@ -46,7 +46,7 @@ You need gsl dev library to successfully install RcppGSL library.
 On Ubuntu/Debian systems this can be accomplished by runnuing the command `sudo apt-get install libgsl-dev` from the terminal.
 
 ### On Mac OS X
-1. Open terminal and run `xcode-select --install` to command line developer tools.
+1. Open terminal and run `xcode-select --install` to install the command line developer tools.
 2. We than need to install gsl libraries. This can be done via [Homebrew](https://brew.sh/). So, still from terminal
 ```bash
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
