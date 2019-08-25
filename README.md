@@ -21,7 +21,7 @@ Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell dat
 * Idetify marker genes across clusters. [See example how..](https://jeky82.github.io/gficf_example.html#find-marker-genes)
 
 ## News
-*Aug. 24 2019* Support for binary packages for OSX and Windows (only R>=3.6)
+*Aug. 24 2019* Support for binary packages for OSX and Windows (only R>=3.5)
 
 *Aug. 22 2019* **New functionality:** Identify marker genes across clusters of cells. [See example how..](https://jeky82.github.io/gficf_example.html#find-marker-genes)
 
