@@ -44,7 +44,7 @@ BiocManager::install(c("edgeR", "BiocParallel", "fgsea", "biomaRt"))
 install.packages(pkgs = "gficf",repos = c("https://dibbelab.github.io/Rrepo/","https://cloud.r-project.org"))
 ```
 
-## Installing from github (Raccomandedd for all R versions)
+## Installing from github (Recommended for all R versions)
 
 `gficf` makes use of `Rcpp`, `RcppParallel` and `RcppGSL`. So you have to carry out
 a few extra steps before being able to build this package. The steps are reported below for each platform.
