@@ -12,7 +12,7 @@ The package also include data reduction with either Principal Component Analisys
 Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell data visualization.   
 
 **Examples & Functionality**:
-* General and simple use case scenario is [HERE](https://jeky82.github.io/gficf_example.html)
+* General use case scenario (normalization and clustering) [HERE](https://jeky82.github.io/gficf_example.html)
 
 * Embed new cells in an already existing embedded space. [See example how..](https://jeky82.github.io/gficf_example.html#how-to-embedd-new-cells-in-an-existing-space)
 
@@ -37,14 +37,14 @@ Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell dat
 
 *Jul. 03 2019*. Version 0.1 with example on Tabula Muris.
 
-## Installing from dibbelab repo (Only with R>=3.6)
+## Installing from dibbelab repo (Only with R>=3.5)
 ```R
 if (!requireNamespace("BiocManager", quietly = TRUE)) {install.packages("BiocManager")}
 BiocManager::install(c("edgeR", "BiocParallel", "fgsea", "biomaRt"))
 install.packages(pkgs = "gficf",repos = c("https://dibbelab.github.io/Rrepo/","https://cloud.r-project.org"))
 ```
 
-## Installing from github (All R versions)
+## Installing from github (Raccomandedd for all R versions)
 
 `gficf` makes use of `Rcpp`, `RcppParallel` and `RcppGSL`. So you have to carry out
 a few extra steps before being able to build this package. The steps are reported below for each platform.
@@ -85,7 +85,7 @@ devtools::install_github("dibbelab/gficf")
 ```
 
 ## How to use GFICF
-Web page with examples is now [HERE](https://jeky82.github.io/gficf_example.html)
+Web page with all examples are [HERE](https://jeky82.github.io/gficf_example.html)
 
 
 ## Useful Information
