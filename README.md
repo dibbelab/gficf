@@ -39,8 +39,11 @@ Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell dat
 
 ## Installing from dibbelab repo (Only with R>=3.5)
 ```R
+# Install required bioconductor packages
 if (!requireNamespace("BiocManager", quietly = TRUE)) {install.packages("BiocManager")}
-BiocManager::install(c("edgeR", "BiocParallel", "fgsea", "biomaRt"))
+BiocManager::install(setdiff(c("edgeR", "BiocParallel", "fgsea", "biomaRt"),rownames(installed.packages())),update = F)
+
+# install gficf package
 install.packages(pkgs = "gficf",repos = c("https://dibbelab.github.io/Rrepo/","https://cloud.r-project.org"))
 ```
 
