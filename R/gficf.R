@@ -14,7 +14,7 @@
 #' @param verbose boolean; Increase verbosity.
 #' @return The updated gficf object.
 #' @export
-gficf = function(M,cell_proportion_max = 1,cell_proportion_min = 0.05,storeRaw=TRUE,normalize=FALSE,verbose=TRUE)
+gficf = function(M,cell_proportion_max = 1,cell_proportion_min = 0.05,storeRaw=TRUE,normalize=TRUE,verbose=TRUE)
 {
   data = list()
   M = normCounts(M,doc_proportion_max = cell_proportion_max,doc_proportion_min = cell_proportion_min,normalizeCounts=normalize,verbose=verbose)
