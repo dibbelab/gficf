@@ -31,6 +31,7 @@ clustcells(data, from.embedded = F, k = 15,
   \item \code{"louvian"} (the default, the original Louvian method)
   \item \code{"louvian 2"} (Louvian with modularity optimization from Seurat)
   \item \code{"louvian 3"} (Louvain algorithm with multilevel refinement from Seurat)
+  \item \code{"leiden"} (Leiden algorithm see Traag et al. 2019)
   \item \code{"walktrap"}
   \item \code{"fastgreedy"}
 }}
@@ -41,7 +42,7 @@ clustcells(data, from.embedded = F, k = 15,
 
 \item{verbose}{logical; Increase verbosity.}
 
-\item{resolution}{Value of the resolution parameter, use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities (used only for louvian 2 or 3 methods).}
+\item{resolution}{Value of the resolution parameter, use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities (used only for leiden and louvian 2 or 3 methods).}
 
 \item{n.start}{Number of random starts (used only for louvian 2 or 3 methods).}
 

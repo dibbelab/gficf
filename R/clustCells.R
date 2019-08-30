@@ -25,24 +25,27 @@
 #'   \item \code{"louvian"} (the default, the original Louvian method)
 #'   \item \code{"louvian 2"} (Louvian with modularity optimization from Seurat)
 #'   \item \code{"louvian 3"} (Louvain algorithm with multilevel refinement from Seurat)
+#'   \item \code{"leiden"} (Leiden algorithm see Traag et al. 2019)
 #'   \item \code{"walktrap"}
 #'   \item \code{"fastgreedy"}
 #' }
 #' @param store.graph logical; Store produced phenograph in the gficf object
 #' @param seed integer; Seed to use for replication.
 #' @param verbose logical; Increase verbosity.
-#' @param resolution Value of the resolution parameter, use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities (used only for louvian 2 or 3 methods).
+#' @param resolution Value of the resolution parameter, use a value above (below) 1.0 if you want to obtain a larger (smaller) number of communities (used only for leiden and louvian 2 or 3 methods).
 #' @param n.start Number of random starts (used only for louvian 2 or 3 methods).
 #' @param n.iter Maximal number of iterations per random start (used only for louvian 2 or 3 methods).
 #' @return the updated gficf object
 #' @importFrom  igraph graph.data.frame simplify cluster_louvain walktrap.community fastgreedy.community membership as_adj
 #' @importFrom RcppParallel setThreadOptions RcppParallelLibs
+#' @importFrom reticulate py_module_available
+#' @importFrom leiden leiden
 #' @import uwot
 #' @import Matrix
 #' @export
 clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,community.algo="louvian",store.graph=T,seed=180582,verbose=TRUE, resolution = 0.8, n.start = 10, n.iter = 10)
 {
-  community.algo = base::match.arg(arg = community.algo,choices = c("louvian","louvian 2","louvian 3","walktrap","fastgreedy"),several.ok = F)
+  community.algo = base::match.arg(arg = community.algo,choices = c("louvian","louvian 2","louvian 3","walktrap","fastgreedy","leiden"),several.ok = F)
   
   if (is.null(data$embedded)) {stop("Run first runReduction function")}
   set.seed(seed)
@@ -94,8 +97,18 @@ clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,co
     community <- igraph::fastgreedy.community(g)
   }
   
-  if(community.algo %in% c("louvian 2","louvian 3")) {
-    community = community + 1
+  if (community.algo=="leiden")
+  {
+    if (!(reticulate::py_module_available("leidenalg") && reticulate::py_module_available("igraph")))
+      stop("Cannot find Leiden algorithm, please install through pip (e.g. sudo -H pip install leidenalg igraph).")
+    
+    tsmessage("Performing leiden...",verbose = verbose)
+    community <- leiden::leiden(object = g,resolution_parameter=resolution)
+  }
+  
+  
+  if(community.algo %in% c("louvian 2","louvian 3","leiden")) {
+    if(community.algo %in% c("louvian 2","louvian 3")) {community = community + 1}
     data$embedded$cluster = as.character(community)
   } else {
     data$embedded$cluster <- as.character(igraph::membership(community))
@@ -104,7 +117,7 @@ clustcells <- function(data,from.embedded=F,k=15,dist.method="manhattan",nt=2,co
   if (store.graph) {data$community=community;data$cell.graph=g} else {data$community=community}
   
   # get centroid of clusters
-  tsmessage("Computing Centroids...",verbose = verbose)
+  tsmessage("Computing Cluster Signatures...",verbose = verbose)
   cluster.map = data$embedded$cluster
   u = base::unique(cluster.map)
   data$cluster.gene.rnk = base::sapply(u, function(x,y=data$gficf,z=cluster.map) Matrix::rowSums(y[,z%in%x]))
