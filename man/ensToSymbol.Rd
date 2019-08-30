@@ -4,7 +4,7 @@
 \alias{ensToSymbol}
 \title{Convert Ensamble IDs to Official Gene Symbols}
 \usage{
-ensToSymbol(df, col, organism)
+ensToSymbol(df, col, organism, verbose = T)
 }
 \arguments{
 \item{df}{data frame; Data frame containing the IDs to convert.}

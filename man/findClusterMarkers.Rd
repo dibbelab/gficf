@@ -22,5 +22,5 @@ The updated gficf object.
 }
 \description{
 Try to identify marker genes across clusters performing Mann-Whitney U test.
-DE genes are identified the expressio in each cluster versus the all the other.
+DE genes are identified the expression in each cluster versus the all the other.
 }

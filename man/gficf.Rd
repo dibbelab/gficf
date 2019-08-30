@@ -5,7 +5,7 @@
 \title{Gene Frequency - Inverse Cell Frequency (GF-ICF)}
 \usage{
 gficf(M, cell_proportion_max = 1, cell_proportion_min = 0.05,
-  storeRaw = TRUE, normalize = FALSE, verbose = TRUE)
+  storeRaw = TRUE, normalize = TRUE, verbose = TRUE)
 }
 \arguments{
 \item{M}{Matrix; UMI cell count matrix}
