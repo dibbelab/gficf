@@ -136,21 +136,38 @@ plotGeneViolin = function(data,gene,ncol=3,x=NULL)
 #' 
 #' @param data list; GFICF object
 #' @param fdr number; FDR threshold to select significant pathways to plot.
+#' @param clusterRowCol; if TRUE row and col of the plot are clustered. 
 #' @return plot from ggplot2 package.
 #' @import Matrix
 #' @import ggplot2
 #' @importFrom reshape2 melt
 #' 
 #' @export
-plotGSEA = function(data,fdr=.05)
+plotGSEA = function(data,fdr=.05,clusterRowCol=F)
 {
   if (is.null(data$gsea)) {stop("Please run runGSEA function first")}
   nes = data$gsea$nes
-  nes[data$gsea$es<=0 | data$gsea$fdr>=fdr] = 0 
+  nes[data$gsea$es<=0 | data$gsea$fdr>=fdr] = 0
+  
+  if (clusterRowCol)
+  {
+    h.c = hclust(dist(t(nes),method = "binary"))
+    h.p = hclust(dist(nes,method = "binary"))
+  }
+  
   nes = nes[Matrix::rowSums(nes)>0,]
   df = reshape2::melt(as.matrix(nes))
   colnames(df) = c("pathway","cluster","nes")
-  ggplot(data = df,aes(x=pathway,y=cluster)) + geom_point(aes(size=nes)) + scale_size_continuous(range = c(0,7)) + theme_bw() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + scale_y_continuous(breaks = 1:max(df$cluster)) + xlab("") + ylab("Cluster name")
+  
+  if (clusterRowCol)
+  {
+    df$cluster = factor(as.character(df$cluster),levels = rev(h.c$labels[h.c$order]))
+    df$pathway = factor(as.character(df$pathway),levels = rev(h.p$labels[h.p$order]))
+  } else {
+    df$cluster = factor(as.character(df$cluster),levels = as.character(1:length(unique(data$embedded$cluster))))
+  }
+  
+  ggplot(data = df,aes(x=pathway,y=cluster)) + geom_point(aes(size=nes)) + scale_size_continuous(range = c(0,7)) + theme_bw() + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + xlab("") + ylab("Cluster name")
 }
 
 #' Plot GSEA results
