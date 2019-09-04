@@ -148,6 +148,7 @@ plotGSEA = function(data,fdr=.05,clusterRowCol=F)
   if (is.null(data$gsea)) {stop("Please run runGSEA function first")}
   nes = data$gsea$nes
   nes[data$gsea$es<=0 | data$gsea$fdr>=fdr] = 0
+  nes = nes[Matrix::rowSums(nes)>0,]
   
   if (clusterRowCol)
   {
@@ -155,7 +156,6 @@ plotGSEA = function(data,fdr=.05,clusterRowCol=F)
     h.p = hclust(dist(nes,method = "binary"))
   }
   
-  nes = nes[Matrix::rowSums(nes)>0,]
   df = reshape2::melt(as.matrix(nes))
   colnames(df) = c("pathway","cluster","nes")
   
