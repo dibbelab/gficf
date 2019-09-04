@@ -54,12 +54,15 @@ gmtPathways <- function(gmt.file,convertToEns,convertHu2Mm,verbose)
 #' @param minSize numeric; Minimal size of a gene set to test (default 15). All pathways below the threshold are excluded.
 #' @param maxSize numeric; Maximal size of a gene set to test (default Inf). All pathways above the threshold are excluded.
 #' @param verbose boolean; Show the progress bar.
+#' @param seed; Seed to use for random number generation.
 #' @return The updated gficf object.
 #' @importFrom fgsea fgsea
 #' @import fastmatch
 #' @export
-runGSEA <- function(data,gmt.file,nsim=1000,convertToEns=T,convertHu2Mm=F,nt=2,minSize=15,maxSize=Inf,verbose=TRUE)
+runGSEA <- function(data,gmt.file,nsim=1000,convertToEns=T,convertHu2Mm=F,nt=2,minSize=15,maxSize=Inf,verbose=TRUE,seed=180582)
 {
+  set.seed(seed)
+  
   if (is.null(data$cluster.gene.rnk)) {stop("Please run clustcell function first")}
   
   data$gsea = list()
