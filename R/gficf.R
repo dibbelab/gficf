@@ -103,3 +103,109 @@ l.norm = function (m, norm = c("l1", "l2"),verbose)
     Diagonal(x = norm_vec) %*% m
   else m * norm_vec
 }
+
+#' Save GFICF object.
+#' 
+#' Function to write a GFICF object to a file, preserving UMAP model.
+#' 
+#' @param data a GFICF object create by \code{\link{gficf}}.
+#' @param file name of the file where the model is to be saved.
+#' 
+#' @examples 
+#' # save
+#' gficf_file <- tempfile("gficf_test")
+#' saveGFICF(data, file = gficf_file)
+#' 
+#' # restore
+#' data2 <- loadGFICF(file = gficf_file)
+#' 
+#' @export
+saveGFICF <- function(data, file="~/Documents/gficf.test") 
+{
+  wd <- getwd()
+  tryCatch({
+    # create directory to store files in
+    mod_dir <- tempfile(pattern = "dir")
+    dir.create(mod_dir)
+    
+    # save gficf object
+    gficf_dir <- file.path(mod_dir, "gficf")
+    dir.create(gficf_dir)
+    gficfl_tmpfname <- file.path(gficf_dir, "data")
+    saveRDS(data, file = gficfl_tmpfname)
+    
+    # save uwot nn index if necessary
+    if(data$reduction %in% c("umap","tumap"))
+    {
+      uwot_dir <- file.path(gficf_dir, "uwot_idx")
+      dir.create(uwot_dir)
+      nn_tmpfname <- file.path(uwot_dir,"nn1")
+      data$uwot$nn_index$save(nn_tmpfname)
+      data$uwot$nn_index$unload()
+      data$uwot$nn_index$load(nn_tmpfname)
+    }
+    # archive the files under the temp dir into the single target file
+    # change directory so the archive only contains one directory
+    setwd(mod_dir)
+    utils::tar(tarfile = file, files = "gficf/")
+  },
+  finally = {
+    setwd(wd)
+    if (file.exists(mod_dir)) {
+      unlink(mod_dir, recursive = TRUE)
+    }
+  })
+}
+
+#' Restore GFICF object.
+#' 
+#' Function to read a GFICF object from a file saved with \code{\link{saveGFICF}}.
+#' 
+#' @param file name of the file where the object is stored.
+#' 
+#' @examples 
+#' gficf_file <- tempfile("gficf_data")
+#' 
+#' # restore
+#' data2 <- loadGFICF(file = gficf_file)
+#' 
+#' @export
+loadGFICF <- function(file)
+{
+  model <- NULL
+  
+  tryCatch({
+    # create directory to store files in
+    mod_dir <- tempfile(pattern = "dir")
+    dir.create(mod_dir)
+    utils::untar(file, exdir = mod_dir)
+    
+    # load gficf object
+    gficf_fname <- file.path(mod_dir, "gficf/data")
+    if (!file.exists(gficf_fname)) {
+      stop("Can't find gficf data in ", file)
+    }
+    data <- readRDS(file = gficf_fname)
+    
+    # load umap index if necessary
+    if(data$reduction %in% c("umap","tumap"))
+    {
+      nn_fname <- file.path(mod_dir,"gficf/uwot_idx/nn1")
+      if (!file.exists(nn_fname)) {
+        stop("Can't find nearest neighbor index ", nn_fname, " in ", file)
+      }
+      
+      # can provide any value for ndim as we get a new value when we load
+      ann <- uwot:::create_ann(names(data$uwot$metric)[1], ndim = 1)
+      ann$load(nn_fname)
+      data$uwot$nn_index <- ann
+    }
+  },
+  finally = {
+    if (file.exists(mod_dir)) {
+      unlink(mod_dir, recursive = TRUE)
+    }
+  })
+  
+  return(data)
+}
