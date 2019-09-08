@@ -133,5 +133,6 @@ All supported communities detection algorithm (set by the `community.algo` param
 * Louvain classic (default)
 * Louvian with modularity optimization (native c++ function imported from `Seurat`)
 * Louvain algorithm with multilevel refinement (native c++ function imported from `Seurat`)
+* Leiden algorithm from [Traag et al. 2019](https://www.nature.com/articles/s41598-019-41695-z) (need to be installed via `sudo -H pip install leidenalg igraph`)
 * Walktrap
 * Fastgreedy
