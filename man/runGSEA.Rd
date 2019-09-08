@@ -6,7 +6,7 @@
 \usage{
 runGSEA(data, gmt.file, nsim = 1000, convertToEns = T,
   convertHu2Mm = F, nt = 2, minSize = 15, maxSize = Inf,
-  verbose = TRUE)
+  verbose = TRUE, seed = 180582)
 }
 \arguments{
 \item{data}{list; GFICF object}
@@ -26,6 +26,8 @@ runGSEA(data, gmt.file, nsim = 1000, convertToEns = T,
 \item{maxSize}{numeric; Maximal size of a gene set to test (default Inf). All pathways above the threshold are excluded.}
 
 \item{verbose}{boolean; Show the progress bar.}
+
+\item{seed;}{Seed to use for random number generation.}
 }
 \value{
 The updated gficf object.

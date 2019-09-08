@@ -4,12 +4,14 @@
 \alias{plotGSEA}
 \title{Plot GSEA results}
 \usage{
-plotGSEA(data, fdr = 0.05)
+plotGSEA(data, fdr = 0.05, clusterRowCol = F)
 }
 \arguments{
 \item{data}{list; GFICF object}
 
 \item{fdr}{number; FDR threshold to select significant pathways to plot.}
+
+\item{clusterRowCol;}{if TRUE row and col of the plot are clustered.}
 }
 \value{
 plot from ggplot2 package.
