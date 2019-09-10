@@ -64,7 +64,13 @@ plotGenes = function(data,genes,log2Expr=T,x=NULL)
   names(l) = genes
   for (i in genes)
   {
-    df = data$embedded
+    if ("predicted" %in% colnames(data$embedded))
+    {
+      df = subset(data$embedded, predicted %in% "NO")
+    } else {
+      df = data$embedded
+    }
+    
     if(log2Expr)
     {
       df$expr = log2(data$rawCounts[i,rownames(df)]+1)
@@ -74,7 +80,7 @@ plotGenes = function(data,genes,log2Expr=T,x=NULL)
     
     df$expr = (df$expr-min(df$expr))/(max(df$expr)-min(df$expr))
     df = df[order(df$expr,decreasing = F),]
-    l[[i]] = ggplot(data = df,aes(x=X,y=Y,color=expr)) + geom_point(size=.5,shape=19) + theme_bw() + theme_bw() + scale_color_gradient2(low = "gray",mid = "#2171b5",high = "#08306b",midpoint = .5) + ggtitle(i)
+    l[[i]] = ggplot(data = df,aes(x=X,y=Y,color=expr)) + geom_point(size=.5,shape=19) + theme_bw() +  scale_color_gradient2(low = "gray",mid = "#2171b5",high = "#08306b",midpoint = .5) + ggtitle(i)
     
   }
   
