@@ -21,6 +21,8 @@ Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell dat
 * Idetify marker genes across clusters. [See example how..](https://jeky82.github.io/gficf_example.html#find-marker-genes)
 
 ## News
+*Sep. 09 2019* Version 0.3.1: Save and load gficf objects, support for Leiden and few bug fixes.
+
 *Aug. 24 2019* Support for binary packages for OSX and Windows (only R>=3.5)
 
 *Aug. 22 2019* **New functionality:** Identify marker genes across clusters of cells. [See example how..](https://jeky82.github.io/gficf_example.html#find-marker-genes)
@@ -87,31 +89,9 @@ if(!require(devtools)){ install.packages("devtools")}
 devtools::install_github("dibbelab/gficf")
 ```
 
-## How to use GFICF
-Web page with all examples are [HERE](https://jeky82.github.io/gficf_example.html)
-
-
-## Useful Information
-
-Apart from the man pages in R you may be interested in the following readings:
-
-* A [description of t-SNE](https://lvdmaaten.github.io/tsne/).
-
-* A [description of UMAP](https://jlmelville.github.io/uwot/umap-for-tsne.html)
-using algorithmic terminology similar to t-SNE, rather than the more topological
-approach of the UMAP publication.
-
-* Some [Examples](https://jlmelville.github.io/uwot/umap-examples.html) of the 
-output of UMAP on some datasets, compared to t-SNE. 
-
-* Some results of running 
-[UMAP on the simple datasets](https://jlmelville.github.io/uwot/umap-simple.html) 
-from [How to Use t-SNE Effectively](https://distill.pub/2016/misread-tsne/).
-
-
 ## Phenograph Implementation Details
 In the package `gficf` the function `clustcells` implement the [Phenograph](https://www.cell.com/cell/fulltext/S0092-8674(15)00637-6) algorithm,
-which is a clustering method designed for high-dimensional single-cell data analysis. It works by creating a graph ("network") representing phenotypic similarities between cells by calculating the Jaccard coefficient between nearest-neighbor sets, and then identifying communities using the well known [Louvain method](https://sites.google.com/site/findcommunities/) in this graph. 
+which is a clustering method designed for high-dimensional single-cell data analysis. It works by creating a graph ("network") representing phenotypic similarities between cells by calculating the Jaccard coefficient between nearest-neighbor sets, and then identifying communities using the well known [Louvain method](https://sites.google.com/site/findcommunities/) or [Leiden algorithm](https://www.nature.com/articles/s41598-019-41695-z) in this graph. 
 
 In this particular implementation of Phenograph we use approximate nearest neighbors found using [RcppAnnoy](https://cran.r-project.org/package=RcppAnnoy)
 libraries present in the `uwot` package. The supported distance metrics for KNN (set by the `dist.method` parameter) are:
@@ -136,3 +116,21 @@ All supported communities detection algorithm (set by the `community.algo` param
 * Leiden algorithm from [Traag et al. 2019](https://www.nature.com/articles/s41598-019-41695-z) (need to be installed via `sudo -H pip install leidenalg igraph`)
 * Walktrap
 * Fastgreedy
+
+
+## Useful Information
+
+Apart from the man pages in R you may be interested in the following readings:
+
+* A [description of t-SNE](https://lvdmaaten.github.io/tsne/).
+
+* A [description of UMAP](https://jlmelville.github.io/uwot/umap-for-tsne.html)
+using algorithmic terminology similar to t-SNE, rather than the more topological
+approach of the UMAP publication.
+
+* Some [Examples](https://jlmelville.github.io/uwot/umap-examples.html) of the 
+output of UMAP on some datasets, compared to t-SNE. 
+
+* Some results of running 
+[UMAP on the simple datasets](https://jlmelville.github.io/uwot/umap-simple.html) 
+from [How to Use t-SNE Effectively](https://distill.pub/2016/misread-tsne/).
