@@ -14,13 +14,15 @@ Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell dat
 **Examples & Functionality**:
 * General use case scenario (normalization and clustering) [HERE](https://jeky82.github.io/gficf_example.html)
 
-* Embed new cells in an already existing embedded space. [See example how..](https://jeky82.github.io/gficf_example.html#how-to-embedd-new-cells-in-an-existing-space)
+* Embed new cells in an already existing embedded space and classify it. [See example how..](https://jeky82.github.io/gficf_example.html#how-to-embedd-new-cells-in-an-existing-space)
 
 * Idetify active pathways in a group of cells. [See example how..](https://jeky82.github.io/gficf_example.html#how-to-perform-gsea-to-identify-active-pathways-in-each-cluster)
 
 * Idetify marker genes across clusters. [See example how..](https://jeky82.github.io/gficf_example.html#find-marker-genes)
 
 ## News
+*Sep. 24 2019* **New functionality:** Classify cells using GF-ICF transformation and K-nn algorithm. [See example how..](https://jeky82.github.io/gficf_example.html#how-to-embedd-new-cells-in-an-existing-space)
+
 *Sep. 09 2019* Version 0.3.1: Save and load gficf objects, support for Leiden and few bug fixes.
 
 *Aug. 24 2019* Support for binary packages for OSX and Windows (only R>=3.5)

@@ -1,6 +1,6 @@
 Package: gficf
 Title: Gene Frequency - Inverse Cell Frequency
-Version: 0.3.1
+Version: 0.3.2
 Authors@R: person("Gennaro", "Gambardella", email = "gambardella@tigem.it", role = c("aut", "cre"))
 Description: Single cell data rapresentation as text
 License: GPL-3
@@ -32,5 +32,6 @@ Imports:
     MASS,
     locfit,
     reticulate,
-    leiden
+    leiden,
+    class
 SystemRequirements: GNU make
