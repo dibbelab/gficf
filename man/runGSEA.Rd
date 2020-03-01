@@ -4,9 +4,18 @@
 \alias{runGSEA}
 \title{Gene Set Enrichement Analysi on GF-ICF}
 \usage{
-runGSEA(data, gmt.file, nsim = 1000, convertToEns = T,
-  convertHu2Mm = F, nt = 2, minSize = 15, maxSize = Inf,
-  verbose = TRUE, seed = 180582)
+runGSEA(
+  data,
+  gmt.file,
+  nsim = 1000,
+  convertToEns = T,
+  convertHu2Mm = F,
+  nt = 2,
+  minSize = 15,
+  maxSize = Inf,
+  verbose = TRUE,
+  seed = 180582
+)
 }
 \arguments{
 \item{data}{list; GFICF object}

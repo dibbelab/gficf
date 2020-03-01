@@ -4,10 +4,20 @@
 \alias{clustcells}
 \title{PhenoGraph clustering}
 \usage{
-clustcells(data, from.embedded = F, k = 15,
-  dist.method = "manhattan", nt = 2, community.algo = "louvian",
-  store.graph = T, seed = 180582, verbose = TRUE, resolution = 0.8,
-  n.start = 10, n.iter = 10)
+clustcells(
+  data,
+  from.embedded = F,
+  k = 15,
+  dist.method = "manhattan",
+  nt = 2,
+  community.algo = "louvian",
+  store.graph = T,
+  seed = 180582,
+  verbose = TRUE,
+  resolution = 0.8,
+  n.start = 10,
+  n.iter = 10
+)
 }
 \arguments{
 \item{data}{list; Input data (gficf object)}
@@ -58,7 +68,7 @@ R implementation of the PhenoGraph algorithm
 A custom R implementation of the PhenoGraph (http://www.cell.com/cell/abstract/S0092-8674(15)00637-6) algorithm, 
 which is a clustering method designed for high-dimensional single-cell data analysis. It works by creating a graph ("network") representing 
 phenotypic similarities between cells by calclating the Jaccard coefficient between nearest-neighbor sets, and then identifying communities 
-using the well known Louvain method (https://sites.google.com/site/findcommunities/) in this graph.
+using the well known Louvain method (https://sites.google.com/site/findcommunities/) in this graph. 
 
 That version used PCA or LSA reduced meta-cells and multithreading annoy version for K-nn search (from uwot package).
 }

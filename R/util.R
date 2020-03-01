@@ -2,7 +2,7 @@
 #' 
 scaleMatrix = function(x,rescale,centre)
 {
-  if (rescale)
+  if (FALSE)
   {
     message("Rescaling..")
     bc_tot <- Matrix::rowSums(x)
@@ -11,7 +11,7 @@ scaleMatrix = function(x,rescale,centre)
     message("Rescaling Done!")
   }
   
-  if (centre)
+  if (FALSE)
   {
     message("Centering data..")
     x <- base::sweep(x, 2, Matrix::colMeans(x), '-')

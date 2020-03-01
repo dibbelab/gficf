@@ -118,20 +118,20 @@ plotGeneViolin = function(data,gene,ncol=3,x=NULL)
   colnames(df) = c("ens","cell.id","value")
   
   if(!is.null(names(gene))) {
-      ix = is.na(names(gene)) | names(gene) %in% "" | is.null(names(gene))
-      if(sum(ix)>0) {names(gene)[ix] = gene[ix]}
-      if(length(unique(names(gene))) == length(gene)) {
-        df$ens = names(gene)[fastmatch::fmatch(df$ens,gene)]
-      }
+    ix = is.na(names(gene)) | names(gene) %in% "" | is.null(names(gene))
+    if(sum(ix)>0) {names(gene)[ix] = gene[ix]}
+    if(length(unique(names(gene))) == length(gene)) {
+      df$ens = names(gene)[fastmatch::fmatch(df$ens,gene)]
     }
+  }
   
   df$value = log2(df$value+1)
   df$cluster = data$embedded$cluster[match(df$cell.id,rownames(data$embedded))]
   df$cluster = factor(as.character(df$cluster),levels = as.character(1:length(unique(df$cluster))))
   p = ggplot2::ggplot(data = df,ggplot2::aes(x=cluster,y=value)) + 
-      ggplot2::geom_violin(scale = "width") + 
-      ggplot2::facet_wrap(~ens,scales = "free_y",ncol=ncol) + 
-      ggplot2::ylab("log2(CPM+1)") + ggplot2::xlab("") + ggplot2::theme_bw()
+    ggplot2::geom_violin(scale = "width") + 
+    ggplot2::facet_wrap(~ens,scales = "free_y",ncol=ncol) + 
+    ggplot2::ylab("log2(CPM+1)") + ggplot2::xlab("") + ggplot2::theme_bw()
   
   return(p)
 }
@@ -199,5 +199,4 @@ plotPathway = function(data,pathwayName,fdr=.05)
   df$NES = nes[match(df$cluster,names(nes))]
   ggplot(data = df,aes(x=X,y=Y)) + geom_point(aes(color=NES),shape=20) + theme_bw() + scale_color_gradient(low = "gray",high = "red")
 }
-
 
