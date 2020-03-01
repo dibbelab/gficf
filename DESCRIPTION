@@ -1,6 +1,6 @@
 Package: gficf
 Title: Gene Frequency - Inverse Cell Frequency
-Version: 0.3.3
+Version: 0.4.1
 Authors@R: person("Gennaro", "Gambardella", email = "gambardella@tigem.it", role = c("aut", "cre"))
 Description: Single cell data rapresentation as text
 License: GPL-3
@@ -9,7 +9,7 @@ BugReports: https://github.com/dibbelab/gficf
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.0.2
-Depends: R (>= 3.4.0)
+Depends: R (>= 3.6.2)
 LinkingTo: Rcpp (>= 0.11.0), RcppGSL, RcppProgress, RcppParallel, RcppEigen
 biocViews:
 Imports: 

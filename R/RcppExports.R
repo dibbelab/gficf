@@ -2,22 +2,22 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 RunModularityClusteringCpp <- function(SNN, modularityFunction, resolution, algorithm, nRandomStarts, nIterations, randomSeed, printOutput, edgefilename) {
-    .Call(`_gficf_RunModularityClusteringCpp`, SNN, modularityFunction, resolution, algorithm, nRandomStarts, nIterations, randomSeed, printOutput, edgefilename)
+    .Call('_gficf_RunModularityClusteringCpp', PACKAGE = 'gficf', SNN, modularityFunction, resolution, algorithm, nRandomStarts, nIterations, randomSeed, printOutput, edgefilename)
 }
 
 jaccard_coeff <- function(idx, printOutput) {
-    .Call(`_gficf_jaccard_coeff`, idx, printOutput)
+    .Call('_gficf_jaccard_coeff', PACKAGE = 'gficf', idx, printOutput)
 }
 
 rcpp_WMU_test <- function(M, idx1, idx2) {
-    .Call(`_gficf_rcpp_WMU_test`, M, idx1, idx2)
+    .Call('_gficf_rcpp_WMU_test', PACKAGE = 'gficf', M, idx1, idx2)
 }
 
 rcpp_parallel_jaccard_coef <- function(mat, printOutput) {
-    .Call(`_gficf_rcpp_parallel_jaccard_coef`, mat, printOutput)
+    .Call('_gficf_rcpp_parallel_jaccard_coef', PACKAGE = 'gficf', mat, printOutput)
 }
 
 rcpp_parallel_WMU_test <- function(matX, matY, printOutput) {
-    .Call(`_gficf_rcpp_parallel_WMU_test`, matX, matY, printOutput)
+    .Call('_gficf_rcpp_parallel_WMU_test', PACKAGE = 'gficf', matX, matY, printOutput)
 }
 

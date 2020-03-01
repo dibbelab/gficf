@@ -7,7 +7,7 @@
 #' @param hgv boolean; use only top High Variable Genes (FDR<25%)
 #' @param parallel boolean; Parralle execution
 #' @param verbose boolean; Increase verbosity
-#' @param start.cl int; (optional) character, indicates the cluster(s) *from* which lineages will be drawn.
+#' @param start.cl int; (optional) character, indicates the cluster(s) from which lineages will be drawn.
 #' @param end.cl int; (optional) character, indicates the cluster(s) which will be forced leaf nodes in their trees.
 #' @param ... Additional arguments to pass to fitGAM of tradeSeq.
 #' @return The updated gficf object.

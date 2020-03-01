@@ -23,7 +23,7 @@ runPseudoTime(
 
 \item{verbose}{boolean; Increase verbosity}
 
-\item{start.cl}{int; (optional) character, indicates the cluster(s) *from* which lineages will be drawn.}
+\item{start.cl}{int; (optional) character, indicates the cluster(s) from which lineages will be drawn.}
 
 \item{end.cl}{int; (optional) character, indicates the cluster(s) which will be forced leaf nodes in their trees.}
 
