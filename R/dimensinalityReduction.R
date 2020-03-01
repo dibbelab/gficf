@@ -4,16 +4,19 @@
 #' 
 #' @param data list; GFICF object
 #' @param dim integer; Number of dimension which to reduce the dataset.
-#' @param rescale logical; Rescale gficf scores before applying reduction (deprecated).
+#' @param var.scale logical; Rescale gficf scores for adjusted variance like in pagoda2 (highly experimental!).
 #' @param centre logical; Centre gficf scores before applying reduction (increase separation).
 #' @param randomized logical; Use randomized (faster) version for matrix decomposition (default is TRUE).
 #' @param seed integer; Initial seed to use.
+#' @param use.odgenes boolean; Use significant overdispersed genes respect to ICF values (highly experimental!).
+#' @param n.odgenes integer; Number of overdispersed genes to use (highly experimental!). A good choise seems to be usually between 1000 and 3000.
+#' @param plot.odgenes boolean; Show significant overdispersed genes respect to ICF values.
 #' @return The updated gficf object.
 #' @importFrom RSpectra svds
 #' @importFrom rsvd rsvd
 #' 
 #' @export
-runLSA = function(data,dim=NULL,rescale=F,centre=F,randomized=T,seed=180582)
+runLSA = function(data,dim=NULL,var.scale=F,centre=F,randomized=T,seed=180582,use.odgenes=F,n.odgenes=NULL,plot.odgenes=F)
 {
   set.seed(seed)
   
@@ -26,13 +29,33 @@ runLSA = function(data,dim=NULL,rescale=F,centre=F,randomized=T,seed=180582)
   
   data$pca = list()
   data$pca$cells = t(data$gficf)
-  data$pca$cells = scaleMatrix(data$pca$cells,rescale,centre)
+  #data$pca$cells = scaleMatrix(data$pca$cells,rescale,centre)
+  
+  if(use.odgenes) {
+    overD=suppressWarnings(findOverDispersed(data = data,alpha = 0.1,verbose = F,plot = plot.odgenes))
+    odgenes <- rownames(overD[overD$lpa<log(0.1),])
+    if(!is.null(n.odgenes)) {
+      if(n.odgenes>length(odgenes)) {
+        odgenes <- rownames(overD)[(order(overD$lp,decreasing=F)[1:min(nrow(data$gficf),n.odgenes)])]
+      } else {
+        odgenes <- odgenes[1:n.odgenes]
+      }
+    }
+    data$pca$cells = data$pca$cells[,odgenes]
+    tsmessage("... using ",length(odgenes)," OD genes",verbose = T)
+  } 
+  
+  if(var.scale) {
+    if(!use.odgenes) {overD=suppressWarnings(findOverDispersed(data = data,alpha = 0.1,verbose = F))}
+    data$pca$cells@x <- data$pca$cells@x*rep(overD[colnames(data$pca$cells),'gsf'],diff(data$pca$cells@p))
+  }
+  
   if (randomized) {ppk<- rsvd::rsvd(data$pca$cells,k=dim)} else {ppk<- RSpectra::svds(data$pca$cells,k=dim)}
   data$pca$cells <- ppk$u %*% base::diag(x = ppk$d)
-  data$pca$centre <- centre
-  data$pca$rescale <- rescale
+  data$pca$centre <- F
+  data$pca$rescale <- var.scale
   data$pca$genes <- ppk$v
-  rownames(data$pca$genes) = rownames(data$gficf)
+  if(use.odgenes) {rownames(data$pca$genes)=odgenes} else {rownames(data$pca$genes) = rownames(data$gficf)}
   rownames(data$pca$cells) = colnames(data$gficf)
   return(data)
 }
@@ -43,15 +66,19 @@ runLSA = function(data,dim=NULL,rescale=F,centre=F,randomized=T,seed=180582)
 #' 
 #' @param data list; GFICF object
 #' @param dim integer; Number of dimension which to reduce the dataset.
-#' @param rescale logical; Rescale gficf scores before applying reduction (deprecated).
+#' @param var.scale logical; Rescale gficf scores for adjusted variance like in pagoda2 (highly experimental!).
 #' @param centre logical; Centre gficf scores before applying reduction (increase separation).
 #' @param randomized logical; Use randomized (faster) version for matrix decomposition (default is TRUE).
 #' @param seed integer; Initial seed to use.
+#' @param use.odgenes boolean; Use significant overdispersed genes respect to ICF values (highly experimental!).
+#' @param n.odgenes integer; Number of overdispersed genes to use (highly experimental!). A good choise seems to be usually between 1000 and 3000.
+#' @param plot.odgenes boolean; Show significant overdispersed genes respect to ICF values.
+#' @return The updated gficf object. 
 #' @return The updated gficf object.
 #' @importFrom rsvd rpca
 #' 
 #' @export
-runPCA = function(data,dim=NULL,rescale=F,centre=F,randomized=T,seed=180582)
+runPCA = function(data,dim=NULL,var.scale=F,centre=F,randomized=T,seed=180582,use.odgenes=F,n.odgenes=NULL,plot.odgenes=F)
 {
   set.seed(seed)
   
@@ -64,13 +91,33 @@ runPCA = function(data,dim=NULL,rescale=F,centre=F,randomized=T,seed=180582)
   
   data$pca = list()
   data$pca$cells = t(data$gficf)
-  data$pca$cells = scaleMatrix(data$pca$cells,rescale,centre)
-  x = rsvd::rpca(data$pca$cells,k=dim,center=F,scale=F,rand=randomized)
+  #data$pca$cells = scaleMatrix(data$pca$cells,F,F)
+  
+  if(use.odgenes) {
+    overD=suppressWarnings(findOverDispersed(data = data,alpha = 0.1,verbose = F,plot = plot.odgenes))
+    odgenes <- rownames(overD[overD$lpa<log(0.1),])
+    if(!is.null(n.odgenes)) {
+      if(n.odgenes>length(odgenes)) {
+        odgenes <- rownames(overD)[(order(overD$lp,decreasing=F)[1:min(nrow(data$gficf),n.odgenes)])]
+      } else {
+        odgenes <- odgenes[1:n.odgenes]
+      }
+    }
+    data$pca$cells = data$pca$cells[,odgenes]
+    tsmessage("... using ",length(odgenes)," OD genes",verbose = T)
+  }
+  
+  if(var.scale) {
+    if(!use.odgenes) {overD=suppressWarnings(findOverDispersed(data = data,alpha = 0.1,verbose = F))}
+    data$pca$cells@x <- data$pca$cells@x*rep(overD[colnames(data$pca$cells),'gsf'],diff(data$pca$cells@p))
+  }
+  
+  x = rsvd::rpca(data$pca$cells,k=dim,center=centre,scale=F,rand=randomized)
   data$pca$cells = x$x
   data$pca$centre <- centre
-  data$pca$rescale <- rescale
+  data$pca$rescale <- var.scale
   data$pca$genes <- x$rotation
-  rownames(data$pca$genes) = rownames(data$gficf)
+  if(use.odgenes) {rownames(data$pca$genes)=odgenes} else {rownames(data$pca$genes) = rownames(data$gficf)}
   rownames(data$pca$cells) = colnames(data$gficf)
   colnames(data$pca$cells) = colnames(data$pca$genes) = paste("C",1:dim,sep = "")
   return(data)
@@ -173,4 +220,80 @@ computePCADim = function(data,randomized=T,subsampling=F,plot=T)
   return(data)
 }
 
+# find over dispersed genes respect to computed ICF
+# ispired by pagoda2 function. Thanks to them.
+#' @import mgcv
+findOverDispersed=function(data,gam.k=5, alpha=5e-2, plot=FALSE, use.unadjusted.pvals=FALSE,do.par=T,max.adjusted.variance=1e3,min.adjusted.variance=1e-3,verbose=TRUE,min.gene.cells=0,n.cores = 2)
+{
+  rowSel <- NULL;
+  
+  tsmessage("calculating variance fit ...",verbose=verbose)
+  df = colMeanVarS(t(data$rawCounts),rowSel,n.cores);
+  df$m = data$w
+  
+  
+  # gene-relative normalizaton
+  df$v <- log(df$v);
+  rownames(df) <- rownames(data$gficf);
+  vi <- which(is.finite(df$v) & df$nobs>=min.gene.cells);
+  if(length(vi)<gam.k*1.5) { gam.k=1 };# too few genes
+  if(gam.k<2) {
+    tsmessage(" using lm ",verbose=verbose)
+    m <- lm(v ~ m, data = df[vi,])
+  } else {
+    tsmessage(" using gam ",verbose=verbose)
+    m <- mgcv::gam(as.formula(paste0('v ~ s(m, k = ',gam.k,')')), data = df[vi,])
+  }
+  df$res <- -Inf;  df$res[vi] <- resid(m,type='response')
+  n.obs <- df$nobs;
+  suppressWarnings(df$lp <- as.numeric(pf(exp(df$res),n.obs,n.obs,lower.tail=F,log.p=T)))
+  df$lpa <- bh.adjust(df$lp,log=TRUE)
+  n.cells <- ncol(data$gficf)
+  df$qv <- as.numeric(qchisq(df$lp, n.cells-1, lower.tail = FALSE,log.p=TRUE)/n.cells)
+  
+  if(use.unadjusted.pvals) {
+    ods <- which(df$lp<log(alpha))
+  } else {
+    ods <- which(df$lpa<log(alpha))
+  }
+  
+  tsmessage(paste0(length(ods),'overdispersed genes ...',length(ods) ),verbose=verbose)
+  
+  df$gsf <- geneScaleFactors <- sqrt(pmax(min.adjusted.variance,pmin(max.adjusted.variance,df$qv))/exp(df$v));
+  df$gsf[!is.finite(df$gsf)] <- 0;
+  
+  if(plot) {
+    if(do.par) {
+      par(mfrow=c(1,2), mar = c(3.5,3.5,2.0,0.5), mgp = c(2,0.65,0), cex = 1.0);
+    }
+    smoothScatter(df$m,df$v,main='',xlab='ICF value',ylab='log10[ variance ]')
+    grid <- seq(min(df$m[vi]),max(df$m[vi]),length.out=1000)
+    lines(grid,predict(m,newdata=data.frame(m=grid)),col="blue")
+    if(length(ods)>0) {
+      points(df$m[ods],df$v[ods],pch='.',col=2,cex=1)
+    }
+    smoothScatter(df$m[vi],df$qv[vi],xlab='ICF value',ylab='',main='adjusted')
+    abline(h=1,lty=2,col=8)
+    if(is.finite(max.adjusted.variance)) { abline(h=max.adjusted.variance,lty=2,col=1) }
+    points(df$m[ods],df$qv[ods],col=2,pch='.')
+  }
+  tsmessage("done.\n",verbose=verbose)
+  return(df)
+}
 
+# BH P-value adjustment with a log option
+bh.adjust <- function(x, log = FALSE)
+{
+  nai <- which(!is.na(x))
+  ox <- x
+  x<-x[nai]
+  id <- order(x, decreasing = FALSE)
+  if(log) {
+    q <- x[id] + log(length(x)/seq_along(x))
+  } else {
+    q <- x[id]*length(x)/seq_along(x)
+  }
+  a <- rev(cummin(rev(q)))[order(id)]
+  ox[nai]<-a
+  ox
+}

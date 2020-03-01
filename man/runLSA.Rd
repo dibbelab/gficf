@@ -4,21 +4,36 @@
 \alias{runLSA}
 \title{Latent Semantic Analysis (LSA)}
 \usage{
-runLSA(data, dim = NULL, rescale = F, centre = F, randomized = T,
-  seed = 180582)
+runLSA(
+  data,
+  dim = NULL,
+  var.scale = F,
+  centre = F,
+  randomized = T,
+  seed = 180582,
+  use.odgenes = F,
+  n.odgenes = NULL,
+  plot.odgenes = F
+)
 }
 \arguments{
 \item{data}{list; GFICF object}
 
 \item{dim}{integer; Number of dimension which to reduce the dataset.}
 
-\item{rescale}{logical; Rescale gficf scores before applying reduction (deprecated).}
+\item{var.scale}{logical; Rescale gficf scores for adjusted variance like in pagoda2 (highly experimental!).}
 
 \item{centre}{logical; Centre gficf scores before applying reduction (increase separation).}
 
 \item{randomized}{logical; Use randomized (faster) version for matrix decomposition (default is TRUE).}
 
 \item{seed}{integer; Initial seed to use.}
+
+\item{use.odgenes}{boolean; Use significant overdispersed genes respect to ICF values (highly experimental!).}
+
+\item{n.odgenes}{integer; Number of overdispersed genes to use (highly experimental!). A good choise seems to be usually between 1000 and 3000.}
+
+\item{plot.odgenes}{boolean; Show significant overdispersed genes respect to ICF values.}
 }
 \value{
 The updated gficf object.
