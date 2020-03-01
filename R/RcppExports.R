@@ -9,42 +9,6 @@ jaccard_coeff <- function(idx, printOutput) {
     .Call(`_gficf_jaccard_coeff`, idx, printOutput)
 }
 
-non0LogColLmS <- function(sY, X, ldepth, maxCells = 0L, ncores = 1L) {
-    .Call(`_gficf_non0LogColLmS`, sY, X, ldepth, maxCells, ncores)
-}
-
-colMeanVarS <- function(sY, rowSel, ncores = 1L) {
-    .Call(`_gficf_colMeanVarS`, sY, rowSel, ncores)
-}
-
-colSumByFac <- function(sY, rowSel) {
-    .Call(`_gficf_colSumByFac`, sY, rowSel)
-}
-
-inplaceColMult <- function(sY, mult, rowSel, ncores = 1L) {
-    .Call(`_gficf_inplaceColMult`, sY, mult, rowSel, ncores)
-}
-
-inplaceWinsorizeSparseCols <- function(sY, n, ncores = 1L) {
-    .Call(`_gficf_inplaceWinsorizeSparseCols`, sY, n, ncores)
-}
-
-jsDist <- function(m, ncores = 1L) {
-    .Call(`_gficf_jsDist`, m, ncores)
-}
-
-orderColumnRows <- function(p, i) {
-    .Call(`_gficf_orderColumnRows`, p, i)
-}
-
-smatColVecCorr <- function(sY, sv, parallel = TRUE) {
-    .Call(`_gficf_smatColVecCorr`, sY, sv, parallel)
-}
-
-arma_mat_cor <- function(m) {
-    .Call(`_gficf_arma_mat_cor`, m)
-}
-
 rcpp_WMU_test <- function(M, idx1, idx2) {
     .Call(`_gficf_rcpp_WMU_test`, M, idx1, idx2)
 }

@@ -223,12 +223,12 @@ computePCADim = function(data,randomized=T,subsampling=F,plot=T)
 # find over dispersed genes respect to computed ICF
 # ispired by pagoda2 function. Thanks to them.
 #' @import mgcv
-findOverDispersed=function(data,gam.k=5, alpha=5e-2, plot=FALSE, use.unadjusted.pvals=FALSE,do.par=T,max.adjusted.variance=1e3,min.adjusted.variance=1e-3,verbose=TRUE,min.gene.cells=0,n.cores = 2)
+findOverDispersed=function(data,gam.k=5, alpha=5e-2, plot=FALSE, use.unadjusted.pvals=FALSE,do.par=T,max.adjusted.variance=1e3,min.adjusted.variance=1e-3,verbose=TRUE,min.gene.cells=0)
 {
   rowSel <- NULL;
   
   tsmessage("calculating variance fit ...",verbose=verbose)
-  df = colMeanVarS(t(data$rawCounts),rowSel,n.cores);
+  df = data.frame(m=data$w,v=apply(data$rawCounts, 1, var),nobs=Matrix::rowSums(data$rawCounts!=0),stringsAsFactors = F)
   df$m = data$w
   
   
