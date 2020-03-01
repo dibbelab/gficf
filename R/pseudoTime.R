@@ -4,14 +4,14 @@
 #' Can be used to assign a pseudotime to each cell. Identified clusters in the UMAP space will be used.
 #' 
 #' @param data list; GFICF object
-#' @param hgv boolean; use only top High Variable Genes (FDR<25%)
+#' @param hgv boolean; use only top High Variable Genes (FDR<.25)
 #' @param parallel boolean; Parralle execution
 #' @param verbose boolean; Increase verbosity
-#' @param start.cl int; (optional) character, indicates the cluster(s) from which lineages will be drawn.
-#' @param end.cl int; (optional) character, indicates the cluster(s) which will be forced leaf nodes in their trees.
+#' @param start.cl integer; (optional) character, indicates the cluster(s) from which lineages will be drawn.
+#' @param end.cl integer; (optional) character, indicates the cluster(s) which will be forced leaf nodes in their trees.
 #' @param ... Additional arguments to pass to fitGAM of tradeSeq.
 #' @return The updated gficf object.
-#' @import slingshot 
+#' @import slingshot
 #' @import tradeSeq
 #' @importFrom  BiocParallel multicoreWorkers
 #' @importFrom  BiocParallel MulticoreParam

@@ -17,15 +17,15 @@ runPseudoTime(
 \arguments{
 \item{data}{list; GFICF object}
 
-\item{hgv}{boolean; use only top High Variable Genes (FDR<25%)}
+\item{hgv}{boolean; use only top High Variable Genes (FDR<.25)}
 
 \item{parallel}{boolean; Parralle execution}
 
 \item{verbose}{boolean; Increase verbosity}
 
-\item{start.cl}{int; (optional) character, indicates the cluster(s) from which lineages will be drawn.}
+\item{start.cl}{integer; (optional) character, indicates the cluster(s) from which lineages will be drawn.}
 
-\item{end.cl}{int; (optional) character, indicates the cluster(s) which will be forced leaf nodes in their trees.}
+\item{end.cl}{integer; (optional) character, indicates the cluster(s) which will be forced leaf nodes in their trees.}
 
 \item{...}{Additional arguments to pass to fitGAM of tradeSeq.}
 }
