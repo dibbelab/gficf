@@ -18,7 +18,7 @@
 #' @export
 runLSA = function(data,dim=NULL,var.scale=F,centre=F,randomized=T,seed=180582,use.odgenes=F,n.odgenes=NULL,plot.odgenes=F)
 {
-  set.seed(seed)
+  if(use.odgenes & is.null(data$rawCounts)) {stop("Raw Counts absent! Please run gficf normalization with storeRaw = T")}
   
   if (is.null(dim))
   {
@@ -26,6 +26,8 @@ runLSA = function(data,dim=NULL,var.scale=F,centre=F,randomized=T,seed=180582,us
   } else {
     data$dimPCA = dim
   }
+  
+  set.seed(seed)
   
   data$pca = list()
   data$pca$cells = t(data$gficf)
@@ -42,12 +44,14 @@ runLSA = function(data,dim=NULL,var.scale=F,centre=F,randomized=T,seed=180582,us
       }
     }
     data$pca$cells = data$pca$cells[,odgenes]
+    data$pca$odgenes = overD
     tsmessage("... using ",length(odgenes)," OD genes",verbose = T)
   } 
   
   if(var.scale) {
     if(!use.odgenes) {overD=suppressWarnings(findOverDispersed(data = data,alpha = 0.1,verbose = F))}
     data$pca$cells@x <- data$pca$cells@x*rep(overD[colnames(data$pca$cells),'gsf'],diff(data$pca$cells@p))
+    data$pca$odgenes = overD
   }
   
   if (randomized) {ppk<- rsvd::rsvd(data$pca$cells,k=dim)} else {ppk<- RSpectra::svds(data$pca$cells,k=dim)}
@@ -80,7 +84,8 @@ runLSA = function(data,dim=NULL,var.scale=F,centre=F,randomized=T,seed=180582,us
 #' @export
 runPCA = function(data,dim=NULL,var.scale=F,centre=F,randomized=T,seed=180582,use.odgenes=F,n.odgenes=NULL,plot.odgenes=F)
 {
-  set.seed(seed)
+  
+  if(use.odgenes & is.null(data$rawCounts)) {stop("Raw Counts absent! Please run gficf normalization with storeRaw = T")}
   
   if (is.null(dim))
   {
@@ -88,6 +93,8 @@ runPCA = function(data,dim=NULL,var.scale=F,centre=F,randomized=T,seed=180582,us
   } else {
     data$dimPCA = dim
   }
+  
+  set.seed(seed)
   
   data$pca = list()
   data$pca$cells = t(data$gficf)
@@ -104,12 +111,14 @@ runPCA = function(data,dim=NULL,var.scale=F,centre=F,randomized=T,seed=180582,us
       }
     }
     data$pca$cells = data$pca$cells[,odgenes]
+    data$pca$odgenes = overD
     tsmessage("... using ",length(odgenes)," OD genes",verbose = T)
   }
   
   if(var.scale) {
     if(!use.odgenes) {overD=suppressWarnings(findOverDispersed(data = data,alpha = 0.1,verbose = F))}
     data$pca$cells@x <- data$pca$cells@x*rep(overD[colnames(data$pca$cells),'gsf'],diff(data$pca$cells@p))
+    data$pca$odgenes = overD
   }
   
   x = rsvd::rpca(data$pca$cells,k=dim,center=centre,scale=F,rand=randomized)
