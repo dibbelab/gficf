@@ -3,7 +3,7 @@ CXX_STD = CXX11
 
 # RcppGSL
 PKG_CPPFLAGS= -I$(GSL_LIBS)/include -I../inst/include
-PKG_LIBS= -L$(GSL_LIBS)/lib -lgsl -lgslcblas 
+PKG_LIBS= -L$(GSL_LIBS)/lib/x64 -lgsl -lgslcblas 
 
 # RcppParallel
 PKG_CXXFLAGS += -DRCPP_PARALLEL_USE_TBB=1 -DSTRICT_R_HEADERS
