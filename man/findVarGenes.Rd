@@ -8,6 +8,13 @@
 \usage{
 findVarGenes(data, fitMethod = "locfit", verbose = T)
 }
+\arguments{
+\item{data}{list; GFICF object}
+
+\item{fitMethod}{charachter; Method to use to fit variance and mean expression relationship (loess or locfit).}
+
+\item{verbose}{boolean; Increase verbosity.}
+}
 \description{
 Find high variable genes following the approach
  proposed by Chen et al. in BMC Genomics (2016)

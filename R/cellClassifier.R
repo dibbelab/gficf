@@ -5,7 +5,7 @@
 #' 
 #' @param data list; GFICF object
 #' @param classes chareachters; Classes of aready exsiting cells in the order of thay are in colnames(data$gficf).
-#' @param rescale k; Number of K-nn to use for classification. Odd number less than 30 are prefered.
+#' @param k integer; Number of K-nn to use for classification. Odd number less than 30 are prefered.
 #' @param seed integer; Initial seed to use.
 #' @return A dataframe containing cell id and predicted classes.
 #' @importFrom class knn

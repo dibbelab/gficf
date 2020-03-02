@@ -20,7 +20,6 @@
 #' @export
 runPseudoTime = function(data,hgv=T,parallel=F,verbose=T, start.cl = NULL, end.cl = NULL, ...)
 {
-  require(tradeSeq)
   if(is.null(data$community)) {stop("Pleas first run clustcells function to identify clusters!")}
   if(is.null(data$rawCounts)) {stop("Count data not stored!")}
   

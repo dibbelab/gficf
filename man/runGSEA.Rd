@@ -36,7 +36,7 @@ runGSEA(
 
 \item{verbose}{boolean; Show the progress bar.}
 
-\item{seed;}{Seed to use for random number generation.}
+\item{seed}{integer; Seed to use for random number generation.}
 }
 \value{
 The updated gficf object.

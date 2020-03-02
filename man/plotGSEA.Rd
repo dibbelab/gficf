@@ -11,7 +11,7 @@ plotGSEA(data, fdr = 0.05, clusterRowCol = F)
 
 \item{fdr}{number; FDR threshold to select significant pathways to plot.}
 
-\item{clusterRowCol;}{if TRUE row and col of the plot are clustered.}
+\item{clusterRowCol}{boolean; if TRUE row and col of the plot are clustered.}
 }
 \value{
 plot from ggplot2 package.

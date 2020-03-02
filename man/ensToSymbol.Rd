@@ -12,6 +12,8 @@ ensToSymbol(df, col, organism, verbose = T)
 \item{col}{characters; Name of column containing the ensamble ids.}
 
 \item{organism}{characters; Organism of origin (i.e. human or mouse).}
+
+\item{verbose}{boolean; Icrease verbosity.}
 }
 \value{
 The updated data frame with a new column called symb.

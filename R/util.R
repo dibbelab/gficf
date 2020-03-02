@@ -46,6 +46,7 @@ tsmessage <- function(..., domain = NULL, appendLF = TRUE, verbose = TRUE,time_s
 #' @param df data frame; Data frame containing the IDs to convert.
 #' @param col characters; Name of column containing the ensamble ids.
 #' @param organism characters; Organism of origin (i.e. human or mouse).
+#' @param verbose boolean; Icrease verbosity.
 #' @return The updated data frame with a new column called symb.
 #'
 #' @importFrom  biomaRt useMart getBM

@@ -11,9 +11,9 @@ classify.cells(data, classes, k = 7, seed = 18051982)
 
 \item{classes}{chareachters; Classes of aready exsiting cells in the order of thay are in colnames(data$gficf).}
 
-\item{seed}{integer; Initial seed to use.}
+\item{k}{integer; Number of K-nn to use for classification. Odd number less than 30 are prefered.}
 
-\item{rescale}{k; Number of K-nn to use for classification. Odd number less than 30 are prefered.}
+\item{seed}{integer; Initial seed to use.}
 }
 \value{
 A dataframe containing cell id and predicted classes.

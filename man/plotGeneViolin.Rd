@@ -9,11 +9,11 @@ plotGeneViolin(data, gene, ncol = 3, x = NULL)
 \arguments{
 \item{data}{list; GFICF object}
 
+\item{gene}{characters; Id of genes to plot. It must correspond to the IDs on the rows of raw count matrix.}
+
 \item{ncol}{numeric; Number of columns of the final plot (defaul is 3).}
 
 \item{x}{Matrix; Custom normalized raw counts. If present will be used instead of the ones normalized by gficf. Default is NULL.}
-
-\item{genes}{characters; Id of genes to plot. It must correspond to the IDs on the rows of raw count matrix.}
 }
 \value{
 A list of plots.

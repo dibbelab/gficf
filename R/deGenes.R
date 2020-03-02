@@ -4,11 +4,9 @@
 #' DE genes are identified the expression in each cluster versus the all the other.
 #'
 #' @param data list; GFICF object
-#' @param x Matrix; UMI counts matrix of cells to embedd.
 #' @param nt integer; Number of thread to use (default 2).
 #' @param hvg boolean; Use only High Variable Genes (default is TRUE).
 #' @param verbose boolean; Icrease verbosity.
-#' 
 #' @return The updated gficf object.
 #' @import Matrix
 #' @importFrom RcppParallel setThreadOptions
@@ -64,7 +62,9 @@ findClusterMarkers = function(data,nt=2,hvg=T,verbose=T)
 #'  Find high variable genes following the approach
 #'  proposed by Chen et al. in BMC Genomics (2016)
 #'  Code adapted from https://github.com/hillas/scVEGs
-#'
+#' @param data list; GFICF object
+#' @param fitMethod charachter; Method to use to fit variance and mean expression relationship (loess or locfit).
+#' @param verbose boolean; Increase verbosity.
 #' @import Matrix
 #' @importFrom locfit locfit locfit.robust lp
 #' @importFrom MASS fitdistr

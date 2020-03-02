@@ -14,8 +14,6 @@ findClusterMarkers(data, nt = 2, hvg = T, verbose = T)
 \item{hvg}{boolean; Use only High Variable Genes (default is TRUE).}
 
 \item{verbose}{boolean; Icrease verbosity.}
-
-\item{x}{Matrix; UMI counts matrix of cells to embedd.}
 }
 \value{
 The updated gficf object.

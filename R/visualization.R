@@ -92,7 +92,7 @@ plotGenes = function(data,genes,log2Expr=T,x=NULL)
 #' Plot the expression of a gene across group of cells with violion plot.
 #' 
 #' @param data list; GFICF object
-#' @param genes characters; Id of genes to plot. It must correspond to the IDs on the rows of raw count matrix.
+#' @param gene characters; Id of genes to plot. It must correspond to the IDs on the rows of raw count matrix.
 #' @param ncol numeric; Number of columns of the final plot (defaul is 3).
 #' @param x Matrix; Custom normalized raw counts. If present will be used instead of the ones normalized by gficf. Default is NULL.
 #' @return A list of plots.
@@ -142,7 +142,7 @@ plotGeneViolin = function(data,gene,ncol=3,x=NULL)
 #' 
 #' @param data list; GFICF object
 #' @param fdr number; FDR threshold to select significant pathways to plot.
-#' @param clusterRowCol; if TRUE row and col of the plot are clustered. 
+#' @param clusterRowCol boolean; if TRUE row and col of the plot are clustered. 
 #' @return plot from ggplot2 package.
 #' @import Matrix
 #' @import ggplot2

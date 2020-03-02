@@ -54,7 +54,7 @@ gmtPathways <- function(gmt.file,convertToEns,convertHu2Mm,verbose)
 #' @param minSize numeric; Minimal size of a gene set to test (default 15). All pathways below the threshold are excluded.
 #' @param maxSize numeric; Maximal size of a gene set to test (default Inf). All pathways above the threshold are excluded.
 #' @param verbose boolean; Show the progress bar.
-#' @param seed; Seed to use for random number generation.
+#' @param seed integer; Seed to use for random number generation.
 #' @return The updated gficf object.
 #' @importFrom fgsea fgsea
 #' @import fastmatch
