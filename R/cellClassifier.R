@@ -43,7 +43,17 @@ embedNewCells = function(data,x,nt=2,seed=18051982, verbose=TRUE, ...)
   x = tf(x,verbose=verbose)
   x = idf(x,w = data$w,verbose=verbose)
   x = t(l.norm(t(x),norm = "l2",verbose=verbose))
-  x = as.matrix(scaleMatrix(t(x), data$pca$rescale,data$pca$centre)) %*% data$pca$genes
+  x = as.matrix(scaleMatrix(t(x), data$pca$rescale,data$pca$centre))
+  
+  if(ncol(x)!=nrow(data$pca$genes)) {x = x[,rownames(data$pca$genes)]}
+  
+  if(!is.null(data$pca$odgenes) & data$pca$rescale)
+  {
+    x = Matrix::Matrix(data = x,sparse = T)
+    x@x <- x@x*rep(data$pca$odgenes[colnames(x),'gsf'],diff(x@p))
+  }
+  
+  x = x %*% data$pca$genes
   gc()
   
   if(data$reduction%in%c("tumap","umap")) {
