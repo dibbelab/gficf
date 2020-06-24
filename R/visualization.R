@@ -40,12 +40,13 @@ plotCells = function(data,colorBy=NULL,pointSize=.5)
 #' @param genes characters; Id of genes to plot. It must correspond to the IDs on the rows of raw count matrix.
 #' @param log2Expr boolean; Relative expression of a gene is computed on rescaled in log2 expression (default TRUE).
 #' @param x Matrix; Custom normalized raw counts. If present will be used instead of the ones normalized by gficf. Default is NULL.
+#' @param rescale boolean; Rescale expression between 0 and 1. Default is false.
 #' @return A list of plots.
 #' @import Matrix
 #' @import ggplot2
 #' 
 #' @export
-plotGenes = function(data,genes,log2Expr=T,x=NULL)
+plotGenes = function(data,genes,log2Expr=T,x=NULL,rescale=F)
 {
   if (is.null(data$embedded)) {stop("Please run reduction in the embedded space first!")}
   if (!is.null(x)) {data$rawCounts=x}
@@ -78,7 +79,7 @@ plotGenes = function(data,genes,log2Expr=T,x=NULL)
       df$expr = data$rawCounts[i,rownames(df)]
     }
     
-    df$expr = (df$expr-min(df$expr))/(max(df$expr)-min(df$expr))
+    if(rescale) {df$expr = df$expr/max(df$expr)}
     df = df[order(df$expr,decreasing = F),]
     l[[i]] = ggplot(data = df,aes(x=X,y=Y,color=expr)) + geom_point(size=.5,shape=19) + theme_bw() +  scale_color_gradient2(low = "gray",mid = "#2171b5",high = "#08306b",midpoint = .5) + ggtitle(i)
     
