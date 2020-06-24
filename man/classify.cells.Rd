@@ -4,7 +4,7 @@
 \alias{classify.cells}
 \title{Classify New Embedded Cells}
 \usage{
-classify.cells(data, classes, k = 7, seed = 18051982)
+classify.cells(data, classes, k = 7, seed = 18051982, method = "PCA")
 }
 \arguments{
 \item{data}{list; GFICF object}
@@ -14,6 +14,8 @@ classify.cells(data, classes, k = 7, seed = 18051982)
 \item{k}{integer; Number of K-nn to use for classification. Odd number less than 30 are prefered.}
 
 \item{seed}{integer; Initial seed to use.}
+
+\item{method}{chareachters; Which space in which apply KNN. Default is PCA but embedded usually gives better results.}
 }
 \value{
 A dataframe containing cell id and predicted classes.

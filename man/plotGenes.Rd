@@ -4,7 +4,7 @@
 \alias{plotGenes}
 \title{Plot gene expression across cells}
 \usage{
-plotGenes(data, genes, log2Expr = T, x = NULL)
+plotGenes(data, genes, log2Expr = T, x = NULL, rescale = F)
 }
 \arguments{
 \item{data}{list; GFICF object}
@@ -14,6 +14,8 @@ plotGenes(data, genes, log2Expr = T, x = NULL)
 \item{log2Expr}{boolean; Relative expression of a gene is computed on rescaled in log2 expression (default TRUE).}
 
 \item{x}{Matrix; Custom normalized raw counts. If present will be used instead of the ones normalized by gficf. Default is NULL.}
+
+\item{rescale}{boolean; Rescale expression between 0 and 1. Default is false.}
 }
 \value{
 A list of plots.
