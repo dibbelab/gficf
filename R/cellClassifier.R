@@ -7,15 +7,23 @@
 #' @param classes chareachters; Classes of aready exsiting cells in the order of thay are in colnames(data$gficf).
 #' @param k integer; Number of K-nn to use for classification. Odd number less than 30 are prefered.
 #' @param seed integer; Initial seed to use.
+#' @param method chareachters; Which space in which apply KNN. Default is PCA but embedded usually gives better results.
 #' @return A dataframe containing cell id and predicted classes.
 #' @importFrom class knn
 #' 
 #' @export
-classify.cells = function(data,classes,k=7,seed=18051982)
+classify.cells = function(data,classes,k=7,seed=18051982,method="PCA")
 {
+  method = base::match.arg(arg = method,choices = c("PCA","embedded"),several.ok = F)
+  if (sum(colnames(data$embedded)%in%"predicted") == 0) {stop("Please embed first new cells!")}
   set.seed(seed)
   classes = factor(as.character(classes))
-  res = class::knn(data$pca$cells,data$pca$pred,classes,k = k,prob = F)
+  if (method%in%"PCA")
+  {
+    res = class::knn(data$pca$cells,data$pca$pred,classes,k = k,prob = F) 
+  } else {
+    res = class::knn(data$embedded[data$embedded$predicted%in%"NO",c(1,2)],data$embedded[data$embedded$predicted%in%"YES",c(1,2)],classes,k = k,prob = F)
+  }
   df = data.frame(cell.id=rownames(data$pca$pred),pred=as.character(res),stringsAsFactors = F)
   return(df)
 }
