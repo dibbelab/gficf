@@ -75,15 +75,15 @@ runGSEA <- function(data,gmt.file,nsim=1000,convertToEns=T,convertHu2Mm=F,nt=2,m
   rownames(data$gsea$es) = rownames(data$gsea$nes) = rownames(data$gsea$pval) = rownames(data$gsea$fdr) = names(data$gsea$pathways)
   colnames(data$gsea$es) = colnames(data$gsea$nes) = colnames(data$gsea$pval) = colnames(data$gsea$fdr) = colnames(data$cluster.gene.rnk)
   
-  pb <- uwot:::Progress$new(max = ncol(data$cluster.gene.rnk),display = verbose)
+  progress_for(n=0,tot = ncol(data$cluster.gene.rnk),display = verbose)
   for (i in 1:ncol(data$cluster.gene.rnk))
   {
-    df = as.data.frame(fgsea::fgsea(pathways = data$gsea$pathways,stats = data$cluster.gene.rnk[,i],nperm = nsim,gseaParam = 0,nproc = nt,minSize = minSize,maxSize = maxSize))[,1:7]
+    df = as.data.frame(fgsea::fgseaMultilevel(pathways = data$gsea$pathways,stats = data$cluster.gene.rnk[,i],nPermSimple = nsim,gseaParam = 0,nproc = nt,minSize = minSize,maxSize = maxSize))[,1:7]
     data$gsea$es[df$pathway,i] = df$ES
     data$gsea$nes[df$pathway,i] = df$NES
     data$gsea$pval[df$pathway,i] = df$pval
     data$gsea$fdr[df$pathway,i] = df$padj
-    pb$increment()
+    progress_for(n=i,tot = ncol(data$cluster.gene.rnk),display = verbose)
   }
   
   data$gsea$stat = df[,c("pathway","size")]

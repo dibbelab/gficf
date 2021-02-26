@@ -81,3 +81,19 @@ ensToSymbol = function(df,col,organism,verbose=T)
   
   return(df)
 }
+
+# Rcpp progress bar style
+progress_for <- function(n, tot,display) {
+  if (display) {
+    message("0%   10   20   30   40   50   60   70   80   90   100%")
+    message("[----|----|----|----|----|----|----|----|----|----|")
+    # n:tot = nstars:50 -> nstars = (n*50)/tot
+    nstars = floor((n*50)/tot)
+    if(nstars>0)
+      for (i in 1:nstars) {
+        message("*", appendLF = FALSE)
+        utils::flush.console()
+      }
+    message("|")
+  }
+}
