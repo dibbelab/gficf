@@ -40,7 +40,7 @@ findClusterMarkers = function(data,nt=2,hvg=T,verbose=T)
   
   tsmessage("... Start identify marker genes")
   res = NULL
-  p = uwot:::Progress$new(max = length(u),display = T)
+  #progress_for(n=0,tot = length(u),display = T)
   for (i in 1:length(u)) {
     cells.1 = which(data$embedded$cluster%in%u[i])
     cells.2 = which(!data$embedded$cluster%in%u[i])
@@ -50,7 +50,7 @@ findClusterMarkers = function(data,nt=2,hvg=T,verbose=T)
     tmp = tmp[order(tmp$fdr,decreasing = F),]
     tmp$cluster = u[i]
     res = rbind(res,tmp)
-    p$increment()
+    #progress_for(n=i,tot = length(u),display = T)
   }
   
   res = res[order(res$log2FC,decreasing = T),]
@@ -117,8 +117,8 @@ findVarGenes = function(data,fitMethod="locfit",verbose=T)
   logXseq <- log10(xSeq_all)
   cvDist <- matrix(0,length(xdata),1)
   
-  p = uwot:::Progress$new(max = length(logX),display = verbose)
-  
+  #progress_for(n=0,tot = length(logX),display = verbose)
+
   for (i in 1:length(logX)) 
   {
     cx <- which(logXseq >= logX[i] - 0.2 & logXseq < logX[i] + 0.2)
@@ -140,7 +140,7 @@ findVarGenes = function(data,fitMethod="locfit",verbose=T)
       }
     }
     
-    p$increment()
+    #progress_for(n=i,tot = length(logX),display = verbose)
     
   }
   
