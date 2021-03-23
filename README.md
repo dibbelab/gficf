@@ -58,7 +58,7 @@ a few extra steps before being able to build this package. The steps are reporte
 
 ### On Linux
 You need gsl dev library to successfully install RcppGSL library.
-On Ubuntu/Debian systems this can be accomplished by runnuing the command `sudo apt-get install libgsl-dev` from the terminal.
+On Ubuntu/Debian systems this can be accomplished by runnuing the command `sudo apt-get install libgsl-dev libcurl4-openssl-dev libssl-dev libxml2-dev` from the terminal.
 
 ### On Mac OS X
 1. Open terminal and run `xcode-select --install` to install the command line developer tools.
