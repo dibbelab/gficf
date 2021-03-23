@@ -21,6 +21,10 @@ Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell dat
 * Idetify marker genes across clusters. [See example how..](https://jeky82.github.io/gficf_example.html#find-marker-genes)
 
 ## News
+*Mar. 23 2021* **New functionality:** Use GSVA to identify deferentially active pathways across cluster of cells.
+
+*Mar. 1 2020* **New functionality:** PseudoTime support by using tradeseq (alpha status).
+
 *Sep. 24 2019* **New functionality:** Classify cells using GF-ICF transformation and K-nn algorithm. [See example how..](https://jeky82.github.io/gficf_example.html#how-to-embedd-new-cells-in-an-existing-space)
 
 *Sep. 09 2019* Version 0.3.1: Save and load gficf objects, support for Leiden and few bug fixes.
