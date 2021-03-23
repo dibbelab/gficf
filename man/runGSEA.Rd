@@ -14,7 +14,8 @@ runGSEA(
   minSize = 15,
   maxSize = Inf,
   verbose = TRUE,
-  seed = 180582
+  seed = 180582,
+  method = "GSEA"
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ runGSEA(
 \item{verbose}{boolean; Show the progress bar.}
 
 \item{seed}{integer; Seed to use for random number generation.}
+
+\item{method}{string; Method to use GSEA or GSVA. Default is GSEA.}
 }
 \value{
 The updated gficf object.

@@ -179,7 +179,7 @@ plotGSEA = function(data,fdr=.05,clusterRowCol=F)
 
 #' Plot GSEA results
 #'
-#' Circle plot for gene set enrichement analysis results.
+#' Plot GSEA values on top of UMAP/TSNE coordinates.
 #' 
 #' @param data list; GFICF object
 #' @param pathwayName characters; Name of the pathway to plot.
@@ -201,3 +201,34 @@ plotPathway = function(data,pathwayName,fdr=.05)
   ggplot(data = df,aes(x=X,y=Y)) + geom_point(aes(color=NES),shape=20) + theme_bw() + scale_color_gradient(low = "gray",high = "red")
 }
 
+#' Plot GSEA results
+#'
+#' Circle plot for gene set enrichement analysis results.
+#' 
+#' @param data list; GFICF object
+#' @param fdr number; FDR threshold to select significant pathways to plot.
+#' @param clusterRowCol boolean; if TRUE row and col of the plot are clustered.
+#' @param logFCth number; LogFC threshold to select pathways to plot. 
+#' @return plot from ggplot2 package.
+#' @import Matrix
+#' @import ggplot2
+#' @importFrom reshape2 melt acast
+#' 
+#' @export
+plotGSVA = function(data,fdr=.05,clusterRowCol=T,logFCth=0)
+{
+  if (is.null(data$gsva)) {stop("Please run runGSEA function first")}
+  M = reshape2::acast(subset(data$gsva$DEpathways,adj.P.Val<fdr & abs(logFC)>logFCth),pathway~cluster,fill = 0,value.var = "logFC")
+  
+  df = reshape2::melt(M)
+  if(clusterRowCol)
+  {
+    h.col  = hclust(dist(t(M)),method = "ward.D2")
+    h.row  = hclust(dist(M),method = "ward.D2")
+    df$Var1 = factor(as.character(df$Var1),levels = h.row$labels[h.row$order])
+    df$Var2 = factor(as.character(df$Var2),levels = h.col$labels[h.col$order])
+  }
+  
+  ggplot(data = df,aes(x=Var1,y=Var2,fill=value)) + geom_tile() + scale_fill_gradient2(low = "blue",high = "red") + theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) + xlab("") + ylab("")
+  
+}
