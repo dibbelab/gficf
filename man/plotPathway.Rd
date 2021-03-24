@@ -17,5 +17,5 @@ plotPathway(data, pathwayName, fdr = 0.05)
 plot from ggplot2 package.
 }
 \description{
-Circle plot for gene set enrichement analysis results.
+Plot GSEA values on top of UMAP/TSNE coordinates.
 }
