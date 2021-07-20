@@ -45,7 +45,7 @@ findClusterMarkers = function(data,nt=2,hvg=T,verbose=T)
     cells.1 = which(data$embedded$cluster%in%u[i])
     cells.2 = which(!data$embedded$cluster%in%u[i])
     tmp = rcpp_parallel_WMU_test(matX = cpms[,cells.1],matY = cpms[,cells.2],printOutput = F)
-    tmp = data.frame(ens=rownames(cpms),log2FC=tmp[,2],fdr=tmp[,1],stringsAsFactors = F)
+    tmp = data.frame(ens=rownames(cpms),log2FC=tmp[,2],p.value=tmp[,1],fdr=p.adjust(tmp[,1],method = "fdr"),stringsAsFactors = F)
     tmp = subset(tmp,fdr<.05 & log2FC>0)
     tmp = tmp[order(tmp$fdr,decreasing = F),]
     tmp$cluster = u[i]
