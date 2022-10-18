@@ -45,28 +45,26 @@ Latent Semantic Analisys (LSA) before to apply t-SNE or UMAP for single cell dat
 
 *Jul. 03 2019*. Version 0.1 with example on Tabula Muris.
 
-## Installing from dibbelab repo (Only with R>=3.5)
-```R
-# Install required bioconductor packages
-if (!requireNamespace("BiocManager", quietly = TRUE)) {install.packages("BiocManager")}
-BiocManager::install(setdiff(c("edgeR", "BiocParallel", "fgsea", "biomaRt","slingshot","tradeSeq"),rownames(installed.packages())),update = F)
+# Installation
 
-# install gficf package
-install.packages(pkgs = "gficf",repos = c("https://dibbelab.github.io/Rrepo/","https://cloud.r-project.org"))
-```
 
-## Installing from github (Recommended for all R versions)
+#### 1. OS required Steps (Officially supported only Linux)
 
 `gficf` makes use of `Rcpp`, `RcppParallel` and `RcppGSL`. So you have to carry out
 a few extra steps before being able to build this package. The steps are reported below for each platform.
 
-### On Linux
+
+##### 1.1 Ubuntu/Debian
+
 You need gsl dev library to successfully install RcppGSL library.
 On Ubuntu/Debian systems this can be accomplished by runnuing the command `sudo apt-get install libgsl-dev libcurl4-openssl-dev libssl-dev libxml2-dev` from the terminal.
 
-### On Mac OS X
-1. Open terminal and run `xcode-select --install` to install the command line developer tools.
-2. We than need to install gsl libraries. This can be done via [Homebrew](https://brew.sh/). So, still from terminal
+
+##### 1.2 Mac OS X
+
+1.2.1 Open terminal and run `xcode-select --install` to install the command line developer tools.
+
+1.2.1. We than need to install gsl libraries. This can be done via [Homebrew](https://brew.sh/). So, still from terminal
 ```bash
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
@@ -75,10 +73,14 @@ and than use `homebrew` to install gsl with following command
 brew install gsl
 ```
 
-### On Windows
-1. Skip this first step if you are using RStudio because it will ask you automatically. Otherwise install  [Rtools](https://cran.r-project.org/bin/windows/Rtools/) and ensure  `path\to\Rtools\bin` is on your path.   
-2. [Download gsl library for Windows](https://sourceforge.net/projects/gnu-scientific-library-windows/) from sourceforge and exctract it in `C:\` or where you want.   
-3. Open R/Rstudio and before to istall the package from github exec the following command in the R terminal.
+
+##### 1.3 Windows
+
+1.3.1 Skip this first step if you are using RStudio because it will ask you automatically. Otherwise install  [Rtools](https://cran.r-project.org/bin/windows/Rtools/) and ensure  `path\to\Rtools\bin` is on your path.   
+
+1.3.2 [Download gsl library for Windows](https://sourceforge.net/projects/gnu-scientific-library-windows/) from sourceforge and exctract it in `C:\` or where you want.   
+
+1.3.3 Open R/Rstudio and before to istall the package from github exec the following command in the R terminal.
 ```R
 # Change the path if you installed gsl librarie not in the default path.
 # Be sure to use the format '"path/to/gsl-xxx_mingw-xxx/gsl-xxx-static"'
@@ -88,9 +90,15 @@ brew install gsl
 Sys.setenv(GSL_LIBS = '"C:/gsl-2.2.1_mingw-6.2.0/gsl-2.2.1-static"')
 ```
 
-### After above OS specific steps
+
+#### 2. After above OS specific steps
+
 Exec in R terminal the following commands
 ```R
+# Install required bioconductor packages
+if (!requireNamespace("BiocManager", quietly = TRUE)) {install.packages("BiocManager")}
+BiocManager::install(setdiff(c("sva","edgeR", "fgsea"),rownames(installed.packages())),update = F)
+
 if(!require(devtools)){ install.packages("devtools")}
 devtools::install_github("dibbelab/gficf")
 ```
