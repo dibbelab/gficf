@@ -1,5 +1,9 @@
 # gficf package overview
 
+## ANNOUNCEMENT
+Please use the **new version 2.0** avalible [HERE](https://github.com/gambalab/gficf). Novel functionalities of verion 2.0 are described in [this preprint](https://biorxiv.org/cgi/content/short/2022.10.24.513476v1). ***To note:*** GFICF object created with the version on this github are not compatibles with GFICF version 2.0.     
+
+## Description
 An R implementation of the 
 Gene Frequency - Inverse Cell Frequency method for single cell data
 normalization [(Gambardella et al. 2019)](https://www.frontiersin.org/articles/10.3389/fgene.2019.00734/abstract).
